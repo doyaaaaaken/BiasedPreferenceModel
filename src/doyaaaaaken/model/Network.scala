@@ -47,6 +47,6 @@ object CompleteGraphFactory {
 /*WSグラフのファクトリ*/
 //object SmallWorldGraphFactory {
 //  def create(agentNum: Int): Network = {
-//    //TODO
+//    //TODO WSグラフも実装する
 //  }
 //}

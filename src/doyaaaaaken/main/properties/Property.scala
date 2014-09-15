@@ -20,9 +20,10 @@ object Property {
   }
 
   //アクセス時のキー名一覧
-  lazy val simNum: Int = map.apply("sim.num").toInt //TODO lazy化
+  lazy val simNum: Int = map.apply("sim.num").toInt
   lazy val agentNum: Int = map.apply("agent.num").toInt
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
+  lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
 }
 
 /**

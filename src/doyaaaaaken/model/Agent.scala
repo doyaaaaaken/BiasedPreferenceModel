@@ -1,11 +1,12 @@
 package doyaaaaaken.model
 
 import doyaaaaaken.model.helper.TraitFactory
+import doyaaaaaken.main.properties.Property
 
 class Agent(agentIdNum: Int, antiConf: Double, traitFactoryInstance: TraitFactory) {
 
   val agentId = agentIdNum
-  val possessTraitNumCapacity = 0 //持てる様式の上限数 //TODO Property化
+  val possessTraitNumCapacity = Property.agentPossessTraitCapacity //持てる様式の上限数
 
   val traits: Seq[Int] = traitFactoryInstance.getInitialTrait
   val preference: Map[Int, Double] = null
@@ -19,7 +20,7 @@ class Agent(agentIdNum: Int, antiConf: Double, traitFactoryInstance: TraitFactor
 object AgentFactory {
 
   var agentId = -1 //作成するAgentにつけるID
-  val traitFactory: TraitFactory = TraitFactory()
+  val traitFactory: TraitFactory = TraitFactory.apply()
 
   def create(): Agent = {
     agentId += 1

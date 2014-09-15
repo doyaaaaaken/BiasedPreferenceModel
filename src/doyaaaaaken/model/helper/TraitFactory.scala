@@ -1,5 +1,7 @@
 package doyaaaaaken.model.helper
 
+import doyaaaaaken.main.properties.Property
+
 /**
  * AgentFactory内部にて初期化され、各Agentインスタンスに参照として保持され利用される。
  *
@@ -37,8 +39,8 @@ object TraitFactory {
   var instanceCount = 0
 
   def apply(): TraitFactory = {
-    if (limitInstanceNum >= instanceCount) throw new RuntimeException("TraitFactoryは1つしか生成できません")
+    if (instanceCount >= limitInstanceNum) throw new RuntimeException("TraitFactoryは1つしか生成できません")
     instanceCount += 1
-    new TraitFactory(5) //TODO プロパティ化
+    new TraitFactory(Property.initialTraitKind)
   }
 }

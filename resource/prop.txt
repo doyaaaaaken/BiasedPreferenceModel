@@ -6,3 +6,6 @@ sim.num = 100;
 #エージェント関係
 agent.num = 100;
 agent.trait.possessCapacity = 4;	//エージェントが様式を持てる限界数
+
+#様式関係
+trait.initialKindNum = 5;	//初期状態での様式の種類数

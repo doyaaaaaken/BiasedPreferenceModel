@@ -12,6 +12,7 @@ object Boot {
    * 注：現時点ではPropertyファイルのみを返す設定にしている
    */
   def start(): Unit = {
+    println("＊＊＊＊＊＊シミュレーション開始＊＊＊＊＊＊")
     PropertyReader.read
   }
 }
