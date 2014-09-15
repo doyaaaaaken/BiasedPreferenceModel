@@ -8,4 +8,5 @@ agent.num = 100;
 agent.trait.possessCapacity = 4;	//エージェントが様式を持てる限界数
 
 #様式関係
-trait.initialKindNum = 5;	//初期状態での様式の種類数
+trait.initialKindNum = 5;	//初期状態での様式の全種類数
+trait.initialHavingKindProportion = 0.5;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)

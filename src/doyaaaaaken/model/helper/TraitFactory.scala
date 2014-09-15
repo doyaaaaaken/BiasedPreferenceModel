@@ -16,8 +16,7 @@ private[model] class TraitFactory(initialTraitKindNum: Int) {
    * エージェントの初期様式を作成する
    */
   def getInitialTrait(): Seq[Int] = {
-    //TODO 未実装
-    null
+    (0 to initialTraitKind).toList.filter(_ => Math.random < Property.initialHavingTraitProp)
   }
 
   /**
