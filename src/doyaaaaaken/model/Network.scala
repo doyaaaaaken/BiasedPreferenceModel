@@ -21,7 +21,8 @@ class Network(edgeList: List[List[Boolean]]) {
    * 指定したAgentとリンクが繋がっているAgentナンバーのリストを返す
    */
   def getLinkedAgentNums(agentNum: Int): Seq[Int] = {
-    //TODO
+    edge.apply(agentNum).zipWithIndex.filter { case (isLinked: Boolean, index: Int) => isLinked && index != agentNum }
+      .map { case (isLinked: Boolean, index: Int) => index }
   }
 }
 
@@ -31,12 +32,12 @@ object CompleteGraphFactory {
     //1~AgentNumまでの全値がtrue(リンクあり)である1行を定義
     var edgeRow: List[Boolean] = Nil
     for (i <- 1 to agentNum) {
-      edgeRow :+ true
+      edgeRow = edgeRow :+ true
     }
     //1行を集合させ、全値がtrue（リンクあり）の行列を作成する
     var edge: List[List[Boolean]] = Nil
     for (i <- 1 to agentNum) {
-      edge :+ edgeRow
+      edge = edge :+ edgeRow
     }
 
     new Network(edge)
@@ -44,8 +45,8 @@ object CompleteGraphFactory {
 }
 
 /*WSグラフのファクトリ*/
-object SmallWorldGraphFactory {
-  def create(agentNum: Int): Network = {
-    //TODO
-  }
-}
+//object SmallWorldGraphFactory {
+//  def create(agentNum: Int): Network = {
+//    //TODO
+//  }
+//}

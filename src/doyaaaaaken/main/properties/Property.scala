@@ -9,8 +9,8 @@ import scala.util.matching.Regex.Match
  */
 class Property(keyValueStore: Map[String, String]) {
   //アクセス時のキー名一覧
-  val simNum: Int = keyValueStore.get("sim.num").get.toInt
-  val agentNum: Int = keyValueStore.get("agent.num").get.toInt
+  val simNum: Int = keyValueStore.apply("sim.num").toInt
+  val agentNum: Int = keyValueStore.apply("agent.num").toInt
 }
 
 object Property {
