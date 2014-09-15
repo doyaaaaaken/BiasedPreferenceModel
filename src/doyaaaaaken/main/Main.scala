@@ -18,7 +18,7 @@ object Main {
     //エージェント間の繋がりを示すネットワークの生成
     val network: Network = CompleteGraphFactory.create(1000) //完全グラフ  //TODO プロパティ化
     //エージェントの初期化
-    val agentsIndexedSeq = for (i <- 1 to 1000) yield { AgentFactory.apply() } //TODO プロパティ化
+    val agentsIndexedSeq = for (i <- 1 to 1000) yield { AgentFactory.create() } //TODO プロパティ化
     val agents: Set[Agent] = agentsIndexedSeq.toSet //AgentNum体のエージェントセット
   }
 }
