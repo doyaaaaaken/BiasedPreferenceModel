@@ -8,7 +8,7 @@ private[model] class Preference(pref: Map[Int, Double]) {
     pref.get(traitKind)
   }
 
-  //TODO Preferenceクラスの実装
+  //TODO Preferenceクラスのメソッド実装
 
 }
 
@@ -19,8 +19,8 @@ object Preference {
    * -1.0～1.0までのランダムな値としてもつようにする
    */
   def apply: Preference = {
-    val prefIndexedSeq = for (i <- (0 to Property.initialTraitKind - 1)) yield { (i, Math.random * 2 - 1.0) }
-    val pref: Map[Int, Double] = prefIndexedSeq.toMap
+    val tmp = for (i <- (0 to Property.initialTraitKind - 1)) yield { (i, Math.random * 2 - 1.0) }
+    val pref: Map[Int, Double] = tmp.toMap
     new Preference(pref)
   }
 }

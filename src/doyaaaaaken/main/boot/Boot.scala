@@ -7,12 +7,13 @@ import doyaaaaaken.main.properties.Property
  */
 object Boot {
 
-  /**
-   * シミュレーション開始時に必要な処理
-   * 注：現時点ではPropertyファイルのみを返す設定にしている
-   */
   def start(): Unit = {
     println("＊＊＊＊＊＊シミュレーション開始＊＊＊＊＊＊")
     PropertyReader.read
+  }
+
+  def finish(): Unit = {
+    //TODO DBの接続閉じるとか
+    println("＊＊＊＊＊＊シミュレーション終了＊＊＊＊＊＊")
   }
 }
