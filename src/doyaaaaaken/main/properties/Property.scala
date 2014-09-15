@@ -11,6 +11,7 @@ class Property(keyValueStore: Map[String, String]) {
   //アクセス時のキー名一覧
   val simNum: Int = keyValueStore.apply("sim.num").toInt
   val agentNum: Int = keyValueStore.apply("agent.num").toInt
+  val agentPossessTraitCapacity: Int = keyValueStore.apply("agent.trait.possessCapacity").toInt
 }
 
 object Property {

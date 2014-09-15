@@ -1,4 +1,4 @@
-package doyaaaaaken.test.model
+package test.doyaaaaaken.model
 
 import doyaaaaaken.model.CompleteGraphFactory
 import doyaaaaaken.model.Network
