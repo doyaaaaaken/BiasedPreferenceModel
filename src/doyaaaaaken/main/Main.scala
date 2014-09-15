@@ -3,11 +3,11 @@ package doyaaaaaken.main
 import doyaaaaaken.main.boot.Boot
 import doyaaaaaken.main.properties.Property
 /**
- * ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚Ì–{œ‘g‚İ‚Æ‚È‚éMainƒNƒ‰ƒX
+ * ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®æœ¬éª¨çµ„ã¿ã¨ãªã‚‹Mainã‚¯ãƒ©ã‚¹
  */
 object Main {
   def main(args: Array[String]): Unit = {
-    println("––––––ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ŠJn––––––")
+    println("ï¼Šï¼Šï¼Šï¼Šï¼Šï¼Šã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹ï¼Šï¼Šï¼Šï¼Šï¼Šï¼Š")
     val prop: Property = Boot.start
     println(prop.simNum)
   }

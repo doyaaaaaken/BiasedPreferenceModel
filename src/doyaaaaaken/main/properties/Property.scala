@@ -5,12 +5,12 @@ import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 
 /**
- * Propertyî•ñ‚ÉƒAƒNƒZƒX‚µ‚½‚¢‚ÍAobject‚Ì’†‚ÌƒL[–¼ˆê——‚©‚çAprops.get("ƒL[–¼")‚ÅƒAƒNƒZƒX‚Å‚«‚é
+ * Propertyæƒ…å ±ã«ã‚¢ã‚¯ã‚»ã‚¹ã—ãŸã„æ™‚ã¯ã€objectã®ä¸­ã®ã‚­ãƒ¼åä¸€è¦§ã‹ã‚‰ã€props.get("ã‚­ãƒ¼å")ã§ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹
  */
 class Property(keyValueStore: Map[String, String]) {
-  //ƒAƒNƒZƒX‚ÌƒL[–¼ˆê——
-  val simNum = keyValueStore.get("sim.num").get
-  val agentNum = keyValueStore.get("agent.num").get
+  //ã‚¢ã‚¯ã‚»ã‚¹æ™‚ã®ã‚­ãƒ¼åä¸€è¦§
+  val simNum: Int = keyValueStore.get("sim.num").get.toInt
+  val agentNum: Int = keyValueStore.get("agent.num").get.toInt
 }
 
 object Property {
@@ -20,7 +20,7 @@ object Property {
 }
 
 /**
- * İ’èƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ•’l‚ğƒ}ƒbƒv‚ÖŠi”[
+ * è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ï¼†å€¤ã‚’ãƒãƒƒãƒ—ã¸æ ¼ç´
  */
 object PropertyReader {
 

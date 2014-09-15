@@ -3,13 +3,13 @@ package doyaaaaaken.main.boot
 import doyaaaaaken.main.properties.PropertyReader
 import doyaaaaaken.main.properties.Property
 /**
- * ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚Ìß–Ú‚Å•K—v‚Èˆ—
+ * ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®ç¯€ç›®ã§å¿…è¦ãªå‡¦ç†
  */
 object Boot {
 
   /**
-   * ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ŠJn‚É•K—v‚Èˆ—
-   * ’FŒ»“_‚Å‚ÍPropertyƒtƒ@ƒCƒ‹‚Ì‚İ‚ğ•Ô‚·İ’è‚É‚µ‚Ä‚¢‚é
+   * ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹æ™‚ã«å¿…è¦ãªå‡¦ç†
+   * æ³¨ï¼šç¾æ™‚ç‚¹ã§ã¯Propertyãƒ•ã‚¡ã‚¤ãƒ«ã®ã¿ã‚’è¿”ã™è¨­å®šã«ã—ã¦ã„ã‚‹
    */
   def start(): Property = {
     PropertyReader.read
