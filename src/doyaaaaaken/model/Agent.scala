@@ -3,17 +3,15 @@ package doyaaaaaken.model
 import doyaaaaaken.model.helper.TraitFactory
 import doyaaaaaken.main.properties.Property
 
-class Agent(agentIdNum: Int, antiConf: Double, traitFactoryInstance: TraitFactory) {
+class Agent(
+  agentId: Int,
+  antiConformism: Double, //はやりと差別化したがる傾向([0,1]の範囲。1に近いほど差別化欲求が大きく0に近いほど同調欲求が大きい)
+  traitFactory: TraitFactory) {
 
-  val traitFactory = traitFactoryInstance
-
-  val agentId = agentIdNum
   val possessTraitNumCapacity = Property.agentPossessTraitCapacity //持てる様式の上限数
 
   var traits: Seq[Int] = traitFactory.getInitialTrait
-  var preference: Map[Int, Double] = null
-
-  val antiConformism = antiConf //はやりと差別化したがる傾向([0,1]の範囲。1に近いほど差別化欲求が大きく0に近いほど同調欲求が大きい)
+  val preference: Preference = Preference.apply
 
 }
 

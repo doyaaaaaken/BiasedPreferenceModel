@@ -27,6 +27,13 @@ object AgentTest {
     agents.foreach(a => println(a.traits))
     println()
 
+    println("****以下のAgentの持つ各様式に対するPreference群が-1.0～1.0でばらついていることを目視確認する****")
+    agents.map(a => a.preference).foreach(p =>
+      for (i <- 0 to Property.initialTraitKind - 1) yield {
+        println("様式" + i + "に対する好みは" + p.getPreferenceValue(i).get)
+      })
+    println()
+
   }
 
 }

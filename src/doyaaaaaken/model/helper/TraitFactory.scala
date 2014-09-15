@@ -25,6 +25,7 @@ private[model] class TraitFactory(initialTraitKindNum: Int) {
   def getNewTrait(): Int = {
     //TODO 未実装
     latestTraitKind + 1
+    -99999
   }
 
 }
