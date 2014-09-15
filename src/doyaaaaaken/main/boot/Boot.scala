@@ -11,7 +11,7 @@ object Boot {
    * シミュレーション開始時に必要な処理
    * 注：現時点ではPropertyファイルのみを返す設定にしている
    */
-  def start(): Property = {
+  def start(): Unit = {
     PropertyReader.read
   }
 }

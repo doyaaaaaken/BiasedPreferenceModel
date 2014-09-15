@@ -3,29 +3,34 @@ package doyaaaaaken.main.properties
 import scala.io.Source
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
+import java.util.Collections.EmptyMap
 
 /**
- * Property情報にアクセスしたい時は、objectの中のキー名一覧から、props.get("キー名")でアクセスできる
+ * どのクラスからでも参照できる設定ファイル情報オブジェクト
  */
-class Property(keyValueStore: Map[String, String]) {
-  //アクセス時のキー名一覧
-  val simNum: Int = keyValueStore.apply("sim.num").toInt
-  val agentNum: Int = keyValueStore.apply("agent.num").toInt
-  val agentPossessTraitCapacity: Int = keyValueStore.apply("agent.trait.possessCapacity").toInt
-}
-
 object Property {
-  def apply(keyValueMap: Map[String, String]) = {
-    new Property(keyValueMap)
+
+  private[this] var map: Map[String, String] = null
+
+  /**
+   * 設定ファイルから読み込んだ情報の格納
+   */
+  def init(keyValueMap: Map[String, String]) = {
+    map = keyValueMap
   }
+
+  //アクセス時のキー名一覧
+  lazy val simNum: Int = map.apply("sim.num").toInt //TODO lazy化
+  lazy val agentNum: Int = map.apply("agent.num").toInt
+  lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
 }
 
 /**
- * 設定ファイルの読み込み＆値をマップへ格納
+ * 設定ファイルの読み込み&Propetyオブジェクトの初期化
  */
 object PropertyReader {
 
-  def read(): Property = {
+  def read(): Unit = {
     val source = Source.fromFile("./resource/prop.txt")
     var sourceStr: String = ""
     try {
@@ -39,6 +44,6 @@ object PropertyReader {
       (m.group("key"), m.group("value"))
     }.toMap
 
-    Property(keyValueMap)
+    Property.init(keyValueMap)
   }
 }
