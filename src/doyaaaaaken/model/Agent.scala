@@ -13,6 +13,14 @@ class Agent(
   var traits: Seq[Int] = traitFactory.getInitialTrait
   val preference: Preference = Preference.apply
 
+  /**
+   * 受け取った様式番号リストに対して、好みの総和Pomを返す
+   */
+  def calcPom(copyTraitNums: Seq[Int]): Double = {
+    //TODO Pomの計算
+    0.0
+  }
+
 }
 
 object AgentFactory {
