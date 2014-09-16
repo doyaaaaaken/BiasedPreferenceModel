@@ -51,7 +51,14 @@ object AgentImitationService {
     }.map {
       case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum, oldAgents.apply(copyAgentId).preference.getPreferenceValue(targetTraitNum))
     }
-
+    //コピー成功エージェントがtraitのコピーを行う
+    traitCopyInfoList.foreach {
+      case (agent, targetTraitNum, existTrait) => agent.changeTrait(targetTraitNum, existTrait)
+    }
+    //コピー成功エージェントがpreferenceのコピーを行う
+    preferenceCopyInfoList.foreach {
+      case (agent, targetTraitNum, prefValue) => agent.changePreference(targetTraitNum, prefValue)
+    }
   }
 
   /*PomからComを計算する式*/

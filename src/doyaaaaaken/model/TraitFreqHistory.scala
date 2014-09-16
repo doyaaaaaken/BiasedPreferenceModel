@@ -13,6 +13,14 @@ class TraitFreqHistory(timeStep: Int, currentTraitList: Seq[Int]) {
   def getRandomTraitNum: Int = {
     currentTraitList(new Random(1234).nextInt(currentTraitList.size))
   }
+
+  /**デバッグ用：保持する変数をコンソール出力する*/
+  def debugPrint: Unit = {
+    println("++++++++++++++++++++++++++++++++++")
+    println("＜社会において存在する様式群＞")
+    println("タイムステップ：" + timeStep + "  存在する様式リスト：" + currentTraitList)
+    println("++++++++++++++++++++++++++++++++++")
+  }
 }
 
 object TraitFreqHistory {

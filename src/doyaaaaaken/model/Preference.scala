@@ -2,16 +2,32 @@ package doyaaaaaken.model
 
 import doyaaaaaken.main.boot.Property
 
-private[model] class Preference(pref: Map[Int, Double]) {
+private[model] class Preference(preference: Map[Int, Double]) {
+
+  private var pref = preference
 
   /**指定の様式種類番号に対する好みの値を返す*/
   def getPreferenceValue(traitKind: Int): Double = {
     pref.apply(traitKind)
   }
 
+  /**ゲッター：Preferenceの値を格納したMapをコピーして返す*/
+  def getPreference: Map[Int, Double] = pref.toMap
+
   /**与えられた様式種類群に対する好みの総和を返す*/
   def calcPrefSum(traitNums: Seq[Int]): Double = {
     traitNums.map(pref.apply(_)).sum
+  }
+
+  /**指定の様式番号の様式に対する好みを変更する*/
+  def changePrefValue(traitNum: Int, prefValue: Double): Unit = {
+    pref = if (pref.contains(traitNum)) {
+      pref.map {
+        case (tKind, preValue) => if (tKind != traitNum) (tKind, preValue) else (tKind, prefValue)
+      }
+    } else {
+      pref ++ Map(traitNum -> prefValue)
+    }
   }
 }
 
