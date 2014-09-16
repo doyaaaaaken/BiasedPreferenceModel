@@ -4,8 +4,8 @@ import doyaaaaaken.main.boot.Property
 
 private[model] class Preference(pref: Map[Int, Double]) {
 
-  def getPreferenceValue(traitKind: Int): Option[Double] = {
-    pref.get(traitKind)
+  def getPreferenceValue(traitKind: Int): Double = {
+    pref.apply(traitKind)
   }
 
   //TODO Preferenceクラスのメソッド実装

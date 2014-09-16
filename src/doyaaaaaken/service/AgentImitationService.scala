@@ -30,12 +30,27 @@ object AgentImitationService {
     }
 
     //各エージェント、どの様式番号のt-pペアをコピーするのか決める
-    val copyAgentInfoList2: Seq[(Agent, Int, Int, Double)] = copyAgentComList.map {
-      case (agent, copyAgentId, pSum) => (agent, copyAgentId, traitFreq.getRandomTraitNum, pSum)
+    //(Agentインスタンス、コピー先エージェント番号、コピー対象の様式番号、コピー確率)という形式にする
+    val copyAgentInfoList: Seq[(Agent, Int, Int, Double)] = copyAgentComList.map {
+      case (agent, copyAgentId, copyProb) => (agent, copyAgentId, traitFreq.getRandomTraitNum, copyProb)
     }
 
-    //アシンクロナスに相手の様式・好みをコピーする
-    //TODO 未実装
+    /*
+     * アシンクロナスに相手の様式・好みをコピーする
+     *アシンクロナスに行うため現在の相手の状態を直接コピーするのではなく一旦変数に入れる
+     */
+    //(Agentのインスタンス、コピー対象の様式番号、様式ありorなしの状態値)の形式。確率判定で成功しコピ－を行うエージェントのみリストに入れる。
+    val traitCopyInfoList: Seq[(Agent, Int, Boolean)] = copyAgentInfoList.filter {
+      case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random()
+    }.map {
+      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum, oldAgents.apply(copyAgentId).traits.contains(targetTraitNum))
+    }
+    //(Agentのインスタンス、コピー対象にする様式番号、好みの状態値-1.0～1.0)の形式。確率判定で成功しコピ－を行うエージェントのみリストに入れる。
+    val preferenceCopyInfoList: Seq[(Agent, Int, Double)] = copyAgentInfoList.filter {
+      case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random()
+    }.map {
+      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum, oldAgents.apply(copyAgentId).preference.getPreferenceValue(targetTraitNum))
+    }
 
   }
 
