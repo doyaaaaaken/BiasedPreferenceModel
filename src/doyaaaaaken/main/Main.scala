@@ -7,11 +7,16 @@ import doyaaaaaken.model.Network
 import doyaaaaaken.model.AgentFactory
 import doyaaaaaken.model.Agent
 import doyaaaaaken.service.AgentImitationService
+import doyaaaaaken.model.TraitFreqHistory
 /**
  * シミュレーションの本骨組みとなるMainクラス
  */
 object Main {
+
+  var currentTraitFreq: TraitFreqHistory = null //現タイムステップに存在する様式リストを保持する
+
   def main(args: Array[String]): Unit = {
+
     Boot.start //シミュレーション開始時に必要な処理
 
     //エージェント間の繋がりを示すネットワークの生成
@@ -20,12 +25,18 @@ object Main {
     val tmp = for (i <- 0 to Property.agentNum - 1) yield { (i, AgentFactory.create()) }
     val agents: Map[Int, Agent] = tmp.toMap //AgentNum体のエージェントセット
 
+    //現在存在する様式リストの作成
+    currentTraitFreq = TraitFreqHistory.apply(0, agents)
+
     //シミュレーションの実行
     for (i <- 1 to Property.simNum) {
       //模倣フェーズ・・・全エージェント、自分と繋がっている他のエージェントを模倣する(アシンクロナス)
-      AgentImitationService.work(agents, network)
+      AgentImitationService.work(agents, network, currentTraitFreq)
 
       //TODO 突然変異フェーズ
+
+      //現在存在する様式リストの更新
+      currentTraitFreq = TraitFreqHistory.apply(i, agents)
 
       //TODO データの格納
 
