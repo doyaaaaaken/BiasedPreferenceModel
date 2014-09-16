@@ -13,7 +13,7 @@ private[model] class TraitFactory(initialTraitKindNum: Int) {
   var latestTraitKind = initialTraitKind //最新の様式種類番号
 
   /**
-   * エージェントの初期様式(0～initialTraitKind-1)を作成する
+   * エージェントの初期様式(0～initialTraitKind-1のどれか)を作成する
    */
   def getInitialTrait(): Seq[Int] = {
     (0 to initialTraitKind - 1).toList.filter(_ => Math.random < Property.initialHavingTraitProp)

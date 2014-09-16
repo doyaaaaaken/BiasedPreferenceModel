@@ -4,12 +4,15 @@ import doyaaaaaken.main.boot.Property
 
 private[model] class Preference(pref: Map[Int, Double]) {
 
+  /**指定の様式種類番号に対する好みの値を返す*/
   def getPreferenceValue(traitKind: Int): Double = {
     pref.apply(traitKind)
   }
 
-  //TODO Preferenceクラスのメソッド実装
-
+  /**与えられた様式種類群に対する好みの総和を返す*/
+  def calcPrefSum(traitNums: Seq[Int]): Double = {
+    traitNums.map(pref.apply(_)).sum
+  }
 }
 
 object Preference {
