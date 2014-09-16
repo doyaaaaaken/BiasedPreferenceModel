@@ -1,7 +1,7 @@
 package doyaaaaaken.main
 
 import doyaaaaaken.main.boot.Boot
-import doyaaaaaken.main.properties.Property
+import doyaaaaaken.main.boot.Property
 import doyaaaaaken.model.CompleteGraphFactory
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.AgentFactory

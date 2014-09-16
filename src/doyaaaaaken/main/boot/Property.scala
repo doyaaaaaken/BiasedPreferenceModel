@@ -1,4 +1,4 @@
-package doyaaaaaken.main.properties
+package doyaaaaaken.main.boot
 
 import scala.io.Source
 import scala.util.matching.Regex

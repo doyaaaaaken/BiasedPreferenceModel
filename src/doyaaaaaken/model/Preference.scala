@@ -1,6 +1,6 @@
 package doyaaaaaken.model
 
-import doyaaaaaken.main.properties.Property
+import doyaaaaaken.main.boot.Property
 
 private[model] class Preference(pref: Map[Int, Double]) {
 

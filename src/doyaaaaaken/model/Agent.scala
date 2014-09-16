@@ -1,7 +1,7 @@
 package doyaaaaaken.model
 
 import doyaaaaaken.model.helper.TraitFactory
-import doyaaaaaken.main.properties.Property
+import doyaaaaaken.main.boot.Property
 
 class Agent(
   agentId: Int,

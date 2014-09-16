@@ -1,6 +1,6 @@
 package doyaaaaaken.model.helper
 
-import doyaaaaaken.main.properties.Property
+import doyaaaaaken.main.boot.Property
 
 /**
  * AgentFactory内部にて初期化され、各Agentインスタンスに参照として保持され利用される。

@@ -1,7 +1,7 @@
 package test.doyaaaaaken.model
 
 import doyaaaaaken.main.boot.Boot
-import doyaaaaaken.main.properties.Property
+import doyaaaaaken.main.boot.Property
 import doyaaaaaken.model.AgentFactory
 import doyaaaaaken.model.Agent
 import doyaaaaaken.model.helper.TraitFactory
