@@ -29,16 +29,19 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
    */
   def insertDataSet(timeStep: Int, con: Connection): Unit = {
     try {
-      val stmt: Statement = con.createStatement(); // ステートメント生成
+      val sqlTemplate = "INSERT INTO " + Property.dbName + "." + Property.traitFreqHistoryTableName + " (timestep, trait_kind, freq) VALUES (?, ?, ?);"
+      val ps = con.prepareStatement(sqlTemplate) //プリペアドステートメントを生成
 
-      val sqls: Seq[String] = currentTraitMap.map {
-        case (traitKind, freq) =>
-          "INSERT INTO " + Property.dbName + "." + Property.traitFreqHistoryTableName +
-            " (timestep, trait_kind, freq) VALUES (" + timeStep + "," + traitKind + "," + freq + ");"
-      }.toList
+      ps.setInt(1, timeStep)
+      currentTraitMap.foreach {
+        case (traitKind, freq) => {
+          ps.setInt(2, traitKind)
+          ps.setInt(3, freq)
+          ps.executeUpdate()
+        }
+      }
 
-      sqls.foreach(stmt.executeUpdate(_))
-      stmt.close();
+      ps.close();
     } catch {
       case e: SQLException => println("Database error " + e)
       case e => {
