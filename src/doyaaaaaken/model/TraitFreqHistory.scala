@@ -5,6 +5,7 @@ import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
+import doyaaaaaken.main.boot.Property
 
 /**
  * 各ターンにおける様式の度数を表すクラス
@@ -25,15 +26,45 @@ class TraitFreqHistory(timeStep: Int, currentTraitList: Seq[Int]) {
     try {
       val stmt: Statement = con.createStatement(); // ステートメント生成
       //TODO 内容をちゃんとしたものに直す
-      val sqlStr: String = "SELECT * FROM test_table"; // SQLを実行
+      val sqlStr: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName;
       val rs: ResultSet = stmt.executeQuery(sqlStr);
 
-      while (rs.next()) { // 結果行をループ
+      while (rs.next()) {
         val id: Int = rs.getInt("id");
-        val name: String = rs.getString("name");
-        val flag: Boolean = rs.getBoolean("flag");
-        println(id + "：" + name + " : " + flag);
+        val timeStep: Int = rs.getInt("timestep");
+        val traitKind: Int = rs.getInt("trait_kind");
+        val freq: Int = rs.getInt("freq");
+        println(id + "：" + timeStep + " : " + traitKind + " : " + freq);
       }
+
+      rs.close();
+      stmt.close();
+    } catch {
+      case e: SQLException => println("Database error " + e)
+      case e => {
+        println("Some other exception type on DbSession:")
+        e.printStackTrace()
+      }
+    }
+  }
+
+  /**
+   * 現在時刻の様式の度数をDBに格納する
+   */
+  def selectDataSet(timeStep: Int, con: Connection): Unit = {
+    try {
+      val stmt: Statement = con.createStatement();
+      val sqlStr: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName;
+      val rs: ResultSet = stmt.executeQuery(sqlStr);
+
+      while (rs.next()) {
+        val id: Int = rs.getInt("id");
+        val timeStep: Int = rs.getInt("timestep");
+        val traitKind: Int = rs.getInt("trait_kind");
+        val freq: Int = rs.getInt("freq");
+        println(id + "：" + timeStep + " : " + traitKind + " : " + freq);
+      }
+      //TODO 取得したデータをコンソール出力するのではなく、CSVなどとして使えるように変数に格納する
 
       rs.close();
       stmt.close();

@@ -28,10 +28,11 @@ object Property {
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
   lazy val initialHavingTraitProp: Double = map.apply("trait.initialHavingKindProportion").toDouble
   lazy val debug: Boolean = map.apply("sim.debug").toBoolean
+  lazy val dbHostName: String = map.apply("mysql.hostName")
+  lazy val dbName: String = map.apply("mysql.dbName")
+  lazy val traitFreqHistoryTableName: String = map.apply("mysql.tableName.traitFreqHistory")
 
   //セキュアな設定ファイルの情報へのアクセス時のキー名
-  lazy val dbHostName: String = secureMap.apply("mysql.hostName")
-  lazy val dbName: String = secureMap.apply("mysql.dbName")
   lazy val dbId: String = secureMap.apply("mysql.id")
   lazy val dbPass: String = secureMap.apply("mysql.pass")
 }
