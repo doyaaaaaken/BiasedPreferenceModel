@@ -30,6 +30,16 @@ object DbSession {
     con
   }
 
+  /**シミュレーション前にDBのデータを全て消しておくメソッド*/
+  private[main] def clearData: Unit = {
+    val stmt: Statement = con.createStatement();
+    val sql: String = "TRUNCATE TABLE " + Property.dbName + "." + Property.traitFreqHistoryTableName + ";";
+
+    stmt.executeUpdate(sql);
+    stmt.close();
+
+  }
+
   private[main] def close = {
     try {
       if (con != null) con.close();

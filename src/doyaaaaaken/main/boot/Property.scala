@@ -23,11 +23,12 @@ object Property {
 
   //設定ファイルアクセス時のキー名一覧
   lazy val simNum: Int = map.apply("sim.num").toInt
+  lazy val debug: Boolean = map.apply("sim.debug").toBoolean
+  lazy val dbClearBeforeSim: Boolean = map.apply("sim.db.clear").toBoolean
   lazy val agentNum: Int = map.apply("agent.num").toInt
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
   lazy val initialHavingTraitProp: Double = map.apply("trait.initialHavingKindProportion").toDouble
-  lazy val debug: Boolean = map.apply("sim.debug").toBoolean
   lazy val dbHostName: String = map.apply("mysql.hostName")
   lazy val dbName: String = map.apply("mysql.dbName")
   lazy val traitFreqHistoryTableName: String = map.apply("mysql.tableName.traitFreqHistory")

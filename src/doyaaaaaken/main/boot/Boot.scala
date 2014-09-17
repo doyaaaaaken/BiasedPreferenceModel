@@ -11,6 +11,7 @@ object Boot {
     println("＊＊＊＊＊＊シミュレーション開始＊＊＊＊＊＊")
     PropertyReader.read
     DbSession.open
+    if (Property.dbClearBeforeSim) DbSession.clearData
   }
 
   def finish(): Unit = {
