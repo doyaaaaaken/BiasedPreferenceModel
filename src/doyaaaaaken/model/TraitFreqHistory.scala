@@ -16,7 +16,12 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
 
   /**現存する様式番号のうちどれか1つをランダムに返す*/
   def getRandomTraitNum: Int = {
-    currentTraitMap.keys.toList(new Random().nextInt(currentTraitMap.size))
+    if (!currentTraitMap.isEmpty) {
+      currentTraitMap.keys.toList(new Random().nextInt(currentTraitMap.size))
+    } else {
+      println("様式がなくなったためシミュレーション終了です")
+      sys.exit(-1)
+    }
   }
 
   /**
@@ -25,19 +30,14 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
   def insertDataSet(timeStep: Int, con: Connection): Unit = {
     try {
       val stmt: Statement = con.createStatement(); // ステートメント生成
-      //TODO 内容をちゃんとしたものに直す
-      val sqlStr: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName;
-      val rs: ResultSet = stmt.executeQuery(sqlStr);
 
-      while (rs.next()) {
-        val id: Int = rs.getInt("id");
-        val timeStep: Int = rs.getInt("timestep");
-        val traitKind: Int = rs.getInt("trait_kind");
-        val freq: Int = rs.getInt("freq");
-        println(id + "：" + timeStep + " : " + traitKind + " : " + freq);
-      }
+      val sqls: Seq[String] = currentTraitMap.map {
+        case (traitKind, freq) =>
+          "INSERT INTO " + Property.dbName + "." + Property.traitFreqHistoryTableName +
+            " (timestep, trait_kind, freq) VALUES (" + timeStep + "," + traitKind + "," + freq + ");"
+      }.toList
 
-      rs.close();
+      sqls.foreach(stmt.executeUpdate(_))
       stmt.close();
     } catch {
       case e: SQLException => println("Database error " + e)
@@ -54,8 +54,8 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
   def selectDataSet(timeStep: Int, con: Connection): Unit = {
     try {
       val stmt: Statement = con.createStatement();
-      val sqlStr: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName;
-      val rs: ResultSet = stmt.executeQuery(sqlStr);
+      val sql: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName;
+      val rs: ResultSet = stmt.executeQuery(sql);
 
       while (rs.next()) {
         val id: Int = rs.getInt("id");

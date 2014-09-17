@@ -1,16 +1,16 @@
 #シミュレーションの設定を記したファイル
 
 #シミュレーション関係
-sim.num = 5;	//シミュレーション回数
+sim.num = 1000;	//シミュレーション回数
 sim.debug = false;	//デバッグするか否か
 
 #エージェント関係
-agent.num = 5;
+agent.num = 1000;
 agent.trait.possessCapacity = 4;	//エージェントが様式を持てる限界数
 
 #様式関係
-trait.initialKindNum = 5;	//初期状態での様式の全種類数
-trait.initialHavingKindProportion = 0.3;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)
+trait.initialKindNum = 10;	//初期状態での様式の全種類数
+trait.initialHavingKindProportion = 0.5;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)
 
 #DB関係
 mysql.hostName = localhost;

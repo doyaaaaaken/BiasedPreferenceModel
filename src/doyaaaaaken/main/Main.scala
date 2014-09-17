@@ -40,6 +40,8 @@ object Main {
 
       //データの格納
       currentTraitFreq.insertDataSet(i, DbSession.getConnection)
+
+      if (i % 100 == 0) println(i + "タイムステップ経過")
     }
 
     Boot.finish
