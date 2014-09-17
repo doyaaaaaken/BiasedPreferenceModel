@@ -16,27 +16,6 @@ object DbSession {
     try {
       Class.forName("org.gjt.mm.mysql.Driver") // ドライバロード
       con = DriverManager.getConnection("jdbc:mysql://" + Property.dbHostName + "/" + Property.dbName, Property.dbId, Property.dbPass); // MySQLに接続
-      // ～使い方～
-      //      try {
-      //        // ステートメント生成
-      //        val stmt: Statement = con.createStatement();
-      //
-      //        // SQLを実行
-      //        val sqlStr: String = "SELECT * FROM test_table";
-      //        val rs: ResultSet = stmt.executeQuery(sqlStr);
-      //
-      //        // 結果行をループ
-      //        while (rs.next()) {
-      //          // レコードの値
-      //          val id: Int = rs.getInt("id");
-      //          val name: String = rs.getString("name");
-      //          val flag: Boolean = rs.getBoolean("flag");
-      //
-      //          println(id + "：" + name + " : " + flag);
-      //        }
-      //        rs.close();
-      //        stmt.close();
-      //      }
     } catch {
       case e: SQLException => println("Database error " + e)
       case e => {
@@ -44,6 +23,11 @@ object DbSession {
         e.printStackTrace()
       }
     }
+  }
+
+  /**conのゲッター*/
+  private[main] def getConnection: Connection = {
+    con
   }
 
   private[main] def close = {

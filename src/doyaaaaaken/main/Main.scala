@@ -8,6 +8,7 @@ import doyaaaaaken.model.AgentFactory
 import doyaaaaaken.model.Agent
 import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.model.TraitFreqHistory
+import doyaaaaaken.main.db.DbSession
 /**
  * シミュレーションの本骨組みとなるMainクラス
  */
@@ -17,18 +18,17 @@ object Main {
 
   def main(args: Array[String]): Unit = {
 
-    Boot.start //シミュレーション開始時に必要な処理
+    Boot.start
 
-    //エージェント間の繋がりを示すネットワークの生成
+    /*エージェント間の繋がりを示すネットワークの生成*/
     val network: Network = CompleteGraphFactory.create(Property.agentNum) //完全グラフ
-    //エージェントの初期化
+    /*エージェントの初期化*/
     val tmp = for (i <- 0 to Property.agentNum - 1) yield { (i, AgentFactory.create()) }
     val agents: Map[Int, Agent] = tmp.toMap //AgentNum体のエージェントセット
 
-    //現在存在する様式リストの作成
-    currentTraitFreq = TraitFreqHistory.apply(0, agents)
+    currentTraitFreq = TraitFreqHistory.apply(0, agents) //現在存在する様式リストの作成
 
-    //シミュレーションの実行
+    /*シミュレーションの実行*/
     for (i <- 1 to Property.simNum) {
       //模倣フェーズ・・・全エージェント、自分と繋がっている他のエージェントを模倣する(アシンクロナス)
       AgentImitationService.work(agents, network, currentTraitFreq)
@@ -38,8 +38,8 @@ object Main {
       //現在存在する様式リストの更新
       currentTraitFreq = TraitFreqHistory.apply(i, agents)
 
-      //TODO データの格納
-
+      //データの格納
+      currentTraitFreq.insertDataSet(i, DbSession.getConnection)
     }
 
     Boot.finish
