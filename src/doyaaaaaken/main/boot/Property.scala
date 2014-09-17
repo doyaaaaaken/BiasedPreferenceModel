@@ -30,7 +30,10 @@ object Property {
   lazy val debug: Boolean = map.apply("sim.debug").toBoolean
 
   //セキュアな設定ファイルの情報へのアクセス時のキー名
-  lazy val dbPass: String = map.apply("mysql.pass")
+  lazy val dbHostName: String = secureMap.apply("mysql.hostName")
+  lazy val dbName: String = secureMap.apply("mysql.dbName")
+  lazy val dbId: String = secureMap.apply("mysql.id")
+  lazy val dbPass: String = secureMap.apply("mysql.pass")
 }
 
 /**

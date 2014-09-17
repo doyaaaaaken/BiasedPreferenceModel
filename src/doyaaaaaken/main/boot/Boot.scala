@@ -1,5 +1,7 @@
 package doyaaaaaken.main.boot
 
+import doyaaaaaken.main.db.DbSession
+
 /**
  * シミュレーションの節目で必要な処理
  */
@@ -8,10 +10,11 @@ object Boot {
   def start(): Unit = {
     println("＊＊＊＊＊＊シミュレーション開始＊＊＊＊＊＊")
     PropertyReader.read
+    DbSession.open
   }
 
   def finish(): Unit = {
-    //TODO DBの接続閉じるとか
+    DbSession.close
     println("＊＊＊＊＊＊シミュレーション終了＊＊＊＊＊＊")
   }
 }
