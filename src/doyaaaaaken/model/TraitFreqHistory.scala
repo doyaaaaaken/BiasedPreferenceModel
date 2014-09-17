@@ -12,11 +12,11 @@ import doyaaaaaken.main.boot.Property
  *
  * 注：毎ターンの終わりに呼ばれる
  */
-class TraitFreqHistory(timeStep: Int, currentTraitList: Seq[Int]) {
+class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
 
   /**現存する様式番号のうちどれか1つをランダムに返す*/
   def getRandomTraitNum: Int = {
-    currentTraitList(new Random().nextInt(currentTraitList.size))
+    currentTraitMap.keys.toList(new Random().nextInt(currentTraitMap.size))
   }
 
   /**
@@ -81,7 +81,7 @@ class TraitFreqHistory(timeStep: Int, currentTraitList: Seq[Int]) {
   def debugPrint: Unit = {
     println("++++++++++++++++++++++++++++++++++")
     println("＜社会において存在する様式群＞")
-    println("タイムステップ：" + timeStep + "  存在する様式リスト：" + currentTraitList)
+    println("タイムステップ：" + timeStep + "  存在する様式リスト：" + currentTraitMap)
     println("++++++++++++++++++++++++++++++++++")
   }
 }
@@ -89,8 +89,8 @@ class TraitFreqHistory(timeStep: Int, currentTraitList: Seq[Int]) {
 object TraitFreqHistory {
   /**ファクトリが呼ばれたら、各エージェントにアクセスして様式の度数を集計する*/
   def apply(timeStep: Int, agents: Map[Int, Agent]): TraitFreqHistory = {
-    //agentから度数一覧を取得
-    val currentTraitList: Set[Int] = agents.flatMap(_._2.traits).toSet
-    new TraitFreqHistory(timeStep, currentTraitList.toList)
+    //agentから「様式種類 - 度数」の一覧を取得
+    val currentTraitMap: Map[Int, Int] = agents.flatMap(_._2.traits).toList.groupBy(x => x).map(x => (x._1, x._2.size))
+    new TraitFreqHistory(timeStep, currentTraitMap)
   }
 }
