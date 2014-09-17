@@ -2,7 +2,7 @@
 
 #シミュレーション関係
 sim.num = 100;	//シミュレーション回数
-sim.debug = true;	//デバッグするか否か
+sim.debug = false;	//デバッグするか否か
 
 #エージェント関係
 agent.num = 5;

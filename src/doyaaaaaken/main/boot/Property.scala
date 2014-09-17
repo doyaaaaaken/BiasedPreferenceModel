@@ -11,21 +11,26 @@ import java.util.Collections.EmptyMap
 object Property {
 
   private[this] var map: Map[String, String] = null
+  private[this] var secureMap: Map[String, String] = null
 
   /**
    * 設定ファイルから読み込んだ情報の格納
    */
-  def init(keyValueMap: Map[String, String]) = {
+  def init(keyValueMap: Map[String, String], secureKeyValueMap: Map[String, String]) = {
     map = keyValueMap
+    secureMap = secureKeyValueMap
   }
 
-  //アクセス時のキー名一覧
+  //設定ファイルアクセス時のキー名一覧
   lazy val simNum: Int = map.apply("sim.num").toInt
   lazy val agentNum: Int = map.apply("agent.num").toInt
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
   lazy val initialHavingTraitProp: Double = map.apply("trait.initialHavingKindProportion").toDouble
   lazy val debug: Boolean = map.apply("sim.debug").toBoolean
+
+  //セキュアな設定ファイルの情報へのアクセス時のキー名
+  lazy val dbPass: String = map.apply("mysql.pass")
 }
 
 /**
@@ -34,6 +39,7 @@ object Property {
 object PropertyReader {
 
   def read(): Unit = {
+    //普通の設定ファイルの読み込み
     val source = Source.fromFile("./resource/prop.txt")
     var sourceStr: String = ""
     try {
@@ -47,6 +53,18 @@ object PropertyReader {
       (m.group("key"), m.group("value"))
     }.toMap
 
-    Property.init(keyValueMap)
+    //セキュリティの関係上ネット上に上げられない設定ファイルの読み込み
+    val secureSource = Source.fromFile("./resource/secure/secureProp.txt")
+    var secureSourceStr: String = ""
+    try {
+      secureSourceStr = secureSource.getLines.toList.mkString("")
+    } finally {
+      secureSource.close()
+    }
+    val secureKeyValueMap = pattern.findAllIn(secureSourceStr).matchData.map { m: Match =>
+      (m.group("key"), m.group("value"))
+    }.toMap
+
+    Property.init(keyValueMap, secureKeyValueMap)
   }
 }
