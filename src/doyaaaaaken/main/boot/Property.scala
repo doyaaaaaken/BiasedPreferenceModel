@@ -25,6 +25,7 @@ object Property {
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
   lazy val initialHavingTraitProp: Double = map.apply("trait.initialHavingKindProportion").toDouble
+  lazy val debug: Boolean = map.apply("sim.debug").toBoolean
 }
 
 /**

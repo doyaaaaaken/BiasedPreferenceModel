@@ -1,7 +1,8 @@
 #シミュレーションの設定を記したファイル
 
-#シミュレーション回数
-sim.num = 100;
+#シミュレーション関係
+sim.num = 100;	//シミュレーション回数
+sim.debug = true;	//デバッグするか否か
 
 #エージェント関係
 agent.num = 5;
@@ -9,4 +10,4 @@ agent.trait.possessCapacity = 4;	//エージェントが様式を持てる限界
 
 #様式関係
 trait.initialKindNum = 5;	//初期状態での様式の全種類数
-trait.initialHavingKindProportion = 0.5;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)
+trait.initialHavingKindProportion = 0.3;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)

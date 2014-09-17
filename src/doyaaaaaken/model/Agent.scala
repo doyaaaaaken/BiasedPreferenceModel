@@ -8,6 +8,8 @@ class Agent(
   antiConformism: Double, //はやりと差別化したがる傾向([0,1]の範囲。1に近いほど差別化欲求が大きく0に近いほど同調欲求が大きい)
   traitFactory: TraitFactory) {
 
+  val id = agentId
+
   //TODO 様式上限数系の制限を実装する
   val possessTraitNumCapacity = Property.agentPossessTraitCapacity //持てる様式の上限数
 

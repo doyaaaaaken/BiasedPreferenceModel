@@ -11,7 +11,7 @@ class TraitFreqHistory(timeStep: Int, currentTraitList: Seq[Int]) {
 
   /**現存する様式番号のうちどれか1つをランダムに返す*/
   def getRandomTraitNum: Int = {
-    currentTraitList(new Random(1234).nextInt(currentTraitList.size))
+    currentTraitList(new Random().nextInt(currentTraitList.size))
   }
 
   /**デバッグ用：保持する変数をコンソール出力する*/
