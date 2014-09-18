@@ -51,35 +51,6 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
     }
   }
 
-  /**
-   * 現在時刻の様式の度数をDBに格納する
-   */
-  def selectDataSet(timeStep: Int, con: Connection): Unit = {
-    try {
-      val stmt: Statement = con.createStatement();
-      val sql: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName;
-      val rs: ResultSet = stmt.executeQuery(sql);
-
-      while (rs.next()) {
-        val id: Int = rs.getInt("id");
-        val timeStep: Int = rs.getInt("timestep");
-        val traitKind: Int = rs.getInt("trait_kind");
-        val freq: Int = rs.getInt("freq");
-        println(id + "：" + timeStep + " : " + traitKind + " : " + freq);
-      }
-      //TODO 取得したデータをコンソール出力するのではなく、CSVなどとして使えるように変数に格納する
-
-      rs.close();
-      stmt.close();
-    } catch {
-      case e: SQLException => println("Database error " + e)
-      case e => {
-        println("Some other exception type on DbSession:")
-        e.printStackTrace()
-      }
-    }
-  }
-
   /**デバッグ用：保持する変数をコンソール出力する*/
   def debugPrint: Unit = {
     println("++++++++++++++++++++++++++++++++++")
@@ -95,5 +66,36 @@ object TraitFreqHistory {
     //agentから「様式種類 - 度数」の一覧を取得
     val currentTraitMap: Map[Int, Int] = agents.flatMap(_._2.traits).toList.groupBy(x => x).map(x => (x._1, x._2.size))
     new TraitFreqHistory(timeStep, currentTraitMap)
+  }
+
+  /**
+   * trait_freq_historyテーブルの全値を取得する
+   */
+  def selectAllData(con: Connection): Seq[(Int, Int, Int, Int)] = {
+
+    var datas: Seq[(Int, Int, Int, Int)] = Nil //最終的に返すデータ
+    try {
+      val stmt: Statement = con.createStatement
+      val sql: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName
+      val rs: ResultSet = stmt.executeQuery(sql)
+
+      while (rs.next()) {
+        val id: Int = rs.getInt("id")
+        val timeStep: Int = rs.getInt("timestep")
+        val traitKind: Int = rs.getInt("trait_kind")
+        val freq: Int = rs.getInt("freq")
+        datas = datas :+ (id, timeStep, traitKind, freq)
+      }
+
+      rs.close
+      stmt.close
+    } catch {
+      case e: SQLException => println("Database error " + e)
+      case e => {
+        println("Some other exception type on DbSession:")
+        e.printStackTrace
+      }
+    }
+    datas
   }
 }
