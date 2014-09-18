@@ -15,6 +15,7 @@ object Boot {
   }
 
   def finish(): Unit = {
+    if (Property.csvOutputAfterSim) CsvOutputter.work
     DbSession.close
     println("＊＊＊＊＊＊シミュレーション終了＊＊＊＊＊＊")
   }

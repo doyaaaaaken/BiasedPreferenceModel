@@ -5,6 +5,8 @@ sim.num = 10;	//シミュレーション回数
 sim.debug = false;	//デバッグするか否か
 sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
 sim.db.saveInterval = 2;	//DBに保存する時間刻み幅
+sim.csv.output = true;	//シミュレーション終わりにDB情報を全てCSVアウトプットするかどうか
+sim.csv.fileName = trait_freq_history.csv; 	//CSVアウトプットの際のファイル名
 
 #エージェント関係
 agent.num = 1000;
