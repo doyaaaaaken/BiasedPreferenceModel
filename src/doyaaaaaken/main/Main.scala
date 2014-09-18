@@ -35,9 +35,9 @@ object Main {
       AgentImitationService.work(agents, network, currentTraitFreq)
 
       //突然変異フェーズ
-      if (Property.newTraitMutationRate > Math.random()) AgentMutationService.acquireNewTrait(agents, currentTraitFreq) //新規様式の発生
-      if (Property.randomizePreferenceMutationRate > Math.random()) AgentMutationService.randomizePreference(agents) //好みをランダムに振り直す
-      if (Property.agentRebornMutationRate > Math.random()) AgentMutationService.reborn(agents) //エージェントが転生する
+      AgentMutationService.acquireNewTrait(agents, currentTraitFreq) //新規様式の発生
+      AgentMutationService.randomizePreference(agents) //好みをランダムに振り直す
+      AgentMutationService.reborn(agents) //エージェントが転生する
 
       //現在存在する様式リストの更新 
       currentTraitFreq = TraitFreqHistory.apply(i, agents)

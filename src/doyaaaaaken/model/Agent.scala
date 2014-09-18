@@ -38,6 +38,11 @@ class Agent(
     preference.changePrefValue(traitNum, prefValue)
   }
 
+  /**好みの値をランダムに振り直す*/
+  def randomizePreference(): Unit = {
+    preference.randomizePrefValue
+  }
+
   /**【デバッグ用】 エージェントの情報をコンソール出力する*/
   def debugPrint(): Unit = {
     println("+++++++++++++++++")

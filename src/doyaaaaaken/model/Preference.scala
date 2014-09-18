@@ -4,7 +4,7 @@ import doyaaaaaken.main.boot.Property
 
 private[model] class Preference(preference: Map[Int, Double]) {
 
-  private var pref = preference
+  var pref: Map[Int, Double] = preference
 
   /**指定の様式種類番号に対する好みの値を返す*/
   def getPreferenceValue(traitKind: Int): Double = {
@@ -28,6 +28,11 @@ private[model] class Preference(preference: Map[Int, Double]) {
     } else {
       pref ++ Map(traitNum -> prefValue)
     }
+  }
+
+  /**好みの値をランダムに振り直す*/
+  def randomizePrefValue: Unit = {
+    pref = pref.map(prefMap => (prefMap._1, Math.random() * 2 - 1.0))
   }
 }
 
