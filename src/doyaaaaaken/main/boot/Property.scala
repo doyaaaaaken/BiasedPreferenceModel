@@ -74,5 +74,6 @@ object PropertyReader {
     }.toMap
 
     Property.init(keyValueMap, secureKeyValueMap)
+    println("＊＊＊＊＊＊設定ファイル読み込み完了＊＊＊＊＊＊")
   }
 }
