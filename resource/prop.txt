@@ -16,6 +16,11 @@ agent.trait.possessCapacity = 4;	//エージェントが様式を持てる限界
 trait.initialKindNum = 10;	//初期状態での様式の全種類数
 trait.initialHavingKindProportion = 0.5;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)
 
+#突然変異率（0.0～1.0までの小数値で指定）
+sim.mutation.newTrait = 0.0;
+sim.mutation.randomizePreference = 0.0;
+sim.mutation.agentReborn = 0.0;
+
 #DB関係
 mysql.hostName = localhost;
 mysql.dbName = biased_preference_model;

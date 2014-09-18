@@ -9,6 +9,7 @@ import doyaaaaaken.model.Agent
 import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.model.TraitFreqHistory
 import doyaaaaaken.main.db.DbSession
+import doyaaaaaken.service.AgentMutationService
 /**
  * シミュレーションの本骨組みとなるMainクラス
  */
@@ -33,12 +34,15 @@ object Main {
       //模倣フェーズ・・・全エージェント、自分と繋がっている他のエージェントを模倣する(アシンクロナス)
       AgentImitationService.work(agents, network, currentTraitFreq)
 
-      //TODO 突然変異フェーズ
+      //突然変異フェーズ
+      if (Property.newTraitMutationRate > Math.random()) AgentMutationService.acquireNewTrait(agents, currentTraitFreq) //新規様式の発生
+      if (Property.randomizePreferenceMutationRate > Math.random()) AgentMutationService.randomizePreference(agents) //好みをランダムに振り直す
+      if (Property.agentRebornMutationRate > Math.random()) AgentMutationService.reborn(agents) //エージェントが転生する
 
-      //現在存在する様式リストの更新
+      //現在存在する様式リストの更新 
       currentTraitFreq = TraitFreqHistory.apply(i, agents)
 
-      //データの格納
+      //データの格納 
       if (i % Property.dbSaveInterval == 0) currentTraitFreq.insertDataSet(i, DbSession.getConnection)
 
       if (i % 100 == 0) println(i + "タイムステップ経過")

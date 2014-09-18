@@ -32,6 +32,9 @@ object Property {
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
   lazy val initialHavingTraitProp: Double = map.apply("trait.initialHavingKindProportion").toDouble
+  lazy val newTraitMutationRate: Double = map.apply("sim.mutation.newTrait").toDouble
+  lazy val randomizePreferenceMutationRate: Double = map.apply("sim.mutation.randomizePreference").toDouble
+  lazy val agentRebornMutationRate: Double = map.apply("sim.mutation.agentReborn").toDouble
   lazy val dbHostName: String = map.apply("mysql.hostName")
   lazy val dbName: String = map.apply("mysql.dbName")
   lazy val traitFreqHistoryTableName: String = map.apply("mysql.tableName.traitFreqHistory")
