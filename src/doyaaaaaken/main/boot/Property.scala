@@ -25,6 +25,7 @@ object Property {
   lazy val simNum: Int = map.apply("sim.num").toInt
   lazy val debug: Boolean = map.apply("sim.debug").toBoolean
   lazy val dbClearBeforeSim: Boolean = map.apply("sim.db.clear").toBoolean
+  lazy val dbSaveInterval: Int = map.apply("sim.db.saveInterval").toInt
   lazy val agentNum: Int = map.apply("agent.num").toInt
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt

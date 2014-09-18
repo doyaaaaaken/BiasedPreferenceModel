@@ -39,7 +39,7 @@ object Main {
       currentTraitFreq = TraitFreqHistory.apply(i, agents)
 
       //データの格納
-      currentTraitFreq.insertDataSet(i, DbSession.getConnection)
+      if (i % Property.dbSaveInterval == 0) currentTraitFreq.insertDataSet(i, DbSession.getConnection)
 
       if (i % 100 == 0) println(i + "タイムステップ経過")
     }
