@@ -1,4 +1,4 @@
-BiasedPreferenceModel
+﻿BiasedPreferenceModel
 =====================
 
 Preferenceモデルにバイアス等を考慮したモデル。Scalaにて実装。
@@ -12,3 +12,5 @@ Preferenceモデルにバイアス等を考慮したモデル。Scalaにて実�
 *Model_1_1*においてはシミュレーションはできないが、『エージェントが他者を模倣する行動』の実装＆テストを目標とする
 
 *Model_1_2*においてはデータをDBに格納する処理＆CSVとして出力する処理を実装する
+
+*Model_1_3*においては突然変異の3つの処理を加え、Preferenceモデルの結果を再現することを目標とする
