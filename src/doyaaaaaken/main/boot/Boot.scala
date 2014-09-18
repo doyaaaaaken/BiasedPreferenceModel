@@ -7,11 +7,13 @@ import doyaaaaaken.main.db.DbSession
  */
 object Boot {
 
-  def start(): Unit = {
+  def start(useDb: Boolean): Unit = {
     println("＊＊＊＊＊＊シミュレーション開始＊＊＊＊＊＊")
     PropertyReader.read
-    DbSession.open
-    if (Property.dbClearBeforeSim) DbSession.clearData
+    if (useDb) {
+      DbSession.open
+      if (Property.dbClearBeforeSim) DbSession.clearData
+    }
   }
 
   def finish(): Unit = {

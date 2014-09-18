@@ -9,7 +9,7 @@ sim.csv.output = true;	//シミュレーション終わりにDB情報を全てCS
 sim.csv.fileName = trait_freq_history.csv; 	//CSVアウトプットの際のファイル名
 
 #エージェント関係
-agent.num = 1000;
+agent.num = 10;
 agent.trait.possessCapacity = 4;	//エージェントが様式を持てる限界数
 
 #様式関係

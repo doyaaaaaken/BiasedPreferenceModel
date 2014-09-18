@@ -14,7 +14,7 @@ object AgentTest {
      * エージェント初期化テスト
      ============================*/
 
-    Boot.start //シミュレーション開始時に必要な処理
+    Boot.start(false) //シミュレーション開始時に必要な処理
 
     //エージェントの初期化
     val agentsIndexedSeq = for (i <- 1 to Property.agentNum) yield { AgentFactory.create() }

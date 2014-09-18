@@ -19,7 +19,7 @@ object Main {
 
   def main(args: Array[String]): Unit = {
 
-    Boot.start
+    Boot.start(useDb = true)
 
     /*エージェント間の繋がりを示すネットワークの生成*/
     val network: Network = CompleteGraphFactory.create(Property.agentNum) //完全グラフ
