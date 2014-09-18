@@ -44,7 +44,7 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
       ps.close();
     } catch {
       case e: SQLException => println("Database error " + e)
-      case e => {
+      case e: Throwable => {
         println("Some other exception type on DbSession:")
         e.printStackTrace()
       }
@@ -76,7 +76,7 @@ object TraitFreqHistory {
     var datas: Seq[(Int, Int, Int, Int)] = Nil //最終的に返すデータ
     try {
       val stmt: Statement = con.createStatement
-      val sql: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName
+      val sql: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName + " ORDER BY id ASC, timestep ASC"
       val rs: ResultSet = stmt.executeQuery(sql)
 
       while (rs.next()) {
@@ -91,7 +91,7 @@ object TraitFreqHistory {
       stmt.close
     } catch {
       case e: SQLException => println("Database error " + e)
-      case e => {
+      case e: Throwable => {
         println("Some other exception type on DbSession:")
         e.printStackTrace
       }

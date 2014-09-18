@@ -19,7 +19,7 @@ object DbSession {
       con = DriverManager.getConnection("jdbc:mysql://" + Property.dbHostName + "/" + Property.dbName, Property.dbId, Property.dbPass); // MySQLに接続
     } catch {
       case e: SQLException => println("Database error " + e)
-      case e => {
+      case e: Throwable => {
         println("Some other exception type on DbSession:")
         e.printStackTrace()
       }
@@ -48,7 +48,7 @@ object DbSession {
     try {
       if (con != null) con.close();
     } catch {
-      case e => {
+      case e: Throwable => {
         println("Some other exception type on DbSession:")
         e.printStackTrace()
       }
