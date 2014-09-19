@@ -39,7 +39,13 @@ object AgentMutationServiceTest {
     println("++++++++++振り直し後++++++++++")
     agents.foreach(aMap => println(aMap._2.preference.getPreference))
 
-    //TODO エージェントの転生テスト
+    //エージェントが転生していることを目視で確認する
+    println("＊＊＊＊＊＊エージェントの転生テスト＊＊＊＊＊＊")
+    println("++++++++++転生前++++++++++")
+    agents.foreach(aMap => aMap._2.debugPrint)
+    agents.apply(1).reborn(currentTraitFreq.getCurrentTraitKindList) //エージェント1番のみ転生する
+    println("++++++++++転生後++++++++++")
+    agents.foreach(aMap => aMap._2.debugPrint)
 
     //新規様式がエージェント内に出現していることを目視で確認する
     println("＊＊＊＊＊＊新規様式の出現テスト＊＊＊＊＊＊")
