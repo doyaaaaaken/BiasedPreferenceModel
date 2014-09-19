@@ -10,7 +10,7 @@ import doyaaaaaken.main.boot.Property
 private[model] class TraitFactory(initialTraitKindNum: Int) {
 
   val initialTraitKind = initialTraitKindNum //初期の様式種類数
-  var latestTraitKind = initialTraitKind //最新の様式種類番号
+  var latestTraitKind = initialTraitKind - 1 //現在の最新の様式種類番号
 
   /**
    * エージェントの初期様式(0～initialTraitKind-1のどれか)を作成する
@@ -23,9 +23,8 @@ private[model] class TraitFactory(initialTraitKindNum: Int) {
    * エージェントが新規様式を生みだした際に、その様式番号を返す
    */
   def getNewTrait(): Int = {
-    //TODO 未実装
-    latestTraitKind + 1
-    -99999
+    latestTraitKind = latestTraitKind + 1
+    latestTraitKind
   }
 
 }

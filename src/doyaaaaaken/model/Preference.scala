@@ -8,7 +8,7 @@ private[model] class Preference(preference: Map[Int, Double]) {
 
   /**指定の様式種類番号に対する好みの値を返す*/
   def getPreferenceValue(traitKind: Int): Double = {
-    pref.apply(traitKind)
+    getOrCreatePrefValue(traitKind)
   }
 
   /**ゲッター：Preferenceの値を格納したMapをコピーして返す*/
@@ -16,7 +16,7 @@ private[model] class Preference(preference: Map[Int, Double]) {
 
   /**与えられた様式種類群に対する好みの総和を返す*/
   def calcPrefSum(traitNums: Seq[Int]): Double = {
-    traitNums.map(pref.apply(_)).sum
+    traitNums.map(getOrCreatePrefValue(_)).sum
   }
 
   /**指定の様式番号の様式に対する好みを変更する*/
@@ -33,6 +33,17 @@ private[model] class Preference(preference: Map[Int, Double]) {
   /**好みの値をランダムに振り直す*/
   def randomizePrefValue: Unit = {
     pref = pref.map(prefMap => (prefMap._1, Math.random() * 2 - 1.0))
+  }
+
+  /**指定の様式番号に対する好みの値を得る。まだなかった場合は適宜その場で作る*/
+  private[this] def getOrCreatePrefValue(traitKind: Int): Double = {
+    if (pref.contains(traitKind)) {
+      pref.apply(traitKind)
+    } else {
+      val newPrefValue = Math.random * 2 - 1.0
+      pref = pref + (traitKind -> newPrefValue)
+      newPrefValue
+    }
   }
 }
 

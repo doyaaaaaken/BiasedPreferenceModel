@@ -43,6 +43,11 @@ class Agent(
     preference.randomizePrefValue
   }
 
+  /**新規様式を獲得する*/
+  def acquireNewTrait: Unit = {
+    traits = traits :+ traitFactory.getNewTrait
+  }
+
   /**【デバッグ用】 エージェントの情報をコンソール出力する*/
   def debugPrint(): Unit = {
     println("+++++++++++++++++")

@@ -35,14 +35,16 @@ object Main {
       AgentImitationService.work(agents, network, currentTraitFreq)
 
       //突然変異フェーズ
-      AgentMutationService.acquireNewTrait(agents, currentTraitFreq) //新規様式の発生
       AgentMutationService.randomizePreference(agents) //好みをランダムに振り直す
       AgentMutationService.reborn(agents) //エージェントが転生する
+      AgentMutationService.acquireNewTrait(agents) //新規様式の発生
 
-      //現在存在する様式リストの更新 
+      //現在存在する様式リストの更新（注：「突然変異：新規様式の発生」により現存する様式リストに変更があったため更新）
       currentTraitFreq = TraitFreqHistory.apply(i, agents)
 
-      //データの格納 
+      //TODO preferenceの値が長くなりすぎるのを防ぐため、currentTraitFreqにないものは消す【計算量削減処置】
+
+      //データの格納
       if (i % Property.dbSaveInterval == 0) currentTraitFreq.insertDataSet(i, DbSession.getConnection)
 
       if (i % 100 == 0) println(i + "タイムステップ経過")

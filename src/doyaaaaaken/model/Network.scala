@@ -1,7 +1,5 @@
 package doyaaaaaken.model
 
-import org.omg.SendingContext.RunTime
-
 /**
  * 基本的には無向固定グラフ。2次元配列edgeを持ち、これによってエージェント同士でリンクが結ばれているかチェックする
  */

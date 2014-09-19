@@ -9,11 +9,6 @@ import doyaaaaaken.main.boot.Property
  */
 object AgentMutationService {
 
-  /**新規様式の発生*/
-  def acquireNewTrait(agents: Map[Int, Agent], currentTraitFreq: TraitFreqHistory): Unit = {
-    //    if (Property.newTraitMutationRate > Math.random())  ・・・
-  }
-
   /**好みをランダムに振り直す処理*/
   def randomizePreference(agents: Map[Int, Agent]): Unit = {
     agents.foreach(aMap => if (Property.randomizePreferenceMutationRate > Math.random()) aMap._2.randomizePreference)
@@ -21,6 +16,11 @@ object AgentMutationService {
 
   /**エージェントの転生*/
   def reborn(agents: Map[Int, Agent]): Unit = {
-    //if (Property.agentRebornMutationRate > Math.random()) ・・・
+    //    agents.foreach(aMap => if (Property.agentRebornMutationRate > Math.random) aMap._2.reborn)
+  }
+
+  /**新規様式の発生*/
+  def acquireNewTrait(agents: Map[Int, Agent]): Unit = {
+    agents.foreach(aMap => if (Property.newTraitMutationRate > Math.random) aMap._2.acquireNewTrait)
   }
 }
