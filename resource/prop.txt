@@ -19,7 +19,7 @@ trait.initialHavingKindProportion = 0.5;	//初期状態においてエージェ�
 #突然変異率（0.0～1.0までの小数値で指定）
 sim.mutation.newTrait = 0.1;
 sim.mutation.randomizePreference = 0.01;
-sim.mutation.agentReborn = 0.0;
+sim.mutation.agentReborn = 0.1;
 
 #DB関係
 mysql.hostName = localhost;

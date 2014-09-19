@@ -43,6 +43,12 @@ class Agent(
     preference.randomizePrefValue
   }
 
+  /**エージェントが転生する（様式を全て破棄して、現存する全様式に対する好みを1にする）*/
+  def reborn(currentTraitList: Seq[Int]): Unit = {
+    traits = Nil
+    preference.rebornAgent(currentTraitList)
+  }
+
   /**新規様式を獲得する*/
   def acquireNewTrait: Unit = {
     traits = traits :+ traitFactory.getNewTrait

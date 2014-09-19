@@ -15,8 +15,8 @@ object AgentMutationService {
   }
 
   /**エージェントの転生*/
-  def reborn(agents: Map[Int, Agent]): Unit = {
-    //    agents.foreach(aMap => if (Property.agentRebornMutationRate > Math.random) aMap._2.reborn)
+  def reborn(agents: Map[Int, Agent], currentTraitList: Seq[Int]): Unit = {
+    agents.foreach(aMap => if (Property.agentRebornMutationRate > Math.random) aMap._2.reborn(currentTraitList))
   }
 
   /**新規様式の発生*/

@@ -30,6 +30,11 @@ private[model] class Preference(preference: Map[Int, Double]) {
     }
   }
 
+  /**エージェントの転生に伴い、好みの値を現存する様式群に対して全て1.0に変更する*/
+  def rebornAgent(currentTraitList: Seq[Int]): Unit = {
+    pref = currentTraitList.map((_ -> 1.0)).toMap
+  }
+
   /**好みの値をランダムに振り直す*/
   def randomizePrefValue: Unit = {
     pref = pref.map(prefMap => (prefMap._1, Math.random() * 2 - 1.0))

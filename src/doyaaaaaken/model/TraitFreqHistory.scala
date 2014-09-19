@@ -24,6 +24,11 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
     }
   }
 
+  /**現存する様式種類番号リストを得る*/
+  def getCurrentTraitKindList: Seq[Int] = {
+    currentTraitMap.keySet.toList
+  }
+
   /**
    * 現在時刻の様式の度数をDBに格納する
    */
