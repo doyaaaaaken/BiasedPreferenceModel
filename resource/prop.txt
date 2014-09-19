@@ -1,25 +1,25 @@
 #シミュレーションの設定を記したファイル
 
 #シミュレーション関係
-sim.num = 10;	//シミュレーション回数
+sim.num = 2000;	//シミュレーション回数
 sim.debug = false;	//デバッグするか否か
 sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
-sim.db.saveInterval = 2;	//DBに保存する時間刻み幅
+sim.db.saveInterval = 50;	//DBに保存する時間刻み幅
 sim.csv.output = true;	//シミュレーション終わりにDB情報を全てCSVアウトプットするかどうか
 sim.csv.fileName = trait_freq_history.csv; 	//CSVアウトプットの際のファイル名
 
 #エージェント関係
-agent.num = 10;
-agent.trait.possessCapacity = 4;	//エージェントが様式を持てる限界数
+agent.num = 1000;
+agent.trait.possessCapacity = 100;	//エージェントが様式を持てる限界数
 
 #様式関係
 trait.initialKindNum = 10;	//初期状態での様式の全種類数
 trait.initialHavingKindProportion = 0.5;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)
 
 #突然変異率（0.0～1.0までの小数値で指定）
-sim.mutation.newTrait = 0.1;
+sim.mutation.newTrait = 0.001;
 sim.mutation.randomizePreference = 0.01;
-sim.mutation.agentReborn = 0.1;
+sim.mutation.agentReborn = 0.001;
 
 #DB関係
 mysql.hostName = localhost;
