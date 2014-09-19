@@ -39,6 +39,15 @@ object AgentMutationServiceTest {
     println("++++++++++振り直し後++++++++++")
     agents.foreach(aMap => println(aMap._2.preference.getPreference))
 
-  }
+    //TODO エージェントの転生テスト
 
+    //新規様式がエージェント内に出現していることを目視で確認する
+    println("＊＊＊＊＊＊新規様式の出現テスト＊＊＊＊＊＊")
+    currentTraitFreq.debugPrint
+    println("++++++++++出現前++++++++++")
+    agents.foreach(aMap => println(aMap._2.traits))
+    agents.foreach(aMap => aMap._2.acquireNewTrait) //新規様式を皆獲得した
+    println("++++++++++出現後++++++++++")
+    agents.foreach(aMap => println(aMap._2.traits))
+  }
 }
