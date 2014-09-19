@@ -12,9 +12,9 @@ import doyaaaaaken.main.boot.Property
  *
  *  様式ありの状態もなしの状態も両方ともコピーするアルゴリズム
  */
-private[service] object BothTraitExistConditionCopyStrategy {
+object BothTraitExistConditionCopyStrategy extends Algorithm {
 
-  def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
+  override def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
 
     //(Agentインスタンス , コピー相手先のエージェント番号)のリストを作る
     val copyAgentNumList: Seq[(Agent, Int)] = oldAgents.map {
@@ -28,7 +28,7 @@ private[service] object BothTraitExistConditionCopyStrategy {
     val copyAgentComList: Seq[(Agent, Int, Double)] = copyAgentNumList.map {
       case (agent, copyAgentId) => (agent, copyAgentId, agent.calcPom(oldAgents.apply(copyAgentId).traits))
     }.map {
-      case (agent, copyAgentId, pSum) => (agent, copyAgentId, AgentImitationService.calcCom(pSum))
+      case (agent, copyAgentId, pSum) => (agent, copyAgentId, calcCom(pSum))
     }
 
     //各エージェント、どの様式番号のt-pペアをコピーするのか決める

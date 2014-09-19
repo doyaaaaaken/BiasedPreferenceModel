@@ -12,9 +12,9 @@ import scala.util.Random
  *
  *  Agentが持っている様式しかコピーしないアルゴリズム
  */
-private[service] object OnlyAgentPossessTraitCopyStrategy {
+object OnlyAgentPossessTraitCopyStrategy extends Algorithm {
 
-  def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
+  override def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
 
     //(Agentインスタンス , コピー相手先のエージェント番号)のリストを作る
     val copyAgentNumList: Seq[(Agent, Int)] = oldAgents.map {
@@ -28,7 +28,7 @@ private[service] object OnlyAgentPossessTraitCopyStrategy {
     val copyAgentComList: Seq[(Agent, Int, Double)] = copyAgentNumList.map {
       case (agent, copyAgentId) => (agent, copyAgentId, agent.calcPom(oldAgents.apply(copyAgentId).traits))
     }.map {
-      case (agent, copyAgentId, pSum) => (agent, copyAgentId, AgentImitationService.calcCom(pSum))
+      case (agent, copyAgentId, pSum) => (agent, copyAgentId, calcCom(pSum))
     }
 
     //各エージェント、どの様式番号のt-pペアをコピーするのか決める

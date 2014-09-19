@@ -1,17 +1,20 @@
 package test.doyaaaaaken.model
 
 import doyaaaaaken.main.boot.Boot
-import doyaaaaaken.model.Network
-import doyaaaaaken.model.CompleteGraphFactory
+import doyaaaaaken.main.boot.Property
 import doyaaaaaken.model.Agent
 import doyaaaaaken.model.AgentFactory
+import doyaaaaaken.model.CompleteGraphFactory
+import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
 import doyaaaaaken.service.AgentImitationService
-import doyaaaaaken.main.boot.Property
+import doyaaaaaken.service.strategy.BothTraitExistConditionCopyStrategy
+import doyaaaaaken.service.strategy.OnlyAgentPossessTraitCopyStrategy
 
 object AgentImitationServiceTest {
 
   var currentTraitFreq: TraitFreqHistory = null //現タイムステップに存在する様式リストを保持する
+  val agentImitationService: AgentImitationService = new AgentImitationService(OnlyAgentPossessTraitCopyStrategy)
 
   def main(args: Array[String]): Unit = {
 
@@ -40,7 +43,7 @@ object AgentImitationServiceTest {
     agents.foreach(_._2.debugPrint)
 
     //摸倣を行う
-    AgentImitationService.work(agents, network, currentTraitFreq)
+    agentImitationService.work(agents, network, currentTraitFreq)
 
     //摸倣後
     println("\n＊＊＊摸倣後＊＊＊")

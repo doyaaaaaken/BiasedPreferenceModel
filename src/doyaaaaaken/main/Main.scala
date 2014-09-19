@@ -2,20 +2,24 @@ package doyaaaaaken.main
 
 import doyaaaaaken.main.boot.Boot
 import doyaaaaaken.main.boot.Property
+import doyaaaaaken.main.db.DbSession
+import doyaaaaaken.model.Agent
+import doyaaaaaken.model.AgentFactory
 import doyaaaaaken.model.CompleteGraphFactory
 import doyaaaaaken.model.Network
-import doyaaaaaken.model.AgentFactory
-import doyaaaaaken.model.Agent
-import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.model.TraitFreqHistory
-import doyaaaaaken.main.db.DbSession
+import doyaaaaaken.service.AgentImitationService
+import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.service.AgentMutationService
+import doyaaaaaken.service.strategy.BothTraitExistConditionCopyStrategy
+import doyaaaaaken.service.strategy.OnlyAgentPossessTraitCopyStrategy
 /**
  * シミュレーションの本骨組みとなるMainクラス
  */
 object Main {
 
   var currentTraitFreq: TraitFreqHistory = null //現タイムステップに存在する様式リストを保持する
+  val agentImitationService: AgentImitationService = new AgentImitationService(OnlyAgentPossessTraitCopyStrategy) //注：Agentが持つ様式のみを模倣するアルゴリズムを用いている
 
   def main(args: Array[String]): Unit = {
 
@@ -32,7 +36,7 @@ object Main {
     /*シミュレーションの実行*/
     for (i <- 1 to Property.simNum) {
       //模倣フェーズ・・・全エージェント、自分と繋がっている他のエージェントを模倣する(アシンクロナス)
-      AgentImitationService.work(agents, network, currentTraitFreq)
+      agentImitationService.work(agents, network, currentTraitFreq)
 
       //突然変異フェーズ
       AgentMutationService.randomizePreference(agents) //好みをランダムに振り直す
