@@ -2,6 +2,7 @@ package doyaaaaaken.model
 
 import doyaaaaaken.model.helper.TraitFactory
 import doyaaaaaken.main.boot.Property
+import scala.util.Random
 
 class Agent(
   agentId: Int,
@@ -21,6 +22,11 @@ class Agent(
    */
   def calcPom(copyTraitNums: Seq[Int]): Double = {
     preference.calcPrefSum(copyTraitNums)
+  }
+
+  /**自身が保持する様式の種類をランダムに返す*/
+  def getTraitKindRandom: Option[Int] = {
+    if (traits.isEmpty) None else Some(traits(new Random().nextInt(traits.size)))
   }
 
   /**指定の様式番号の様式を持つor持たない状態にする*/
