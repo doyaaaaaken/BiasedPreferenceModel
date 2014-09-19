@@ -41,11 +41,11 @@ private[service] object OnlyAgentPossessTraitCopyStrategy {
        * アシンクロナスに相手の様式・好みをコピーする
        *アシンクロナスに行うため現在の相手の状態を直接コピーするのではなく一旦変数に入れる
        */
-    //(Agentのインスタンス、コピー対象の様式番号、様式ありorなしの状態値)の形式。確率判定で成功しコピ－を行うエージェントのみリストに入れる。
-    val traitCopyInfoList: Seq[(Agent, Int, Boolean)] = copyAgentInfoList.filter {
+    //(Agentのインスタンス、コピー対象の様式番号)の形式。確率判定で成功し”様式ありの状態”のコピ－を行うエージェントのみリストに入れる。
+    val traitCopyInfoList: Seq[(Agent, Int)] = copyAgentInfoList.filter {
       case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random() && targetTraitNum.isDefined
     }.map {
-      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum.get, oldAgents.apply(copyAgentId).traits.contains(targetTraitNum))
+      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum.get)
     }
     //(Agentのインスタンス、コピー対象にする様式番号、好みの状態値-1.0～1.0)の形式。確率判定で成功しコピ－を行うエージェントのみリストに入れる。
     val preferenceCopyInfoList: Seq[(Agent, Int, Double)] = copyAgentInfoList.filter {
@@ -56,7 +56,7 @@ private[service] object OnlyAgentPossessTraitCopyStrategy {
     debugPrint(Property.debug, copyAgentNumList, copyAgentComList, copyAgentInfoList, traitCopyInfoList, preferenceCopyInfoList) //デバッグモードの場合は変数の値をコンソール出力する
     //コピー成功エージェントがtraitのコピーを行う
     traitCopyInfoList.foreach {
-      case (agent, targetTraitNum, existTrait) => agent.changeTrait(targetTraitNum, existTrait)
+      case (agent, targetTraitNum) => agent.changeTrait(targetTraitNum, true)
     }
     //コピー成功エージェントがpreferenceのコピーを行う
     preferenceCopyInfoList.foreach {
@@ -65,7 +65,7 @@ private[service] object OnlyAgentPossessTraitCopyStrategy {
   }
 
   /**デバッグ用：摸倣の際の各種変数値をコンソール出力する*/
-  private[service] def debugPrint(debug: Boolean, copyAgentNumList: Seq[(Agent, Int)], copyAgentComList: Seq[(Agent, Int, Double)], copyAgentInfoList: Seq[(Agent, Int, Option[Int], Double)], traitCopyInfoList: Seq[(Agent, Int, Boolean)], preferenceCopyInfoList: Seq[(Agent, Int, Double)]): Unit = {
+  private[service] def debugPrint(debug: Boolean, copyAgentNumList: Seq[(Agent, Int)], copyAgentComList: Seq[(Agent, Int, Double)], copyAgentInfoList: Seq[(Agent, Int, Option[Int], Double)], traitCopyInfoList: Seq[(Agent, Int)], preferenceCopyInfoList: Seq[(Agent, Int, Double)]): Unit = {
     if (debug) {
       println("""|＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 							 |AgentImitationService（摸倣処理）のデバッグ開始
