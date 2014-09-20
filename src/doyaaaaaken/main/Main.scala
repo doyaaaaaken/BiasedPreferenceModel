@@ -20,7 +20,7 @@ import doyaaaaaken.service.strategy.YourAndMyTraitExistConditionCopyStrategy
 object Main {
 
   var currentTraitFreq: TraitFreqHistory = null //現タイムステップに存在する様式リストを保持する
-  val agentImitationService: AgentImitationService = new AgentImitationService(YourAndMyTraitExistConditionCopyStrategy) //注：Agentが持つ様式のみを模倣するアルゴリズムを用いている
+  val agentImitationService: AgentImitationService = new AgentImitationService(OnlyAgentPossessTraitCopyStrategy) //注：Agentが持つ様式のみを模倣するアルゴリズムを用いている
 
   def main(args: Array[String]): Unit = {
 
