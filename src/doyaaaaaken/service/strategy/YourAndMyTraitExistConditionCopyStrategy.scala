@@ -2,23 +2,23 @@ package doyaaaaaken.service.strategy
 
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
+import doyaaaaaken.main.boot.Property
 import doyaaaaaken.model.Agent
 import scala.util.Random
-import doyaaaaaken.service.AgentImitationService
-import doyaaaaaken.main.boot.Property
 
 /**
  * 【AgentImitationServiceオブジェクトでのみ使われるアルゴリズム】
  *
- *  様式ありの状態もなしの状態も両方ともコピーするアルゴリズム
+ *  自分と相手の様式を合わせたリストの中から様式ありorなしの状態をコピーする
  */
-object BothTraitExistConditionCopyStrategy extends Algorithm {
+object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
 
   override def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
 
     //エージェント群を、(Agentインスタンス , コピー相手先のエージェント番号, コピー確率Com)という形式にする
     val copyAgentComList: Seq[(Agent, Int, Double)] = getCopyAgentComList(oldAgents, network)
 
+    //TODO 此処から先のアルゴリズムを改修する
     //各エージェント、どの様式番号のt-pペアをコピーするのか決める
     //(Agentインスタンス、コピー先エージェント番号、コピー対象の様式番号、コピー確率)という形式にする
     val copyAgentInfoList: Seq[(Agent, Int, Int, Double)] = copyAgentComList.map {

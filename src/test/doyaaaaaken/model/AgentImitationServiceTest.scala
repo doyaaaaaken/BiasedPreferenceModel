@@ -14,13 +14,13 @@ import doyaaaaaken.service.strategy.OnlyAgentPossessTraitCopyStrategy
 object AgentImitationServiceTest {
 
   var currentTraitFreq: TraitFreqHistory = null //現タイムステップに存在する様式リストを保持する
-  val agentImitationService: AgentImitationService = new AgentImitationService(OnlyAgentPossessTraitCopyStrategy)
+  val agentImitationService: AgentImitationService = new AgentImitationService(OnlyAgentPossessTraitCopyStrategy) //ここのアルゴリズムはテスト目的次第で適宜切り替える！！
 
   def main(args: Array[String]): Unit = {
 
-    /*==========================================
-     * エージェント間での様式摸倣に関するテスト
-     ===========================================*/
+    /*=================================================================================================
+     * エージェント間での様式摸倣に関するテスト(用いるアルゴリズムは変数agentImitationServiceにて指定)
+     ================================================================================================*/
     Boot.start(useDb = false)
 
     //エージェント間の繋がりを示すネットワークの生成
