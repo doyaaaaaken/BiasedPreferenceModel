@@ -26,6 +26,7 @@ object Property {
   lazy val debug: Boolean = map.apply("sim.debug").toBoolean
   lazy val dbClearBeforeSim: Boolean = map.apply("sim.db.clear").toBoolean
   lazy val dbSaveInterval: Int = map.apply("sim.db.saveInterval").toInt
+  lazy val dbSaveStartTime: Int = map.apply("sim.db.saveStartTime").toInt
   lazy val csvOutputAfterSim: Boolean = map.apply("sim.csv.output").toBoolean
   lazy val csvOutputFileName: String = map.apply("sim.csv.fileName").toString
   lazy val agentNum: Int = map.apply("agent.num").toInt

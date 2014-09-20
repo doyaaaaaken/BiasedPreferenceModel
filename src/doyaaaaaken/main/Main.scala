@@ -49,7 +49,7 @@ object Main {
       //TODO preferenceの値が長くなりすぎるのを防ぐため、currentTraitFreqにないものは消す【計算量削減処置】
 
       //データの格納
-      if (i % Property.dbSaveInterval == 0) currentTraitFreq.insertDataSet(i, DbSession.getConnection)
+      if (i % Property.dbSaveInterval == 0 && i >= Property.dbSaveStartTime) currentTraitFreq.insertDataSet(i, DbSession.getConnection)
 
       if (i % 100 == 0) println(i + "タイムステップ経過")
     }
