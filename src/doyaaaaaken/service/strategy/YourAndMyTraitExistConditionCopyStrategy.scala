@@ -1,10 +1,11 @@
 package doyaaaaaken.service.strategy
 
-import doyaaaaaken.model.Network
-import doyaaaaaken.model.TraitFreqHistory
+import scala.util.Random
+
 import doyaaaaaken.main.boot.Property
 import doyaaaaaken.model.Agent
-import scala.util.Random
+import doyaaaaaken.model.Network
+import doyaaaaaken.model.TraitFreqHistory
 
 /**
  * 【AgentImitationServiceオブジェクトでのみ使われるアルゴリズム】
@@ -18,11 +19,10 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
     //エージェント群を、(Agentインスタンス , コピー相手先のエージェント番号, コピー確率Com)という形式にする
     val copyAgentComList: Seq[(Agent, Int, Double)] = getCopyAgentComList(oldAgents, network)
 
-    //TODO 此処から先のアルゴリズムを改修する
     //各エージェント、どの様式番号のt-pペアをコピーするのか決める
     //(Agentインスタンス、コピー先エージェント番号、コピー対象の様式番号、コピー確率)という形式にする
-    val copyAgentInfoList: Seq[(Agent, Int, Int, Double)] = copyAgentComList.map {
-      case (agent, copyAgentId, copyProb) => (agent, copyAgentId, traitFreq.getRandomTraitNum, copyProb)
+    val copyAgentInfoList: Seq[(Agent, Int, Option[Int], Double)] = copyAgentComList.map {
+      case (agent, copyAgentId, copyProb) => (agent, copyAgentId, getRandomTraitKind(agent.traits ++: oldAgents(copyAgentId).traits), copyProb)
     }
 
     /*
@@ -31,15 +31,15 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
      */
     //(Agentのインスタンス、コピー対象の様式番号、様式ありorなしの状態値)の形式。確率判定で成功しコピ－を行うエージェントのみリストに入れる。
     val traitCopyInfoList: Seq[(Agent, Int, Boolean)] = copyAgentInfoList.filter {
-      case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random()
+      case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random() && targetTraitNum.isDefined
     }.map {
-      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum, oldAgents.apply(copyAgentId).traits.contains(targetTraitNum))
+      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum.get, oldAgents.apply(copyAgentId).traits.contains(targetTraitNum.get))
     }
     //(Agentのインスタンス、コピー対象にする様式番号、好みの状態値-1.0～1.0)の形式。確率判定で成功しコピ－を行うエージェントのみリストに入れる。
     val preferenceCopyInfoList: Seq[(Agent, Int, Double)] = copyAgentInfoList.filter {
-      case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random()
+      case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random() && targetTraitNum.isDefined
     }.map {
-      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum, oldAgents.apply(copyAgentId).preference.getPreferenceValue(targetTraitNum))
+      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum.get, oldAgents.apply(copyAgentId).preference.getPreferenceValue(targetTraitNum.get))
     }
     debugPrint(Property.debug, copyAgentComList, copyAgentInfoList, traitCopyInfoList, preferenceCopyInfoList) //デバッグモードの場合は変数の値をコンソール出力する
     //コピー成功エージェントがtraitのコピーを行う
@@ -50,5 +50,10 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
     preferenceCopyInfoList.foreach {
       case (agent, targetTraitNum, prefValue) => agent.changePreference(targetTraitNum, prefValue)
     }
+  }
+
+  /**与えられたSeq[Int]から、ランダムに値を取り出す*/
+  private[this] def getRandomTraitKind(traitKinds: Seq[Int]): Option[Int] = {
+    if (traitKinds.isEmpty) None else Some(traitKinds.toSet.toList(new Random().nextInt(traitKinds.size)))
   }
 }
