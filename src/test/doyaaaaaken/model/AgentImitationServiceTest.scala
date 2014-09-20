@@ -10,11 +10,12 @@ import doyaaaaaken.model.TraitFreqHistory
 import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.service.strategy.BothTraitExistConditionCopyStrategy
 import doyaaaaaken.service.strategy.OnlyAgentPossessTraitCopyStrategy
+import doyaaaaaken.service.strategy.YourAndMyTraitExistConditionCopyStrategy
 
 object AgentImitationServiceTest {
 
   var currentTraitFreq: TraitFreqHistory = null //現タイムステップに存在する様式リストを保持する
-  val agentImitationService: AgentImitationService = new AgentImitationService(OnlyAgentPossessTraitCopyStrategy) //ここのアルゴリズムはテスト目的次第で適宜切り替える！！
+  val agentImitationService: AgentImitationService = new AgentImitationService(YourAndMyTraitExistConditionCopyStrategy) //ここのアルゴリズムはテスト目的次第で適宜切り替える！！
 
   def main(args: Array[String]): Unit = {
 

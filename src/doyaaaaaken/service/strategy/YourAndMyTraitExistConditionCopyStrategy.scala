@@ -54,6 +54,7 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
 
   /**与えられたSeq[Int]から、ランダムに値を取り出す*/
   private[this] def getRandomTraitKind(traitKinds: Seq[Int]): Option[Int] = {
-    if (traitKinds.isEmpty) None else Some(traitKinds.toSet.toList(new Random().nextInt(traitKinds.size)))
+    val traitKindsSet = traitKinds.toSet
+    if (traitKindsSet.isEmpty) None else Some(traitKindsSet.toList(new Random().nextInt(traitKindsSet.size)))
   }
 }
