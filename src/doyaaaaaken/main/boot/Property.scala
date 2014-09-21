@@ -27,8 +27,10 @@ object Property {
   lazy val dbClearBeforeSim: Boolean = map.apply("sim.db.clear").toBoolean
   lazy val dbSaveInterval: Int = map.apply("sim.db.saveInterval").toInt
   lazy val dbSaveStartTime: Int = map.apply("sim.db.saveStartTime").toInt
-  lazy val csvOutputAfterSim: Boolean = map.apply("sim.csv.output").toBoolean
-  lazy val csvOutputFileName: String = map.apply("sim.csv.fileName").toString
+  lazy val csvOutputTraitFreqHisory: Boolean = map.apply("sim.csv.output.traitFreqHistory").toBoolean
+  lazy val csvOutputFileNameForTraitFreqHistory: String = map.apply("sim.csv.fileName.traitFreqHistory").toString
+  lazy val csvOutputTop40Trait: Boolean = map.apply("sim.csv.output.top40trait").toBoolean
+  lazy val csvOutputFileNameForTop40Trait: String = map.apply("sim.csv.fileName.top40trait").toString
   lazy val agentNum: Int = map.apply("agent.num").toInt
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt

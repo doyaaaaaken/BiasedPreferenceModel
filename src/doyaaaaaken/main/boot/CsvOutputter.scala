@@ -11,15 +11,17 @@ import doyaaaaaken.main.db.DbSession
 import doyaaaaaken.model.helper.TraitFactory
 import doyaaaaaken.model.TraitFreqHistory
 
-object CsvOutputter {
-  /**シミュレーション終了後に、DBの値をCSVとしてファイル出力するメソッド*/
-  def work(): Unit = {
+/**シミュレーション終了後に、DBの値をCSVとしてファイル出力するオブジェクト*/
+private[boot] object CsvOutputter {
+
+  /**引数に受け取ったファイル名と関数を用いてCSVファイル出力を行う共通メソッド*/
+  private[this] def outputCsvFile(fileName: String, pwUser: PrintWriterUser): Unit = {
     println("＊＊＊＊＊＊CSVファイルアウトプット開始＊＊＊＊＊＊")
-    val file = new File(Property.csvOutputFileName)
+    val file = new File(fileName)
     try {
       file.createNewFile //ファイルが存在しない時はファイルを作成
       val pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "Shift-JIS")))
-      outputTraitFreqHistory(pw) //trait_freq_historyテーブルの値をCSV出力
+      pwUser.csvOutput(pw)
       pw.close
     } catch {
       case e: IOException => println("CSV入出力中に入出力例外が発生しました ： " + e.printStackTrace)
@@ -28,30 +30,20 @@ object CsvOutputter {
     println("＊＊＊＊＊＊CSVファイルアウトプット終了しました＊＊＊＊＊＊")
   }
 
-  /**trait_freq_historyテーブルの値をCSV出力するメソッド*/
-  private[this] def outputTraitFreqHistory(pw: PrintWriter): Unit = {
-    val con = DbSession.getConnection
-    val tfh: Seq[(Int, Int, Int, Int)] = TraitFreqHistory.selectAllData(con) //id,timestep,trait_kind,freqの4カラムからなるデータ群を取得
-
-    //1行目を項目行として作成
-    pw.print("timeStep,")
-    for (i <- 1 to 16382) pw.print(i + ",")
-    pw.println
-
-    //2行目以下にデータを挿入
-    tfh.groupBy(_._2).foreach { //timeStepの値でグループ化
-      case (timeStep, dataRow) =>
-        {
-          var tmpTraitKindCounter = 1 //","の表示制御に使うための一時変数
-          pw.print(timeStep + ",")
-          dataRow.sortBy(_._3).foreach { //traitKindでソートする
-            case (id, timestep, traitKind, freq) =>
-              for (i <- 1 to traitKind - tmpTraitKindCounter) pw.print(",")
-              tmpTraitKindCounter = traitKind + 1
-              pw.print(freq + ",")
-          }
-        }
-        pw.println
-    }
+  /**タイムステップごとの度数分布：TraitFreqHistoryの出力メソッド*/
+  def outputTraitFreqHistory(): Unit = {
+    val outputter: PrintWriterUser = TraitFreqHistoryCsvOutputter
+    outputCsvFile(Property.csvOutputFileNameForTraitFreqHistory, outputter)
   }
+
+  /**度数最高値がTOP40のものの度数推移出力メソッド*/
+  def outputTop40Trait(): Unit = {
+    val outputter: PrintWriterUser = Top40TraitCsvOutputter
+    outputCsvFile(Property.csvOutputFileNameForTop40Trait, outputter)
+  }
+}
+
+/**PrintWriterを渡したら、それを使ってデータ出力をするTrait*/
+private[boot] trait PrintWriterUser {
+  def csvOutput(pw: PrintWriter): Unit
 }

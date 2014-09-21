@@ -3,11 +3,17 @@
 #シミュレーション関係
 sim.num = 1000;	//シミュレーション回数
 sim.debug = false;	//デバッグするか否か
+
+#DBへの保存関係
 sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
 sim.db.saveInterval = 1;	//DBに保存する時間刻み幅
 sim.db.saveStartTime = 900;	//DBに保存を開始する時間
-sim.csv.output = true;	//シミュレーション終わりにDB情報を全てCSVアウトプットするかどうか
-sim.csv.fileName = trait_freq_history.csv; 	//CSVアウトプットの際のファイル名
+
+#CSVアウトプット関係
+sim.csv.output.traitFreqHistory = true;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
+sim.csv.fileName.traitFreqHistory = trait_freq_history.csv; 	//TraitFreqHistory情報をCSVアウトプットする際のファイル名
+sim.csv.output.top40trait = true;	//度数最高値Top40の様式群の推移をCSV出力するかどうか
+sim.csv.fileName.top40trait = top40trait.csv;
 
 #エージェント関係
 agent.num = 100;
@@ -22,7 +28,7 @@ sim.mutation.newTrait = 0.005;	//Preferenceモデルでは0.001で指定され�
 sim.mutation.randomizePreference = 0.001;	//Preferenceモデルでは0.001で指定されている
 sim.mutation.agentReborn = 0.01;	//Preferenceモデルでは0.01で指定されている
 
-#DB関係
+#DB設定関係
 mysql.hostName = localhost;
 mysql.dbName = biased_preference_model;
 mysql.tableName.traitFreqHistory = trait_freq_history;
