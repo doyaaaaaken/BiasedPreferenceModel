@@ -11,22 +11,26 @@ private[boot] object TraitFreqHistoryCsvOutputter extends PrintWriterUser {
     val con = DbSession.getConnection
     val tfh: Seq[TraitFreqHistoryDataRow] = TraitFreqHistory.selectAllData(con) //id,timestep,trait_kind,freqの4カラムからなるデータ群を取得
 
-    //1行目を項目行として作成
-    pw.print("timeStep,")
-    for (i <- 1 to 16382) pw.print(i + ",")
+    //使われている様式種類群
+    val traitKindsList: Seq[Int] = tfh.map(_.trait_kind).toSet.toList.sorted //データとして存在したtrait_kind群
+    val traitKindsPosition: Map[Int, Int] = { for ((x, i) <- traitKindsList.zipWithIndex) yield (x, i + 2) }.toMap //「._2列目がtraitKind ._1番目の列」という情報
+
+    //1行目の出力
+    pw.print("timeStep")
+    traitKindsList.foreach(traitKind => pw.print("," + traitKind))
     pw.println
 
     //2行目以下にデータを挿入
     tfh.groupBy(_.timestep).foreach {
-      case (timeStep, dataRow) =>
+      case (timeStep, dataRows) =>
         {
           var tmpTraitKindCounter = 1 //","の表示制御に使うための一時変数
-          pw.print(timeStep + ",")
-          dataRow.sortBy(_.trait_kind).foreach {
+          pw.print(timeStep)
+          dataRows.sortBy(_.trait_kind).foreach {
             case row =>
-              for (i <- 1 to row.trait_kind - tmpTraitKindCounter) pw.print(",")
-              tmpTraitKindCounter = row.trait_kind + 1
-              pw.print(row.freq + ",")
+              for (i <- 1 to traitKindsPosition.apply(row.trait_kind) - tmpTraitKindCounter) pw.print(",")
+              pw.print(row.freq)
+              tmpTraitKindCounter = traitKindsPosition.apply(row.trait_kind)
           }
         }
         pw.println
