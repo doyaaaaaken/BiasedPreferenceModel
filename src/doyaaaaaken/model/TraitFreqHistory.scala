@@ -77,9 +77,9 @@ object TraitFreqHistory {
   /**
    * trait_freq_historyテーブルの全値を取得する
    */
-  def selectAllData(con: Connection): Seq[(Int, Int, Int, Int)] = {
+  def selectAllData(con: Connection): Seq[TraitFreqHistoryDataRow] = {
 
-    var datas: Seq[(Int, Int, Int, Int)] = Nil //最終的に返すデータ
+    val datas: ListBuffer[TraitFreqHistoryDataRow] = ListBuffer()
     try {
       val stmt: Statement = con.createStatement
       val sql: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName + " ORDER BY id ASC, timestep ASC"
@@ -90,7 +90,7 @@ object TraitFreqHistory {
         val timeStep: Int = rs.getInt("timestep")
         val traitKind: Int = rs.getInt("trait_kind")
         val freq: Int = rs.getInt("freq")
-        datas = datas :+ (id, timeStep, traitKind, freq)
+        datas += TraitFreqHistoryDataRow(id, timeStep, traitKind, freq)
       }
 
       rs.close
