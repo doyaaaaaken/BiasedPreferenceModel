@@ -36,10 +36,10 @@ private[boot] object CsvOutputter {
     outputCsvFile(Property.csvOutputFileNameForTraitFreqHistory, outputter)
   }
 
-  /**度数最高値がTOP40のものの度数推移出力メソッド*/
-  def outputTop40Trait(): Unit = {
-    val outputter: PrintWriterUser = Top40TraitCsvOutputter
-    outputCsvFile(Property.csvOutputFileNameForTop40Trait, outputter)
+  /**度数最高値がTopNのものの度数推移出力メソッド*/
+  def outputTopNTrait(): Unit = {
+    val outputter: PrintWriterUser = TopNTraitCsvOutputter
+    outputCsvFile(Property.csvOutputFileNameForTopNTrait, outputter)
   }
 }
 

@@ -4,9 +4,9 @@ import java.io.PrintWriter
 
 /**
  * trait_freq_historyテーブルよりデータ取得し
- * 度数最高値がTOP40に達した様式群の推移をCSV出力するオブジェクト
+ * 度数最高値がTopNに達した様式群の推移をCSV出力するオブジェクト
  */
-private[boot] object Top40TraitCsvOutputter extends PrintWriterUser {
+private[boot] object TopNTraitCsvOutputter extends PrintWriterUser {
   override def csvOutput(pw: PrintWriter): Unit = {
     //TODO 未実装
   }

@@ -18,7 +18,7 @@ object Boot {
 
   def finish(): Unit = {
     if (Property.csvOutputTraitFreqHisory) CsvOutputter.outputTraitFreqHistory
-    if (Property.csvOutputTop40Trait) CsvOutputter.outputTop40Trait
+    if (Property.csvOutputTopNTrait) CsvOutputter.outputTopNTrait
     DbSession.close
     println("＊＊＊＊＊＊シミュレーション終了＊＊＊＊＊＊")
   }

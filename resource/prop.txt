@@ -12,8 +12,10 @@ sim.db.saveStartTime = 900;	//DBに保存を開始する時間
 #CSVアウトプット関係
 sim.csv.output.traitFreqHistory = true;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
 sim.csv.fileName.traitFreqHistory = trait_freq_history.csv; 	//TraitFreqHistory情報をCSVアウトプットする際のファイル名
-sim.csv.output.top40trait = true;	//度数最高値Top40の様式群の推移をCSV出力するかどうか
-sim.csv.fileName.top40trait = top40trait.csv;
+sim.csv.output.topNtrait = true;	//度数最高値TopNの様式群の推移をCSV出力するかどうか
+sim.csv.topNnum = 40;	//TopNのNの値 (Preferenceモデルでは40で指定されている)
+sim.csv.fileName.topNtrait = top40trait.csv;
+
 
 #エージェント関係
 agent.num = 100;
