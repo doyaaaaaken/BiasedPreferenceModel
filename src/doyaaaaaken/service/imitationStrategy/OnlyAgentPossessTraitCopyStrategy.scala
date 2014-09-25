@@ -1,18 +1,18 @@
-package doyaaaaaken.service.strategy
+package doyaaaaaken.service.imitationStrategy
 
-import scala.util.Random
-
-import doyaaaaaken.main.boot.Property
-import doyaaaaaken.model.Agent
+import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
+import doyaaaaaken.model.Agent
+import doyaaaaaken.main.boot.Property
+import scala.util.Random
 
 /**
  * 【AgentImitationServiceオブジェクトでのみ使われるアルゴリズム】
  *
- *  自分と相手の様式を合わせたリストの中から様式ありorなしの状態をコピーする
+ *  Agentが持っている様式しかコピーしないアルゴリズム
  */
-object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
+object OnlyAgentPossessTraitCopyStrategy extends Algorithm {
 
   override def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
 
@@ -22,18 +22,18 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
     //各エージェント、どの様式番号のt-pペアをコピーするのか決める
     //(Agentインスタンス、コピー先エージェント番号、コピー対象の様式番号、コピー確率)という形式にする
     val copyAgentInfoList: Seq[(Agent, Int, Option[Int], Double)] = copyAgentComList.map {
-      case (agent, copyAgentId, copyProb) => (agent, copyAgentId, getRandomTraitKind(agent.traits ++: oldAgents(copyAgentId).traits), copyProb)
+      case (agent, copyAgentId, copyProb) => (agent, copyAgentId, oldAgents(copyAgentId).getTraitKindRandom, copyProb)
     }
 
     /*
      * アシンクロナスに相手の様式・好みをコピーする
      * アシンクロナスに行うため現在の相手の状態を直接コピーするのではなく一旦変数に入れる
      */
-    //(Agentのインスタンス、コピー対象の様式番号、様式ありorなしの状態値)の形式。確率判定で成功しコピ－を行うエージェントのみリストに入れる。
-    val traitCopyInfoList: Seq[(Agent, Int, Boolean)] = copyAgentInfoList.filter {
+    //(Agentのインスタンス、コピー対象の様式番号)の形式。確率判定で成功し”様式ありの状態”のコピ－を行うエージェントのみリストに入れる。
+    val traitCopyInfoList: Seq[(Agent, Int)] = copyAgentInfoList.filter {
       case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random() && targetTraitNum.isDefined
     }.map {
-      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum.get, oldAgents.apply(copyAgentId).traits.contains(targetTraitNum.get))
+      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum.get)
     }
     //(Agentのインスタンス、コピー対象にする様式番号、好みの状態値-1.0～1.0)の形式。確率判定で成功しコピ－を行うエージェントのみリストに入れる。
     val preferenceCopyInfoList: Seq[(Agent, Int, Double)] = copyAgentInfoList.filter {
@@ -44,7 +44,7 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
     debugPrint(Property.debug, copyAgentComList, copyAgentInfoList, traitCopyInfoList, preferenceCopyInfoList) //デバッグモードの場合は変数の値をコンソール出力する
     //コピー成功エージェントがtraitのコピーを行う
     traitCopyInfoList.foreach {
-      case (agent, targetTraitNum, existTrait) => agent.changeTrait(targetTraitNum, existTrait)
+      case (agent, targetTraitNum) => agent.changeTrait(targetTraitNum, true)
     }
     //コピー成功エージェントがpreferenceのコピーを行う
     preferenceCopyInfoList.foreach {
@@ -52,9 +52,4 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
     }
   }
 
-  /**与えられたSeq[Int]から、ランダムに値を取り出す*/
-  private[this] def getRandomTraitKind(traitKinds: Seq[Int]): Option[Int] = {
-    val traitKindsSet = traitKinds.toSet
-    if (traitKindsSet.isEmpty) None else Some(traitKindsSet.toList(new Random().nextInt(traitKindsSet.size)))
-  }
 }

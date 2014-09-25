@@ -1,4 +1,4 @@
-package doyaaaaaken.service.strategy
+package doyaaaaaken.service.imitationStrategy
 
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
@@ -10,12 +10,12 @@ abstract class Algorithm {
   private[service] def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit
 
   /**PomからComを計算する式*/
-  private[strategy] def calcCom(Pom: Double): Double = {
+  private[imitationStrategy] def calcCom(Pom: Double): Double = {
     1.0 / (1 + Math.exp(-Pom))
   }
 
   /**エージェント群を、(Agentインスタンス , コピー相手先のエージェント番号, コピー確率Com)という形式にする*/
-  private[strategy] def getCopyAgentComList(agents: Map[Int, Agent], network: Network): Seq[(Agent, Int, Double)] = {
+  private[imitationStrategy] def getCopyAgentComList(agents: Map[Int, Agent], network: Network): Seq[(Agent, Int, Double)] = {
     //(Agentインスタンス , コピー相手先のエージェント番号)のリストを作る
     val copyAgentNumList: Seq[(Agent, Int)] = agents.map {
       case (id, agent) => (agent, network.getLinkedAgentNums(id))
@@ -31,7 +31,7 @@ abstract class Algorithm {
   }
 
   /**デバッグ用：摸倣の際の各種変数値をコンソール出力する*/
-  private[strategy] def debugPrint(debug: Boolean, copyAgentComList: Seq[(Agent, Int, Double)], copyAgentInfoList: Seq[AnyRef], traitCopyInfoList: Seq[AnyRef], preferenceCopyInfoList: Seq[(Agent, Int, Double)]): Unit = {
+  private[imitationStrategy] def debugPrint(debug: Boolean, copyAgentComList: Seq[(Agent, Int, Double)], copyAgentInfoList: Seq[AnyRef], traitCopyInfoList: Seq[AnyRef], preferenceCopyInfoList: Seq[(Agent, Int, Double)]): Unit = {
     if (debug) {
       println("""|＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 							 |AgentImitationService（摸倣処理）のデバッグ開始

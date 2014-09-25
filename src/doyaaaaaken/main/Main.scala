@@ -11,9 +11,9 @@ import doyaaaaaken.model.TraitFreqHistory
 import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.service.AgentMutationService
-import doyaaaaaken.service.strategy.BothTraitExistConditionCopyStrategy
-import doyaaaaaken.service.strategy.OnlyAgentPossessTraitCopyStrategy
-import doyaaaaaken.service.strategy.YourAndMyTraitExistConditionCopyStrategy
+import doyaaaaaken.service.imitationStrategy.BothTraitExistConditionCopyStrategy
+import doyaaaaaken.service.imitationStrategy.OnlyAgentPossessTraitCopyStrategy
+import doyaaaaaken.service.imitationStrategy.YourAndMyTraitExistConditionCopyStrategy
 /**
  * シミュレーションの本骨組みとなるMainクラス
  */

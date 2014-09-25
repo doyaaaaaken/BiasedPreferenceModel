@@ -3,9 +3,7 @@ package doyaaaaaken.service
 import doyaaaaaken.model.Agent
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
-import doyaaaaaken.service.strategy.BothTraitExistConditionCopyStrategy
-import doyaaaaaken.service.strategy.OnlyAgentPossessTraitCopyStrategy
-import doyaaaaaken.service.strategy.Algorithm
+import doyaaaaaken.service.imitationStrategy.Algorithm
 
 /**
  * Agent同士で模倣しあう処理を行うクラス
