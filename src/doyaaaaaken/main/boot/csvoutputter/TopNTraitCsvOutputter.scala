@@ -1,4 +1,4 @@
-package doyaaaaaken.main.boot
+package doyaaaaaken.main.boot.csvoutputter
 
 import java.io.PrintWriter
 import doyaaaaaken.main.db.DbSession

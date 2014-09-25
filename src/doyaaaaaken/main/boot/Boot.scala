@@ -1,6 +1,7 @@
 package doyaaaaaken.main.boot
 
 import doyaaaaaken.main.db.DbSession
+import doyaaaaaken.main.boot.csvoutputter.CsvOutputter
 
 /**
  * シミュレーションの節目で必要な処理

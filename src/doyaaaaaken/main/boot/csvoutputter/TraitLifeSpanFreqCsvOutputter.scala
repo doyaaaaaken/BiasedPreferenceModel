@@ -1,4 +1,4 @@
-package doyaaaaaken.main.boot
+package doyaaaaaken.main.boot.csvoutputter
 
 import doyaaaaaken.model.TraitFreqHistoryDataRow
 import doyaaaaaken.model.TraitFreqHistory

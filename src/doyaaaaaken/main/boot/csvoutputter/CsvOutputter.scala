@@ -1,15 +1,13 @@
-package doyaaaaaken.main.boot
+package doyaaaaaken.main.boot.csvoutputter
 
 import java.io.BufferedWriter
 import java.io.File
-import java.io.FileWriter
 import java.io.PrintWriter
 import java.io.IOException
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
-import doyaaaaaken.main.db.DbSession
-import doyaaaaaken.model.helper.TraitFactory
-import doyaaaaaken.model.TraitFreqHistory
+import doyaaaaaken.main.boot.csvoutputter.TopNTraitCsvOutputter
+import doyaaaaaken.main.boot.Property
 
 /**シミュレーション終了後に、DBの値をCSVとしてファイル出力するオブジェクト*/
 private[boot] object CsvOutputter {
@@ -50,6 +48,6 @@ private[boot] object CsvOutputter {
 }
 
 /**PrintWriterを渡したら、それを使ってデータ出力をするTrait*/
-private[boot] trait PrintWriterUser {
+private[csvoutputter] trait PrintWriterUser {
   def csvOutput(pw: PrintWriter): Unit
 }
