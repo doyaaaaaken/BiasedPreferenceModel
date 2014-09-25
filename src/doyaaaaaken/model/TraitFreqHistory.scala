@@ -7,6 +7,7 @@ import java.sql.SQLException
 import java.sql.Statement
 import doyaaaaaken.main.boot.Property
 import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.{ Map => MutableMap }
 
 /**
  * 各ターンにおける様式の度数を表すクラス
@@ -67,6 +68,9 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
 }
 
 object TraitFreqHistory {
+
+  lazy val dbTableName: String = Property.dbName + "." + Property.traitFreqHistoryTableName //オブジェクトに対応するDBテーブル名
+
   /**ファクトリが呼ばれたら、各エージェントにアクセスして様式の度数を集計する*/
   def apply(timeStep: Int, agents: Map[Int, Agent]): TraitFreqHistory = {
     //agentから「様式種類 - 度数」の一覧を取得
@@ -82,7 +86,7 @@ object TraitFreqHistory {
     val datas: ListBuffer[TraitFreqHistoryDataRow] = ListBuffer()
     try {
       val stmt: Statement = con.createStatement
-      val sql: String = "SELECT * FROM " + Property.dbName + "." + Property.traitFreqHistoryTableName + " ORDER BY id ASC, timestep ASC"
+      val sql: String = "SELECT * FROM " + dbTableName + " ORDER BY id ASC, timestep ASC"
       val rs: ResultSet = stmt.executeQuery(sql)
 
       while (rs.next()) {
@@ -112,7 +116,6 @@ object TraitFreqHistory {
     val datas: ListBuffer[TraitFreqHistoryDataRow] = ListBuffer()
     try {
       val stmt: Statement = con.createStatement
-      val dbTableName: String = Property.dbName + "." + Property.traitFreqHistoryTableName
       val sql: StringBuilder = new StringBuilder
       sql.append("SELECT * FROM ")
       sql.append(dbTableName)
@@ -146,8 +149,27 @@ object TraitFreqHistory {
    * @return キー:様式番号 値:寿命 のMap
    */
   def getTraitLifeSpanFreq(con: Connection): Map[Int, Int] = {
+    val datas: MutableMap[Int, Int] = MutableMap()
+    try {
+      val stmt: Statement = con.createStatement
+      val sql: String = "SELECT trait_kind, count(*) AS life_span FROM " + dbTableName + " GROUP BY trait_kind;"
 
-    null
+      val rs: ResultSet = stmt.executeQuery(sql.toString())
+      while (rs.next()) {
+        val traitKind: Int = rs.getInt("trait_kind")
+        val lifeSpan: Int = rs.getInt("life_span")
+        datas.put(traitKind, lifeSpan)
+      }
+      rs.close
+      stmt.close
+    } catch {
+      case e: SQLException => println("Database error " + e)
+      case e: Throwable => {
+        println("Some other exception type on DbSession:")
+        e.printStackTrace
+      }
+    }
+    datas.toMap
   }
 }
 
