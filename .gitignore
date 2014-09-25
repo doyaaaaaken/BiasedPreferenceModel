@@ -2,4 +2,5 @@
 .cache
 /resource/secure/
 .classpath
-trait_freq_history.csv
+*.csv
+!/resultCsv/
