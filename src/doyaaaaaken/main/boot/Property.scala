@@ -24,6 +24,7 @@ object Property {
   //設定ファイルアクセス時のキー名一覧
   lazy val simNum: Int = map.apply("sim.num").toInt
   lazy val debug: Boolean = map.apply("sim.debug").toBoolean
+  lazy val isBiasedAlgorithm: Boolean = map.apply("sim.algorithm.biased").toBoolean
   lazy val dbClearBeforeSim: Boolean = map.apply("sim.db.clear").toBoolean
   lazy val dbSaveInterval: Int = map.apply("sim.db.saveInterval").toInt
   lazy val dbSaveStartTime: Int = map.apply("sim.db.saveStartTime").toInt

@@ -14,6 +14,8 @@ import doyaaaaaken.model.TraitFreqHistory
  */
 object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
 
+  lazy val isBiasedAlgorithm: Boolean = Property.isBiasedAlgorithm
+
   override def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
 
     //エージェント群を、(Agentインスタンス , コピー相手先のエージェント番号, コピー確率Com)という形式にする
@@ -24,6 +26,13 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
     val copyAgentInfoList: Seq[(Agent, Int, Option[Int], Double)] = copyAgentComList.map {
       case (agent, copyAgentId, copyProb) => (agent, copyAgentId, getRandomTraitKind(agent.traits ++: oldAgents(copyAgentId).traits), copyProb)
     }
+
+    //TODO 本来はここでコピーかアンチかどちらの行動をとるか判定したい
+    //その判定結果でエージェントを振り分け
+    //コピーするエージェントのAgent群は今まで通りcopyAgentInfoListとして渡して、
+    //アンチ行動をとるエージェントのAgent群は選んだ様式を保持しない状態になる＆その様式に対する好みが-1となる
+    //そして、Anti-conformismの仕組みを入れるかどうかは切り替えられるようにしたい
+    if (isBiasedAlgorithm) true //TODO
 
     /*
      * アシンクロナスに相手の様式・好みをコピーする

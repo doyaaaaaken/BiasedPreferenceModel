@@ -3,6 +3,7 @@
 #シミュレーション関係
 sim.num = 12000;	//シミュレーション回数
 sim.debug = false;	//デバッグするか否か
+sim.algorithm.biased = true;	//Anti-conformist biaseの機構をシミュレーションに入れるかどうか
 
 #DBへの保存関係
 sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
