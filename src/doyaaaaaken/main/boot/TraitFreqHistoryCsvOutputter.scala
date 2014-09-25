@@ -7,6 +7,7 @@ import doyaaaaaken.model.TraitFreqHistoryDataRow
 
 /**trait_freq_historyテーブルの値をCSV出力するオブジェクト*/
 private[boot] object TraitFreqHistoryCsvOutputter extends PrintWriterUser {
+
   override def csvOutput(pw: PrintWriter): Unit = {
     val con = DbSession.getConnection
     val tfh: Seq[TraitFreqHistoryDataRow] = TraitFreqHistory.selectAllData(con) //id,timestep,trait_kind,freqの4カラムからなるデータ群を取得

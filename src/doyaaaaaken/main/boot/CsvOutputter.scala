@@ -41,6 +41,12 @@ private[boot] object CsvOutputter {
     val outputter: PrintWriterUser = TopNTraitCsvOutputter
     outputCsvFile(Property.csvOutputFileNameForTopNTrait, outputter)
   }
+
+  /**様式の寿命の分布出力メソッド*/
+  def outputTraitLifeSpanFreq(): Unit = {
+    val outputter: PrintWriterUser = TraitLifeSpanFreqCsvOutputter
+    outputCsvFile(Property.csvOutputFileNameForTraitLifeSpanFreq, outputter)
+  }
 }
 
 /**PrintWriterを渡したら、それを使ってデータ出力をするTrait*/

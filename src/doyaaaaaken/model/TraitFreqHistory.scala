@@ -140,6 +140,15 @@ object TraitFreqHistory {
     }
     datas.toList
   }
+
+  /**
+   * 様式の寿命の分布を抜き出すメソッド
+   * @return キー:様式番号 値:寿命 のMap
+   */
+  def getTraitLifeSpanFreq(con: Connection): Map[Int, Int] = {
+
+    null
+  }
 }
 
 /**trait_freq_historyテーブルからSELECTした1行を格納するDTO*/

@@ -1,21 +1,22 @@
 #シミュレーションの設定を記したファイル
 
 #シミュレーション関係
-sim.num = 12000;	//シミュレーション回数
+sim.num = 1000;	//シミュレーション回数
 sim.debug = false;	//デバッグするか否か
 
 #DBへの保存関係
 sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
-sim.db.saveInterval = 1;	//DBに保存する時間刻み幅
-sim.db.saveStartTime = 8000;	//DBに保存を開始する時間
+sim.db.saveInterval = 100;	//DBに保存する時間刻み幅
+sim.db.saveStartTime = 0;	//DBに保存を開始する時間
 
 #CSVアウトプット関係
 sim.csv.output.traitFreqHistory = false;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
 sim.csv.fileName.traitFreqHistory = trait_freq_history.csv; 	//TraitFreqHistory情報をCSVアウトプットする際のファイル名
-sim.csv.output.topNtrait = true;	//度数最高値TopNの様式群の推移をCSV出力するかどうか
+sim.csv.output.topNtrait = false;	//度数最高値TopNの様式群の推移をCSV出力するかどうか
 sim.csv.topNnum = 40;	//TopNのNの値 (Preferenceモデルでは40で指定されている)
 sim.csv.fileName.topNtrait = top40trait.csv;
-
+sim.csv.output.traitLifeSpanFreq = true;
+sim.csv.fileName.traitLifeSpanFreq = trait_life_span.csv;
 
 #エージェント関係
 agent.num = 100;
