@@ -12,6 +12,7 @@ import scala.util.Random
  *
  *  Agentが持っている様式しかコピーしないアルゴリズム
  */
+@deprecated //恐らくはもう使わないアルゴリズム
 object OnlyAgentPossessTraitCopyStrategy extends Algorithm {
 
   override def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {

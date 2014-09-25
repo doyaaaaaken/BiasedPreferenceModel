@@ -12,6 +12,7 @@ import doyaaaaaken.main.boot.Property
  *
  *  様式ありの状態もなしの状態も両方ともコピーするアルゴリズム
  */
+@deprecated //恐らくはもう使わないアルゴリズム
 object BothTraitExistConditionCopyStrategy extends Algorithm {
 
   override def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
