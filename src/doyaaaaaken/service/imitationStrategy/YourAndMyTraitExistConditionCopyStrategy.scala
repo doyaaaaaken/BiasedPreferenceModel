@@ -23,16 +23,22 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
 
     //各エージェント、どの様式番号のt-pペアをコピーするのか決める
     //(Agentインスタンス、コピー先エージェント番号、コピー対象の様式番号、コピー確率)という形式にする
-    val copyAgentInfoList: Seq[(Agent, Int, Option[Int], Double)] = copyAgentComList.map {
+    var copyAgentInfoList: Seq[(Agent, Int, Option[Int], Double)] = copyAgentComList.map {
       case (agent, copyAgentId, copyProb) => (agent, copyAgentId, getRandomTraitKind(agent.traits ++: oldAgents(copyAgentId).traits), copyProb)
     }
 
-    //TODO 本来はここでコピーかアンチかどちらの行動をとるか判定したい
-    //その判定結果でエージェントを振り分け
-    //コピーするエージェントのAgent群は今まで通りcopyAgentInfoListとして渡して、
-    //アンチ行動をとるエージェントのAgent群は選んだ様式を保持しない状態になる＆その様式に対する好みが-1となる
-    //そして、Anti-conformismの仕組みを入れるかどうかは切り替えられるようにしたい
-    if (isBiasedAlgorithm) true //TODO
+    // 以下の箇所でanti-conformist biasの処理を施す
+    if (isBiasedAlgorithm) {
+      val copyAndAntiAgentsPartition = copyAgentInfoList.partition { //copy,antiの２つにエージェント群を切り分ける
+        case (agent, targetAgentNum, targetTraitKind, copyProb) =>
+          agent.isAnti(targetTraitKind, network.getLinkedAgentNums(agent.id), oldAgents)
+      }
+      copyAgentInfoList = copyAndAntiAgentsPartition._2 //2つに切り分けられたうちのcopy行動をとるAgent群のほうを代入
+      copyAndAntiAgentsPartition._1.foreach { //anti行動を取ると判定をされたAgent群に対し、アンチになる処理を施す
+        case (agent, targetAgentNum, targetTraitKind, copyProb) =>
+          if (targetTraitKind.isDefined) agent.becomeAnti(targetTraitKind.get)
+      }
+    }
 
     /*
      * アシンクロナスに相手の様式・好みをコピーする

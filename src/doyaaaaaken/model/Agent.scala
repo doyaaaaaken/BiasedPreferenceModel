@@ -39,6 +39,21 @@ class Agent(
     }
   }
 
+  /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
+  def isAnti(targetTraitKind: Option[Int], linkedAgentNums: Seq[Int], agents: Map[Int, Agent]): Boolean = {
+    val agentNums = linkedAgentNums :+ id //自分含む、自身から見えるエージェント群のIDリスト
+    val seenTraitList: Seq[Int] = agentNums.flatMap(agents(_).traits) //自身から見える様式群 例）(2,3,3,3,4,5,7)
+    val diffusionRate: Double = seenTraitList.filter(t => targetTraitKind.isDefined && targetTraitKind.get == t).size / seenTraitList.size //様式の普及率
+    diffusionRate > 1 - antiConformism
+  }
+
+  /**エージェントがアンチ行動をとる*/
+  def becomeAnti(traitKind: Int): Unit = {
+    //エージェントは、選んだ様式を保持しない状態になる＆その様式に対する好みが-1となる
+    traits = traits.filterNot(_ == traitKind)
+    preference.changePrefValue(traitKind, -1.0)
+  }
+
   /**指定の様式番号の様式に対する好みを変更する*/
   def changePreference(traitNum: Int, prefValue: Double): Unit = {
     preference.changePrefValue(traitNum, prefValue)
