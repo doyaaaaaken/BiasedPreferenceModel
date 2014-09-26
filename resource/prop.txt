@@ -11,7 +11,7 @@ sim.db.saveInterval = 1;	//DBに保存する時間刻み幅
 sim.db.saveStartTime = 8000;	//DBに保存を開始する時間
 
 #CSVアウトプット関係
-sim.csv.output.traitFreqHistory = false;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
+sim.csv.output.traitFreqHistory = true;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
 sim.csv.fileName.traitFreqHistory = trait_freq_history.csv; 	//TraitFreqHistory情報をCSVアウトプットする際のファイル名
 sim.csv.output.topNtrait = false;	//度数最高値TopNの様式群の推移をCSV出力するかどうか
 sim.csv.topNnum = 40;	//TopNのNの値 (Preferenceモデルでは40で指定されている)
@@ -24,7 +24,7 @@ agent.num = 100;
 agent.trait.possessCapacity = 100;	//エージェントが様式を持てる限界数
 
 #様式関係
-trait.initialKindNum = 10;	//初期状態での様式の全種類数
+trait.initialKindNum = 20;	//初期状態での様式の全種類数
 trait.initialHavingKindProportion = 0.3;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)
 
 #突然変異率（0.0～1.0までの小数値で指定）
