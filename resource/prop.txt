@@ -13,7 +13,7 @@ sim.db.saveStartTime = 8000;	//DBに保存を開始する時間
 #CSVアウトプット関係
 sim.csv.output.traitFreqHistory = true;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
 sim.csv.fileName.traitFreqHistory = trait_freq_history.csv; 	//TraitFreqHistory情報をCSVアウトプットする際のファイル名
-sim.csv.output.topNtrait = false;	//度数最高値TopNの様式群の推移をCSV出力するかどうか
+sim.csv.output.topNtrait = true;	//度数最高値TopNの様式群の推移をCSV出力するかどうか
 sim.csv.topNnum = 40;	//TopNのNの値 (Preferenceモデルでは40で指定されている)
 sim.csv.fileName.topNtrait = top40trait.csv;
 sim.csv.output.traitLifeSpanFreq = true;	//注：様式の寿命分布の出力はDBへの保存時間刻み幅が1でなければ使えません。

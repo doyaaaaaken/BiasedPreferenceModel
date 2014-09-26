@@ -39,11 +39,20 @@ class Agent(
     }
   }
 
+  //  /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
+  //  def isAnti(targetTraitKind: Option[Int], linkedAgentNums: Seq[Int], agents: Map[Int, Agent]): Boolean = {
+  //    val agentNums = linkedAgentNums :+ id //自分含む、自身から見えるエージェント群のIDリスト
+  //    val seenTraitList: Seq[Int] = agentNums.flatMap(agents(_).traits) //自身から見える様式群 例）(2,3,3,3,4,5,7)
+  //    val diffusionRate: Double = if (seenTraitList.isEmpty) 0.0 else seenTraitList.filter(t => targetTraitKind.isDefined && targetTraitKind.get == t).size.toDouble / seenTraitList.size.toDouble //様式の普及率
+  //    diffusionRate > 1 - antiConformism
+  //  }
+
   /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
   def isAnti(targetTraitKind: Option[Int], linkedAgentNums: Seq[Int], agents: Map[Int, Agent]): Boolean = {
-    val agentNums = linkedAgentNums :+ id //自分含む、自身から見えるエージェント群のIDリスト
-    val seenTraitList: Seq[Int] = agentNums.flatMap(agents(_).traits) //自身から見える様式群 例）(2,3,3,3,4,5,7)
-    val diffusionRate: Double = if (seenTraitList.isEmpty) 0.0 else seenTraitList.filter(t => targetTraitKind.isDefined && targetTraitKind.get == t).size.toDouble / seenTraitList.size.toDouble //様式の普及率
+    //注：自分自身の様式は考慮に入れない（なぜなら新興の様式がはやろうとした時に初めから普及率１に近い値になってしまうため）
+    //seenTraitListのサイズがAgentNum以下だった場合はAntiにならない、的な制約入れている。
+    val seenTraitList: Seq[Int] = linkedAgentNums.flatMap(agents(_).traits) //自身から見える様式群 例）(2,3,3,3,4,5,7)
+    val diffusionRate: Double = if (seenTraitList.isEmpty || seenTraitList.size <= Property.agentNum) 0.0 else seenTraitList.filter(t => targetTraitKind.isDefined && targetTraitKind.get == t).size.toDouble / seenTraitList.size.toDouble //様式の普及率
     diffusionRate > 1 - antiConformism
   }
 
@@ -90,6 +99,7 @@ object AgentFactory {
 
   def create(): Agent = {
     agentId += 1
-    new Agent(agentId, Math.random(), traitFactory)
+    val antiConformism: Double = new Random().nextGaussian() / 6.0 + 0.5 //平均が0.5、分散が多分1正規分布
+    new Agent(agentId, antiConformism, traitFactory)
   }
 }
