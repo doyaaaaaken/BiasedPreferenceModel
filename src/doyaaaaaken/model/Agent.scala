@@ -99,7 +99,7 @@ object AgentFactory {
 
   def create(): Agent = {
     agentId += 1
-    val antiConformism: Double = new Random().nextGaussian() / 6.0 + 0.5 //平均が0.5、分散が多分1正規分布
+    val antiConformism: Double = new Random().nextGaussian() / 8.0 + 0.5 //平均が0.5、分散が1/8の正規分布
     new Agent(agentId, antiConformism, traitFactory)
   }
 }
