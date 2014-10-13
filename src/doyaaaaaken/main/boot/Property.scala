@@ -25,10 +25,12 @@ object Property {
   lazy val simNum: Int = map.apply("sim.num").toInt
   lazy val debug: Boolean = map.apply("sim.debug").toBoolean
   lazy val isBiasedAlgorithm: Boolean = map.apply("sim.algorithm.biased").toBoolean
+
   lazy val dbClearBeforeSim: Boolean = map.apply("sim.db.clear").toBoolean
   lazy val dbSaveInterval: Int = map.apply("sim.db.saveInterval").toInt
   lazy val dbSaveStartTime: Int = map.apply("sim.db.saveStartTime").toInt
   lazy val prefDbSaveTraitKind: Int = map.apply("sim.db.prefSave.observedTraitKind").toInt
+
   lazy val csvOutputTraitFreqHisory: Boolean = map.apply("sim.csv.output.traitFreqHistory").toBoolean
   lazy val csvOutputFileNameForTraitFreqHistory: String = map.apply("sim.csv.fileName.traitFreqHistory").toString
   lazy val csvOutputTopNTrait: Boolean = map.apply("sim.csv.output.topNtrait").toBoolean
@@ -36,13 +38,19 @@ object Property {
   lazy val csvOutputFileNameForTopNTrait: String = map.apply("sim.csv.fileName.topNtrait").toString
   lazy val csvOutputTraitLifeSpanFreq: Boolean = map.apply("sim.csv.output.traitLifeSpanFreq").toBoolean
   lazy val csvOutputFileNameForTraitLifeSpanFreq: String = map.apply("sim.csv.fileName.traitLifeSpanFreq").toString
+  lazy val csvOutputPreferenceHistoryForOneTrait: Boolean = map.apply("sim.csv.output.preferenceHistoryForOneTrait").toBoolean
+  lazy val csvOutputFileNameForPreferenceHistoryForOneTrait: String = map.apply("sim.csv.fileName.preferenceHistoryForOneTrait").toString
+
   lazy val agentNum: Int = map.apply("agent.num").toInt
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
+
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
   lazy val initialHavingTraitProp: Double = map.apply("trait.initialHavingKindProportion").toDouble
+
   lazy val newTraitMutationRate: Double = map.apply("sim.mutation.newTrait").toDouble
   lazy val randomizePreferenceMutationRate: Double = map.apply("sim.mutation.randomizePreference").toDouble
   lazy val agentRebornMutationRate: Double = map.apply("sim.mutation.agentReborn").toDouble
+
   lazy val dbHostName: String = map.apply("mysql.hostName")
   lazy val dbName: String = map.apply("mysql.dbName")
   lazy val traitFreqHistoryTableName: String = map.apply("mysql.tableName.traitFreqHistory")

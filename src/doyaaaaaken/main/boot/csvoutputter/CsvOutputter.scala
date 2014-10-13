@@ -6,7 +6,6 @@ import java.io.PrintWriter
 import java.io.IOException
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
-import doyaaaaaken.main.boot.csvoutputter.TopNTraitCsvOutputter
 import doyaaaaaken.main.boot.Property
 
 /**シミュレーション終了後に、DBの値をCSVとしてファイル出力するオブジェクト*/
@@ -44,6 +43,11 @@ private[boot] object CsvOutputter {
   def outputTraitLifeSpanFreq(): Unit = {
     val outputter: PrintWriterUser = TraitLifeSpanFreqCsvOutputter
     outputCsvFile(Property.csvOutputFileNameForTraitLifeSpanFreq, outputter)
+  }
+
+  def outputPreferenceHistoryForOneTrait(): Unit = {
+    val outputter: PrintWriterUser = PreferenceHistoryForOneTraitCsvOutputter
+    outputCsvFile(Property.csvOutputFileNameForPreferenceHistoryForOneTrait, outputter)
   }
 }
 
