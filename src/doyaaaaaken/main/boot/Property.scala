@@ -28,6 +28,7 @@ object Property {
   lazy val dbClearBeforeSim: Boolean = map.apply("sim.db.clear").toBoolean
   lazy val dbSaveInterval: Int = map.apply("sim.db.saveInterval").toInt
   lazy val dbSaveStartTime: Int = map.apply("sim.db.saveStartTime").toInt
+  lazy val prefDbSaveTraitKind: Int = map.apply("sim.db.prefSave.observedTraitKind").toInt
   lazy val csvOutputTraitFreqHisory: Boolean = map.apply("sim.csv.output.traitFreqHistory").toBoolean
   lazy val csvOutputFileNameForTraitFreqHistory: String = map.apply("sim.csv.fileName.traitFreqHistory").toString
   lazy val csvOutputTopNTrait: Boolean = map.apply("sim.csv.output.topNtrait").toBoolean
@@ -45,6 +46,7 @@ object Property {
   lazy val dbHostName: String = map.apply("mysql.hostName")
   lazy val dbName: String = map.apply("mysql.dbName")
   lazy val traitFreqHistoryTableName: String = map.apply("mysql.tableName.traitFreqHistory")
+  lazy val preferenceHistoryForOneTraitTableName: String = map.apply("mysql.tableName.preferenceHistoryForOneTrait")
 
   //セキュアな設定ファイルの情報へのアクセス時のキー名
   lazy val dbId: String = secureMap.apply("mysql.id")

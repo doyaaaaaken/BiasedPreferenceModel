@@ -14,6 +14,7 @@ import doyaaaaaken.service.AgentMutationService
 import doyaaaaaken.service.imitationStrategy.BothTraitExistConditionCopyStrategy
 import doyaaaaaken.service.imitationStrategy.OnlyAgentPossessTraitCopyStrategy
 import doyaaaaaken.service.imitationStrategy.YourAndMyTraitExistConditionCopyStrategy
+import doyaaaaaken.model.PreferenceHistoryForOneTrait
 /**
  * シミュレーションの本骨組みとなるMainクラス
  */
@@ -46,6 +47,9 @@ object Main {
 
       //現在存在する様式リストの更新（注：「突然変異：新規様式の発生」により現存する様式リストに変更があったため更新）
       currentTraitFreq = TraitFreqHistory.apply(i, agents)
+
+      //Preference推移監視対象の様式番号が存在する間は、その様式番号に対するPreference群をDBに記録する
+      if (currentTraitFreq.contains(Property.prefDbSaveTraitKind)) PreferenceHistoryForOneTrait.apply(i, Property.prefDbSaveTraitKind, agents).insertDataSet(i, DbSession.getConnection)
 
       //TODO preferenceの値が長くなりすぎるのを防ぐため、currentTraitFreqにないものは消す【計算量削減処置】
 

@@ -31,6 +31,11 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
     currentTraitMap.keySet.toList
   }
 
+  /**引数で指定された様式が、現存するか否かを返す*/
+  def contains(traitKind: Int): Boolean = {
+    currentTraitMap.keySet.contains(traitKind)
+  }
+
   /**
    * 現在時刻の様式の度数をDBに格納する
    */

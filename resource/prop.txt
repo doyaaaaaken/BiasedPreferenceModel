@@ -1,14 +1,15 @@
 #シミュレーションの設定を記したファイル
 
 #シミュレーション関係
-sim.num = 12000;	//シミュレーション回数
+sim.num = 1000;	//シミュレーション回数
 sim.debug = false;	//デバッグするか否か
-sim.algorithm.biased = true;	//Anti-conformist biaseの機構をシミュレーションに入れるかどうか
+sim.algorithm.biased = false;	//Anti-conformist biasの機構をシミュレーションに入れるかどうか
 
 #DBへの保存関係
 sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
 sim.db.saveInterval = 1;	//DBに保存する時間刻み幅
-sim.db.saveStartTime = 8000;	//DBに保存を開始する時間
+sim.db.saveStartTime = 0;	//DBに保存を開始する時間
+sim.db.prefSave.observedTraitKind = 99;	//Agent全体でのPreferenceの値推移を監視する対象の様式番号(preference_history_for_one_traitテーブルに格納するのに使用)
 
 #CSVアウトプット関係
 sim.csv.output.traitFreqHistory = true;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
@@ -21,7 +22,7 @@ sim.csv.fileName.traitLifeSpanFreq = trait_life_span.csv;
 
 #エージェント関係
 agent.num = 100;
-agent.trait.possessCapacity = 100;	//エージェントが様式を持てる限界数
+agent.trait.possessCapacity = 100;	//エージェントが様式を持てる限界数(未実装なので使えない)
 
 #様式関係
 trait.initialKindNum = 20;	//初期状態での様式の全種類数
@@ -36,3 +37,4 @@ sim.mutation.agentReborn = 0.01;	//Preferenceモデルでは0.01で指定され�
 mysql.hostName = localhost;
 mysql.dbName = biased_preference_model;
 mysql.tableName.traitFreqHistory = trait_freq_history;
+mysql.tableName.preferenceHistoryForOneTrait = preference_history_for_one_trait;

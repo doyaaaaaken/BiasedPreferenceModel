@@ -63,4 +63,16 @@ object Preference {
     val pref: Map[Int, Double] = tmp.toMap
     new Preference(pref)
   }
+
+  //  /**指定のPreferenceの分布タイプに応じて、Preferenceの初期値を返す*/
+  //  private def getPrefInitialValueFromDistribution(pdt: PrefDistributionType): Double = {
+  //    pdt match {
+  //      case NormalUniformDistribution => Math.random * 2 - 1.0
+  //      case UniformLikedDistribution => null
+  //    }
+  //  }
 }
+
+//sealed abstract class PrefDistributionType
+//case object NormalUniformDistribution extends PrefDistributionType //普通の様式に対する分布
+//case object UniformLikedDistribution extends PrefDistributionType //好まれている様式に対する分布
