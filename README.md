@@ -24,3 +24,10 @@ Preferenceモデルにバイアス等を考慮したモデル。Scalaにて実�
 *Model_2*においては、PreferenceモデルからBiasedPreferenceModelへと変更し、結果のシミュレーションを行っていくことを目指す。
 
 *Model_2_0*においてはBiasedPreferenceモデルがもつPreferenceモデルとの違いである「差別化欲求による社会からのフィードバック」を実装。アルゴリズムはとりあえず１つだけ実装する。
+
+*Model_2_1*においてはPreferenceモデルにおいてPreferenceの推移を追跡する実装を追加。  
+（具体的には、  
+・1つのTraitに対する全エージェントの持つPreference群をタイムステップごとに追跡する機能（縦軸はタイムステップ、横軸はAgentナンバー、値はPreference）  
+・それに伴い計算量削減のため使わないPreferenceの値の削除処理が必要であれば実装する  
+　の実装を目標とする）  
+
