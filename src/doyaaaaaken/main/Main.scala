@@ -48,10 +48,11 @@ object Main {
       //現在存在する様式リストの更新（注：「突然変異：新規様式の発生」により現存する様式リストに変更があったため更新）
       currentTraitFreq = TraitFreqHistory.apply(i, agents)
 
+      //【計算量削減処置】preferenceの値が長くなりすぎるのを防ぐため、現存する様式に対する好み以外は消す
+      agents.foreach { agent => agent._2.eraseExceptNecessaryPreference(currentTraitFreq.getCurrentTraitKindList) }
+
       //Preference推移監視対象の様式番号が存在する間は、その様式番号に対するPreference群をDBに記録する
       if (currentTraitFreq.contains(Property.prefDbSaveTraitKind)) PreferenceHistoryForOneTrait.apply(i, Property.prefDbSaveTraitKind, agents).insertDataSet(i, DbSession.getConnection)
-
-      //TODO preferenceの値が長くなりすぎるのを防ぐため、currentTraitFreqにないものは消す【計算量削減処置】
 
       //データの格納
       if (i % Property.dbSaveInterval == 0 && i >= Property.dbSaveStartTime) currentTraitFreq.insertDataSet(i, DbSession.getConnection)

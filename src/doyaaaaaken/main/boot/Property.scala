@@ -28,7 +28,7 @@ object Property {
 
   lazy val dbClearBeforeSim: Boolean = map.apply("sim.db.clear").toBoolean
   lazy val dbSaveInterval: Int = map.apply("sim.db.saveInterval").toInt
-  lazy val dbSaveStartTime: Int = map.apply("sim.db.saveStartTime").toInt
+  lazy val dbSaveStartTime: Int = map.apply("sim.db.traitSave.saveStartTime").toInt
   lazy val prefDbSaveTraitKind: Int = map.apply("sim.db.prefSave.observedTraitKind").toInt
 
   lazy val csvOutputTraitFreqHisory: Boolean = map.apply("sim.csv.output.traitFreqHistory").toBoolean

@@ -73,6 +73,11 @@ class Agent(
     preference.randomizePrefValue
   }
 
+  /**引数に指定された様式群以外に対する好みを消す*/
+  def eraseExceptNecessaryPreference(currentTraitList: Seq[Int]): Unit = {
+    preference.eraseExceptNecessaryPreference(currentTraitList)
+  }
+
   /**エージェントが転生する（様式を全て破棄して、現存する全様式に対する好みを1にする）*/
   def reborn(currentTraitList: Seq[Int]): Unit = {
     traits = Nil

@@ -1,14 +1,14 @@
 #シミュレーションの設定を記したファイル
 
 #シミュレーション関係
-sim.num = 500;	//シミュレーション回数
+sim.num = 12000;	//シミュレーション回数
 sim.debug = false;	//デバッグするか否か
 sim.algorithm.biased = false;	//Anti-conformist biasの機構をシミュレーションに入れるかどうか
 
 #DBへの保存関係
 sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
 sim.db.saveInterval = 1;	//DBに保存する時間刻み幅
-sim.db.saveStartTime = 0;	//DBに保存を開始する時間
+sim.db.traitSave.saveStartTime = 8000;	//DBに保存を開始する時間
 sim.db.prefSave.observedTraitKind = 0;	//Agent全体でのPreferenceの値推移を監視する対象の様式番号(preference_history_for_one_traitテーブルに格納するのに使用)
 
 #CSVアウトプット関係

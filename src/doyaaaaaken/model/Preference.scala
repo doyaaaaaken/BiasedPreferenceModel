@@ -40,6 +40,11 @@ private[model] class Preference(preference: Map[Int, Double]) {
     pref = pref.map(prefMap => (prefMap._1, Math.random() * 2 - 1.0))
   }
 
+  /**引数に指定された様式群以外に対する好みを消す*/
+  def eraseExceptNecessaryPreference(currentTraitList: Seq[Int]): Unit = {
+    pref = pref.filterKeys(traitNum => currentTraitList.contains(traitNum))
+  }
+
   /**指定の様式番号に対する好みの値を得る。まだなかった場合は適宜その場で作る*/
   private[this] def getOrCreatePrefValue(traitKind: Int): Double = {
     if (pref.contains(traitKind)) {
