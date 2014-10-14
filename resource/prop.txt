@@ -1,7 +1,7 @@
 #シミュレーションの設定を記したファイル
 
 #シミュレーション関係
-sim.num = 1000;	//シミュレーション回数
+sim.num = 500;	//シミュレーション回数
 sim.debug = false;	//デバッグするか否か
 sim.algorithm.biased = false;	//Anti-conformist biasの機構をシミュレーションに入れるかどうか
 

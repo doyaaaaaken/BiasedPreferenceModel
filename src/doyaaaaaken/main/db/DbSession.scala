@@ -36,9 +36,11 @@ object DbSession {
   private[main] def clearData: Unit = {
     println("＊＊＊＊＊＊DB全データ消去中...＊＊＊＊＊＊")
     val stmt: Statement = con.createStatement();
-    val sql: String = "TRUNCATE TABLE " + Property.dbName + "." + Property.traitFreqHistoryTableName + ";";
+    val sql1: String = "TRUNCATE TABLE " + Property.dbName + "." + Property.traitFreqHistoryTableName + ";";
+    val sql2: String = "TRUNCATE TABLE " + Property.dbName + "." + Property.preferenceHistoryForOneTraitTableName + ";";
 
-    stmt.executeUpdate(sql);
+    stmt.executeUpdate(sql1);
+    stmt.executeUpdate(sql2);
     stmt.close();
     println("＊＊＊＊＊＊DB全データ消去完了＊＊＊＊＊＊")
   }
