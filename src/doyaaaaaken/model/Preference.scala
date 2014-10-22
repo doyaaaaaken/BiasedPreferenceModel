@@ -66,7 +66,7 @@ object Preference {
    */
   def apply: Preference = {
     val tmp = for (i <- (0 to Property.initialTraitKind - 1)) yield {
-      print(HopedPrefDistribution.getPref + ",") //pref分布出力用
+      //      print(HopedPrefDistribution.getPref + ",") //pref分布出力用
       (i, if (i % Property.hopedTraitGenerateInterval == 0) HopedPrefDistribution.getPref else NormalPrefDistribution.getPref)
     }
     val pref: Map[Int, Double] = tmp.toMap
