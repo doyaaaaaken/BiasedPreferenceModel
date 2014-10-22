@@ -66,6 +66,7 @@ object Preference {
    */
   def apply: Preference = {
     val tmp = for (i <- (0 to Property.initialTraitKind - 1)) yield {
+      print(HopedPrefDistribution.getPref + ",") //pref分布出力用
       (i, if (i % Property.hopedTraitGenerateInterval == 0) HopedPrefDistribution.getPref else NormalPrefDistribution.getPref)
     }
     val pref: Map[Int, Double] = tmp.toMap
@@ -76,15 +77,15 @@ object Preference {
 sealed abstract class PrefDistributionType { //好みの分布を表す抽象クラス
   val rand = new Random()
   def getPref: Double
-  def cutExcessFromRange(p: Double): Double = if (p > 1.0) 1.0 else if (p < -1.0) -1.0 else p
+  def validateAndRevise(p: Double): Double = if (p > 1.0 || p < -1.0) getPref else p
 }
 
 object NormalPrefDistribution extends PrefDistributionType { //普通の様式に対する分布
-  def getPref: Double = cutExcessFromRange( //平均値と、何σが右端（1.0）に当たるのかを指定して正規分布を作成する
+  def getPref: Double = validateAndRevise( //平均値と、何σが右端（1.0）に当たるのかを指定して正規分布を作成する
     rand.nextGaussian() * (1.0 - Property.initialNormalPrefAvarage) / Property.initialNormalPrefSigmaPerRange + Property.initialNormalPrefAvarage)
 }
 
 object HopedPrefDistribution extends PrefDistributionType { //好まれている様式に対する分布
-  def getPref: Double = cutExcessFromRange( //平均値と、何σが右端（1.0）に当たるのかを指定して正規分布を作成する
+  def getPref: Double = validateAndRevise( //平均値と、何σが右端（1.0）に当たるのかを指定して正規分布を作成する
     rand.nextGaussian() * (1.0 - Property.initialHopedPrefAvarage) / Property.initialHopedPrefSigmaPerRange + Property.initialHopedPrefAvarage)
 }
