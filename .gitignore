@@ -1,6 +1,5 @@
 /bin/
 .cache
 /resource/secure/
-.classpath
 *.csv
 !/resultCsv/
