@@ -34,7 +34,7 @@ object Property {
   lazy val csvOutputTraitFreqHisory: Boolean = map.apply("sim.csv.output.traitFreqHistory").toBoolean
   lazy val csvOutputFileNameForTraitFreqHistory: String = map.apply("sim.csv.fileName.traitFreqHistory").toString
   lazy val csvOutputTopNTrait: Boolean = map.apply("sim.csv.output.topNtrait").toBoolean
-  lazy val csvOutputTopNNum: Boolean = map.apply("sim.csv.topNnum").toBoolean
+  lazy val csvOutputTopNNum: String = map.apply("sim.csv.topNnum").toString
   lazy val csvOutputFileNameForTopNTrait: String = map.apply("sim.csv.fileName.topNtrait").toString
   lazy val csvOutputTraitLifeSpanFreq: Boolean = map.apply("sim.csv.output.traitLifeSpanFreq").toBoolean
   lazy val csvOutputFileNameForTraitLifeSpanFreq: String = map.apply("sim.csv.fileName.traitLifeSpanFreq").toString

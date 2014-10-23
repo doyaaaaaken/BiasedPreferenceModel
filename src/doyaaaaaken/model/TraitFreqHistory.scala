@@ -126,7 +126,9 @@ object TraitFreqHistory {
       sql.append(dbTableName)
       sql.append(" AS tfh1 WHERE tfh1.trait_kind IN (SELECT tfh2.trait_kind FROM (SELECT tfh3.trait_kind FROM ")
       sql.append(dbTableName)
-      sql.append(" AS tfh3 GROUP BY tfh3.trait_kind ORDER BY MAX(tfh3.freq) DESC LIMIT 40) AS tfh2);")
+      sql.append(" AS tfh3 GROUP BY tfh3.trait_kind ORDER BY MAX(tfh3.freq) DESC LIMIT ")
+      sql.append(Property.csvOutputTopNNum)
+      sql.append(") AS tfh2);")
 
       val rs: ResultSet = stmt.executeQuery(sql.toString())
 
