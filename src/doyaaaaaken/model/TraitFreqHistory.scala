@@ -14,7 +14,7 @@ import scala.collection.mutable.{ Map => MutableMap }
  *
  * 注：毎ターンの終わりに呼ばれる
  */
-class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
+class TraitFreqHistory(simNum: Int, timeStep: Int, currentTraitMap: Map[Int, Int]) {
 
   /**現存する様式番号のうちどれか1つをランダムに返す*/
   def getRandomTraitNum: Int = {
@@ -39,16 +39,17 @@ class TraitFreqHistory(timeStep: Int, currentTraitMap: Map[Int, Int]) {
   /**
    * 現在時刻の様式の度数をDBに格納する
    */
-  def insertDataSet(timeStep: Int, con: Connection): Unit = {
+  def insertDataSet(con: Connection): Unit = {
     try {
-      val sqlTemplate = "INSERT INTO " + Property.dbName + "." + Property.traitFreqHistoryTableName + " (timestep, trait_kind, freq) VALUES (?, ?, ?);"
+      val sqlTemplate = "INSERT INTO " + Property.dbName + "." + Property.traitFreqHistoryTableName + " (sim_num, timestep, trait_kind, freq) VALUES (?, ?, ?, ?);"
       val ps = con.prepareStatement(sqlTemplate) //プリペアドステートメントを生成
 
-      ps.setInt(1, timeStep)
+      ps.setInt(1, simNum)
+      ps.setInt(2, timeStep)
       currentTraitMap.foreach {
         case (traitKind, freq) => {
-          ps.setInt(2, traitKind)
-          ps.setInt(3, freq)
+          ps.setInt(3, traitKind)
+          ps.setInt(4, freq)
           ps.executeUpdate()
         }
       }
@@ -77,10 +78,10 @@ object TraitFreqHistory {
   lazy val dbTableName: String = Property.dbName + "." + Property.traitFreqHistoryTableName //オブジェクトに対応するDBテーブル名
 
   /**ファクトリが呼ばれたら、各エージェントにアクセスして様式の度数を集計する*/
-  def apply(timeStep: Int, agents: Map[Int, Agent]): TraitFreqHistory = {
+  def apply(simNum: Int, timeStep: Int, agents: Map[Int, Agent]): TraitFreqHistory = {
     //agentから「様式種類 - 度数」の一覧を取得
     val currentTraitMap: Map[Int, Int] = agents.flatMap(_._2.traits).toList.groupBy(x => x).map(x => (x._1, x._2.size))
-    new TraitFreqHistory(timeStep, currentTraitMap)
+    new TraitFreqHistory(simNum, timeStep, currentTraitMap)
   }
 
   /**
@@ -96,10 +97,11 @@ object TraitFreqHistory {
 
       while (rs.next()) {
         val id: Int = rs.getInt("id")
+        val simNum: Int = rs.getInt("sim_num")
         val timeStep: Int = rs.getInt("timestep")
         val traitKind: Int = rs.getInt("trait_kind")
         val freq: Int = rs.getInt("freq")
-        datas += TraitFreqHistoryDataRow(id, timeStep, traitKind, freq)
+        datas += TraitFreqHistoryDataRow(id, simNum, timeStep, traitKind, freq)
       }
 
       rs.close
@@ -134,10 +136,11 @@ object TraitFreqHistory {
 
       while (rs.next()) {
         val id: Int = rs.getInt("id")
+        val simNum: Int = rs.getInt("sim_num")
         val timeStep: Int = rs.getInt("timestep")
         val traitKind: Int = rs.getInt("trait_kind")
         val freq: Int = rs.getInt("freq")
-        datas += TraitFreqHistoryDataRow(id, timeStep, traitKind, freq)
+        datas += TraitFreqHistoryDataRow(id, simNum, timeStep, traitKind, freq)
       }
       rs.close
       stmt.close
@@ -181,4 +184,4 @@ object TraitFreqHistory {
 }
 
 /**trait_freq_historyテーブルからSELECTした1行を格納するDTO*/
-case class TraitFreqHistoryDataRow(id: Int, timestep: Int, trait_kind: Int, freq: Int)
+case class TraitFreqHistoryDataRow(id: Int, simNum: Int, timestep: Int, trait_kind: Int, freq: Int)

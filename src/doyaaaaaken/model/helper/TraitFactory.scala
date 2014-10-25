@@ -34,12 +34,11 @@ private[model] class TraitFactory(initialTraitKindNum: Int) {
  */
 object TraitFactory {
 
-  val limitInstanceNum = 1 //生成できるTraitFactoryは1つだけにする
+  val limitInstanceNum = Property.simNum //生成できるTraitFactoryはシミュレーション回数個分だけにする
   var instanceCount = 0
 
   def apply(): TraitFactory = {
-    if (instanceCount >= limitInstanceNum) throw new RuntimeException("TraitFactoryは1つしか生成できません")
-    instanceCount += 1
+    if (instanceCount >= limitInstanceNum) throw new RuntimeException("TraitFactoryはシミュレーション回数以下個しか生成できません")
     new TraitFactory(Property.initialTraitKind)
   }
 }

@@ -31,7 +31,7 @@ object AgentImitationServiceTest {
     val agents: Map[Int, Agent] = tmp.toMap //AgentNum体のエージェントセット
 
     //現在存在する様式リストの作成
-    currentTraitFreq = TraitFreqHistory.apply(0, agents)
+    currentTraitFreq = TraitFreqHistory.apply(0, 0, agents)
 
     //////////////ここまで本コードのMainクラスでの初期化処理と同じ///////////////////
     //////////////ここからテストコード///////////////////

@@ -29,35 +29,44 @@ object Main {
 
     /*エージェント間の繋がりを示すネットワークの生成*/
     val network: Network = CompleteGraphFactory.create(Property.agentNum) //完全グラフ
-    /*エージェントの初期化*/
-    val tmp = for (i <- 0 to Property.agentNum - 1) yield { (i, AgentFactory.create()) }
-    val agents: Map[Int, Agent] = tmp.toMap //AgentNum体のエージェントセット
 
-    currentTraitFreq = TraitFreqHistory.apply(0, agents) //現在存在する様式リストの作成
+    /*指定の回数シミュレーションを実行する*/
+    for (simNum <- (1 to Property.simNum)) {
 
-    /*シミュレーションの実行*/
-    for (i <- 1 to Property.simNum) {
-      //模倣フェーズ・・・全エージェント、自分と繋がっている他のエージェントを模倣する(アシンクロナス)
-      agentImitationService.work(agents, network, currentTraitFreq)
+      /*エージェントファクトリーの初期化*/
+      AgentFactory.init()
 
-      //突然変異フェーズ
-      AgentMutationService.randomizePreference(agents) //好みをランダムに振り直す
-      AgentMutationService.reborn(agents, currentTraitFreq.getCurrentTraitKindList) //エージェントが転生する
-      AgentMutationService.acquireNewTrait(agents) //新規様式の発生
+      /*エージェントの初期化*/
+      val tmp = for (i <- 0 to Property.agentNum - 1) yield { (i, AgentFactory.create()) }
+      val agents: Map[Int, Agent] = tmp.toMap //AgentNum体のエージェントセット
 
-      //現在存在する様式リストの更新（注：「突然変異：新規様式の発生」により現存する様式リストに変更があったため更新）
-      currentTraitFreq = TraitFreqHistory.apply(i, agents)
+      currentTraitFreq = TraitFreqHistory.apply(simNum, 0, agents) //現在存在する様式リストの作成
 
-      //【計算量削減処置】preferenceの値が長くなりすぎるのを防ぐため、現存する様式に対する好み以外は消す
-      agents.foreach { agent => agent._2.eraseExceptNecessaryPreference(currentTraitFreq.getCurrentTraitKindList) }
+      /*指定のタイムステップ数シミュレーションを実行する*/
+      for (time <- 1 to Property.simTimeNum) {
 
-      //Preference推移監視対象の様式番号が存在する間は、その様式番号に対するPreference群をDBに記録する
-      if (currentTraitFreq.contains(Property.prefDbSaveTraitKind)) PreferenceHistoryForOneTrait.apply(i, Property.prefDbSaveTraitKind, agents).insertDataSet(i, DbSession.getConnection)
+        //模倣フェーズ・・・全エージェント、自分と繋がっている他のエージェントを模倣する(アシンクロナス)
+        agentImitationService.work(agents, network, currentTraitFreq)
 
-      //データの格納
-      if (i % Property.dbSaveInterval == 0 && i >= Property.dbSaveStartTime) currentTraitFreq.insertDataSet(i, DbSession.getConnection)
+        //突然変異フェーズ
+        AgentMutationService.randomizePreference(agents) //好みをランダムに振り直す
+        AgentMutationService.reborn(agents, currentTraitFreq.getCurrentTraitKindList) //エージェントが転生する
+        AgentMutationService.acquireNewTrait(agents) //新規様式の発生
 
-      if (i % 100 == 0) println(i + "タイムステップ経過")
+        //現在存在する様式リストの更新（注：「突然変異：新規様式の発生」により現存する様式リストに変更があったため更新）
+        currentTraitFreq = TraitFreqHistory.apply(simNum, time, agents)
+
+        //【計算量削減処置】preferenceの値が長くなりすぎるのを防ぐため、現存する様式に対する好み以外は消す
+        agents.foreach { agent => agent._2.eraseExceptNecessaryPreference(currentTraitFreq.getCurrentTraitKindList) }
+
+        //Preference推移監視対象の様式番号が存在する間は、その様式番号に対するPreference群をDBに記録する
+        if (currentTraitFreq.contains(Property.prefDbSaveTraitKind)) PreferenceHistoryForOneTrait.apply(simNum, time, Property.prefDbSaveTraitKind, agents).insertDataSet(DbSession.getConnection)
+
+        //データの格納
+        if (time % Property.dbSaveInterval == 0 && time >= Property.dbSaveStartTime) currentTraitFreq.insertDataSet(DbSession.getConnection)
+
+        if (time % 100 == 0) println(simNum + "回目Sim ： " + time + "タイムステップ経過")
+      }
     }
 
     Boot.finish

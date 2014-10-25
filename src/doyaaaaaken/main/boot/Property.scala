@@ -23,6 +23,7 @@ object Property {
 
   //設定ファイルアクセス時のキー名一覧
   lazy val simNum: Int = map.apply("sim.num").toInt
+  lazy val simTimeNum: Int = map.apply("sim.timestep.num").toInt
   lazy val debug: Boolean = map.apply("sim.debug").toBoolean
   lazy val isBiasedAlgorithm: Boolean = map.apply("sim.algorithm.biased").toBoolean
 

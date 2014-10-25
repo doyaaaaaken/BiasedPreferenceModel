@@ -10,21 +10,22 @@ import scala.collection.mutable.ListBuffer
 /**
  * 各タイムステップにおける、特定のTrait番号に対して各エージェントが持つPreferenceの値群
  */
-class PreferenceHistoryForOneTrait(timeStep: Int, traitKindNum: Int, preferenceOfAgent: Map[Int, Double]) {
+class PreferenceHistoryForOneTrait(simNum: Int, timeStep: Int, traitKindNum: Int, preferenceOfAgent: Map[Int, Double]) {
 
   /**
    * 現在時刻の各エージェントが持つPreferenceの値をDBに格納する
    */
-  def insertDataSet(timeStep: Int, con: Connection): Unit = {
+  def insertDataSet(con: Connection): Unit = {
     try {
-      val sqlTemplate = "INSERT INTO " + Property.dbName + "." + Property.preferenceHistoryForOneTraitTableName + " (timestep, trait_kind, agent_id, preference) VALUES (?, ?, ?, ?);"
+      val sqlTemplate = "INSERT INTO " + Property.dbName + "." + Property.preferenceHistoryForOneTraitTableName + " (sim_num, timestep, trait_kind, agent_id, preference) VALUES (?, ?, ?, ?, ?);"
       val ps = con.prepareStatement(sqlTemplate) //プリペアドステートメントを生成
-      ps.setInt(1, timeStep)
-      ps.setInt(2, traitKindNum)
+      ps.setInt(1, simNum)
+      ps.setInt(2, timeStep)
+      ps.setInt(3, traitKindNum)
       preferenceOfAgent.foreach {
         case (agentId, preference) => {
-          ps.setInt(3, agentId)
-          ps.setDouble(4, preference)
+          ps.setInt(4, agentId)
+          ps.setDouble(5, preference)
           ps.executeUpdate()
         }
       }
@@ -40,15 +41,15 @@ class PreferenceHistoryForOneTrait(timeStep: Int, traitKindNum: Int, preferenceO
 }
 
 /** preference_history_for_one_traitテーブルからSELECTした1行のデータを入れるDTOオブジェクト*/
-case class PreferenceHistoryForOneTraitDataRow(id: Int, timeStep: Int, traitKind: Int, agentId: Int, preference: Double)
+case class PreferenceHistoryForOneTraitDataRow(id: Int, simNum: Int, timeStep: Int, traitKind: Int, agentId: Int, preference: Double)
 
 /**コンパニオンオブジェクト*/
 object PreferenceHistoryForOneTrait {
 
   /**ファクトリメソッド*/
-  def apply(timeStep: Int, traitKindNum: Int, agents: Map[Int, Agent]): PreferenceHistoryForOneTrait = {
+  def apply(simNum: Int, timeStep: Int, traitKindNum: Int, agents: Map[Int, Agent]): PreferenceHistoryForOneTrait = {
     val preferenceOfAgent = agents.map(agentMap => (agentMap._1, agentMap._2.preference.getPreferenceValue(traitKindNum)))
-    new PreferenceHistoryForOneTrait(timeStep, traitKindNum, preferenceOfAgent)
+    new PreferenceHistoryForOneTrait(simNum, timeStep, traitKindNum, preferenceOfAgent)
   }
 
   /**
@@ -66,11 +67,12 @@ object PreferenceHistoryForOneTrait {
 
       while (rs.next()) {
         val id: Int = rs.getInt("id")
+        val simNum: Int = rs.getInt("sim_num")
         val timeStep: Int = rs.getInt("timestep")
         val traitKindNum: Int = rs.getInt("trait_kind")
         val agentId: Int = rs.getInt("agent_id")
         val preference: Double = rs.getDouble("preference")
-        datas += PreferenceHistoryForOneTraitDataRow(id, timeStep, traitKindNum, agentId, preference)
+        datas += PreferenceHistoryForOneTraitDataRow(id, simNum, timeStep, traitKindNum, agentId, preference)
       }
 
       rs.close

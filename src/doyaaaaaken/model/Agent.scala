@@ -100,11 +100,16 @@ class Agent(
 object AgentFactory {
 
   var agentId = -1 //作成するAgentにつけるID
-  val traitFactory: TraitFactory = TraitFactory.apply()
+  var traitFactory: TraitFactory = TraitFactory.apply()
 
   def create(): Agent = {
     agentId += 1
     val antiConformism: Double = new Random().nextGaussian() / 8.0 * 3.0 + 0.5 //平均が0.5、分散が3/8の正規分布
     new Agent(agentId, antiConformism, traitFactory)
+  }
+
+  def init(): Unit = {
+    agentId = -1
+    traitFactory = TraitFactory.apply()
   }
 }
