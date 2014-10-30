@@ -158,17 +158,18 @@ object TraitFreqHistory {
    * 様式の寿命の分布を抜き出すメソッド
    * @return キー:様式番号 値:寿命 のMap
    */
-  def getTraitLifeSpanFreq(con: Connection): Map[Int, Int] = {
-    val datas: MutableMap[Int, Int] = MutableMap()
+  def getTraitLifeSpanFreq(con: Connection): Seq[TraitLifeSpanDataRow] = {
+    val datas: ListBuffer[TraitLifeSpanDataRow] = ListBuffer()
     try {
       val stmt: Statement = con.createStatement
-      val sql: String = "SELECT trait_kind, count(*) AS life_span FROM " + dbTableName + " GROUP BY trait_kind;"
+      val sql: String = "SELECT sim_num, trait_kind, count(*) AS life_span FROM " + dbTableName + " GROUP BY sim_num, trait_kind;"
 
       val rs: ResultSet = stmt.executeQuery(sql.toString())
       while (rs.next()) {
+        val simNum: Int = rs.getInt("sim_num")
         val traitKind: Int = rs.getInt("trait_kind")
         val lifeSpan: Int = rs.getInt("life_span")
-        datas.put(traitKind, lifeSpan)
+        datas += TraitLifeSpanDataRow(simNum, traitKind, lifeSpan)
       }
       rs.close
       stmt.close
@@ -179,9 +180,12 @@ object TraitFreqHistory {
         e.printStackTrace
       }
     }
-    datas.toMap
+    datas.toList
   }
 }
 
 /**trait_freq_historyテーブルからSELECTした1行を格納するDTO*/
 case class TraitFreqHistoryDataRow(id: Int, simNum: Int, timestep: Int, trait_kind: Int, freq: Int)
+
+/**trait_freq_historyテーブルからSELECTし加工した、traitLifeSpanに関する行を格納するDTO*/
+case class TraitLifeSpanDataRow(simNum: Int, traitKind: Int, lifeSpan: Int)

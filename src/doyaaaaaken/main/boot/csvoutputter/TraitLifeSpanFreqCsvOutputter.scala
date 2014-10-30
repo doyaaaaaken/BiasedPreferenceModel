@@ -5,6 +5,8 @@ import doyaaaaaken.model.TraitFreqHistory
 import java.io.PrintWriter
 import doyaaaaaken.main.db.DbSession
 import doyaaaaaken.main.boot.Property
+import doyaaaaaken.model.TraitLifeSpanDataRow
+import doyaaaaaken.model.TraitLifeSpanDataRow
 
 /**様式の寿命の分布をCSV出力するオブジェクト*/
 object TraitLifeSpanFreqCsvOutputter extends PrintWriterUser {
@@ -12,19 +14,30 @@ object TraitLifeSpanFreqCsvOutputter extends PrintWriterUser {
   override def csvOutput(pw: PrintWriter): Unit = {
     if (Property.dbSaveInterval == 1) {
       val con = DbSession.getConnection
+      val traitLifeSpanDatas: Seq[TraitLifeSpanDataRow] = TraitFreqHistory.getTraitLifeSpanFreq(con) //trait_kind,lifeSpanのペアデータ群を取得
 
-      val traitLifeSpanMap: Map[Int, Int] = TraitFreqHistory.getTraitLifeSpanFreq(con) //trait_kind,lifeSpanのペアデータ群を取得
+      //sim_num（何回目のシミュレーションか）ご とにデータを分ける
+      val traitLifeSpanDatasMap: Map[Int, Seq[TraitLifeSpanDataRow]] = traitLifeSpanDatas.groupBy(_.simNum)
 
-      //１行目はタイトル行
-      pw.print("trait_kind,life_span")
-      pw.println
+      //sim_numごとに出力する
+      traitLifeSpanDatasMap.foreach {
+        case (simNum, traitLifeSpanData) =>
 
-      //２行目以下にデータを並べていく
-      traitLifeSpanMap.foreach {
-        case (traitKind, lifeSpan) => {
-          pw.print(traitKind + "," + lifeSpan)
+          //タイトル行の出力
+          pw.println(simNum + "回目のシミュレーション結果")
+
+          //2行目はタイトル行
+          pw.print("trait_kind,life_span")
           pw.println
-        }
+
+          //3行目以下にデータを並べていく
+          traitLifeSpanData.foreach { data =>
+            {
+              pw.print(data.traitKind + "," + data.lifeSpan)
+              pw.println
+            }
+          }
+          pw.println
       }
     } else {
       println

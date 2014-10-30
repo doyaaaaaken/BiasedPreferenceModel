@@ -1,23 +1,23 @@
 #シミュレーションの設定を記したファイル
 
 #シミュレーション関係
-sim.num = 2;	//シミュレーション回数
-sim.timestep.num = 12000;//シミュレーションタイムステップ数
+sim.num = 3;	//シミュレーション回数
+sim.timestep.num = 50;//シミュレーションタイムステップ数
 sim.debug = false;	//デバッグするか否か
 sim.algorithm.biased = false;	//Anti-conformist biasの機構をシミュレーションに入れるかどうか
 
 #DBへの保存関係
 sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
 sim.db.saveInterval = 1;	//DBに保存する時間刻み幅
-sim.db.traitSave.saveStartTime = 8000;	//DBに保存を開始する時間
+sim.db.traitSave.saveStartTime = 0;	//DBに保存を開始する時間
 sim.db.prefSave.observedTraitKind = 4500;	//Agent全体でのPreferenceの値推移を監視する対象の様式番号(preference_history_for_one_traitテーブルに格納するのに使用)
 
 #CSVアウトプット関係
 sim.csv.output.traitFreqHistory = true;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
 sim.csv.fileName.traitFreqHistory = trait_freq_history.csv; 	//TraitFreqHistory情報をCSVアウトプットする際のファイル名
 sim.csv.output.topNtrait = true;	//度数最高値TopNの様式群の推移をCSV出力するかどうか
-sim.csv.topNnum = 100;	//TopNのNの値 (Preferenceモデルでは40で指定されている)
-sim.csv.fileName.topNtrait = top100trait.csv;
+sim.csv.topNnum = 40;	//TopNのNの値 (Preferenceモデルでは40で指定されている)
+sim.csv.fileName.topNtrait = top40trait.csv;
 sim.csv.output.traitLifeSpanFreq = true;	//注：様式の寿命分布の出力はDBへの保存時間刻み幅が1でなければ使えません。
 sim.csv.fileName.traitLifeSpanFreq = trait_life_span.csv;
 sim.csv.output.preferenceHistoryForOneTrait = true; //監視対象の様式番号に対するAgent全体でのPreferenceの値の推移情報をCSV出力するか否か
