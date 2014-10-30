@@ -4,6 +4,7 @@ import java.io.PrintWriter
 import doyaaaaaken.main.db.DbSession
 import doyaaaaaken.model.TraitFreqHistory
 import doyaaaaaken.model.TraitFreqHistoryDataRow
+import doyaaaaaken.main.boot.Property
 
 /**
  * trait_freq_historyテーブルよりデータ取得し
@@ -20,10 +21,10 @@ private[boot] object TopNTraitCsvOutputter extends PrintWriterUser {
 
     //sim_numごとに出力する
     topNTraitsDataRowsMap.foreach {
-      case (simNum, topNTraitsData) =>
+      case (simNum, topNTraitsDatas) =>
 
         //使われている様式種類群
-        val traitKindsList: Seq[Int] = topNTraitsData.map(_.trait_kind).toSet.toList.sorted //データとして存在したtrait_kind群
+        val traitKindsList: Seq[Int] = topNTraitsDatas.map(_.trait_kind).toSet.toList.sorted //データとして存在したtrait_kind群
         val traitKindsPosition: Map[Int, Int] = { for ((x, i) <- traitKindsList.zipWithIndex) yield (x, i + 2) }.toMap //「._2列目がtraitKind ._1番目の列」という情報
 
         //タイトル行の出力
@@ -35,7 +36,7 @@ private[boot] object TopNTraitCsvOutputter extends PrintWriterUser {
         pw.println
 
         //3行目以下にデータを挿入
-        topNTraitsData.groupBy(_.timestep).foreach {
+        topNTraitsDatas.groupBy(_.timestep).foreach {
           case (timeStep, dataRows) =>
             {
               var tmpTraitKindCounter = 1 //","の表示制御に使うための一時変数
@@ -49,6 +50,17 @@ private[boot] object TopNTraitCsvOutputter extends PrintWriterUser {
             }
             pw.println
         }
+        pw.println
+
+        //全様式数のうちのhopedな様式の数を末尾に出力する
+        val sb: StringBuffer = new StringBuffer()
+        sb.append("全様式数  ,")
+        sb.append(traitKindsList.size)
+        sb.append(",個のうち、hoped(平均値  ,")
+        sb.append(Property.initialHopedPrefAvarage)
+        sb.append(",)な様式の数は  ,")
+        sb.append(traitKindsList.filter(_ % Property.hopedTraitGenerateInterval == 0).size)
+        pw.print(sb.toString())
         pw.println
     }
   }
