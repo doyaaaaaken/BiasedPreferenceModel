@@ -14,10 +14,12 @@ private[boot] object TopNTraitCsvOutputter extends PrintWriterUser {
 
   override def csvOutput(pw: PrintWriter): Unit = {
     val con = DbSession.getConnection
-    val topNTraitsDataRows: Seq[TraitFreqHistoryDataRow] = TraitFreqHistory.selectTopNTraitsData(con)
 
     //sim_num（何回目のシミュレーションか）ごとにデータを分ける
-    val topNTraitsDataRowsMap: Map[Int, Seq[TraitFreqHistoryDataRow]] = topNTraitsDataRows.groupBy(_.simNum)
+    val topNTraitsDataRows = for (i <- 1 to Property.simNum) yield {
+      (i, TraitFreqHistory.selectTopNTraitsData(con, i))
+    }
+    val topNTraitsDataRowsMap: Map[Int, Seq[TraitFreqHistoryDataRow]] = topNTraitsDataRows.toMap
 
     //sim_numごとに出力する
     topNTraitsDataRowsMap.foreach {
@@ -60,7 +62,7 @@ private[boot] object TopNTraitCsvOutputter extends PrintWriterUser {
         sb.append(Property.initialHopedPrefAvarage)
         sb.append(",)な様式の数は  ,")
         sb.append(traitKindsList.filter(_ % Property.hopedTraitGenerateInterval == 0).size)
-        pw.print(sb.toString())
+        pw.println(sb.toString())
         pw.println
     }
   }

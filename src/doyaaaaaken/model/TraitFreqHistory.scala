@@ -119,16 +119,20 @@ object TraitFreqHistory {
   /**
    * TopNの様式の度数推移だけをtrait_freq_historyテーブルから抜き出す
    */
-  def selectTopNTraitsData(con: Connection): Seq[TraitFreqHistoryDataRow] = {
+  def selectTopNTraitsData(con: Connection, simNumber: Int): Seq[TraitFreqHistoryDataRow] = {
     val datas: ListBuffer[TraitFreqHistoryDataRow] = ListBuffer()
     try {
       val stmt: Statement = con.createStatement
       val sql: StringBuilder = new StringBuilder
       sql.append("SELECT * FROM ")
       sql.append(dbTableName)
-      sql.append(" AS tfh1 WHERE tfh1.trait_kind IN (SELECT tfh2.trait_kind FROM (SELECT tfh3.trait_kind FROM ")
+      sql.append(" AS tfh1 WHERE tfh1.sim_num = ")
+      sql.append(simNumber)
+      sql.append(" AND tfh1.trait_kind IN (SELECT tfh2.trait_kind FROM (SELECT tfh3.trait_kind FROM ")
       sql.append(dbTableName)
-      sql.append(" AS tfh3 GROUP BY tfh3.trait_kind ORDER BY MAX(tfh3.freq) DESC LIMIT ")
+      sql.append(" AS tfh3 WHERE tfh3.sim_num = ")
+      sql.append(simNumber)
+      sql.append(" GROUP BY tfh3.trait_kind ORDER BY MAX(tfh3.freq) DESC LIMIT ")
       sql.append(Property.csvOutputTopNNum)
       sql.append(") AS tfh2);")
 
