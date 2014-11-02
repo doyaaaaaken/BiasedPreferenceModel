@@ -47,11 +47,11 @@ private[model] class Preference(preference: Map[Int, Double]) {
   }
 
   /**指定の様式番号に対する好みの値を得る。まだなかった場合は適宜その場で作る*/
-  private[this] def getOrCreatePrefValue(traitKind: Int): Double = {
+  private def getOrCreatePrefValue(traitKind: Int): Double = {
     if (pref.contains(traitKind)) {
       pref.apply(traitKind)
     } else {
-      val newPrefValue = Math.random * 2 - 1.0
+      val newPrefValue = Preference.calcInitialPrefByType(traitKind)
       pref = pref + (traitKind -> newPrefValue)
       newPrefValue
     }
@@ -67,10 +67,17 @@ object Preference {
   def apply: Preference = {
     val tmp = for (i <- (0 to Property.initialTraitKind - 1)) yield {
       //      print(HopedPrefDistribution.getPref + ",") //pref分布出力用
-      (i, if (i % Property.hopedTraitGenerateInterval == 0) HopedPrefDistribution.getPref else NormalPrefDistribution.getPref)
+      (i, calcInitialPrefByType(i))
     }
     val pref: Map[Int, Double] = tmp.toMap
     new Preference(pref)
+  }
+
+  /**
+   * 様式番号から様式のタイプがNormalかHopedか判断してPreferenceの初期値を作り分ける
+   */
+  def calcInitialPrefByType(traitNum: Int): Double = {
+    if (traitNum % Property.hopedTraitGenerateInterval == 0) HopedPrefDistribution.getPref else NormalPrefDistribution.getPref
   }
 }
 
