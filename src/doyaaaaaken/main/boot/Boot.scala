@@ -20,8 +20,6 @@ object Boot {
 
   def finish(): Unit = {
     if (Property.csvOutputTopNTrait) CsvOutputter.outputTopNTrait
-    if (Property.csvOutputTopNTrait) CsvOutputter.outputTop40Trait //偽装しているメソッド
-    if (Property.csvOutputTopNTrait) CsvOutputter.outputTop20Trait //偽装しているメソッド
     if (Property.csvOutputPreferenceHistoryForOneTrait) CsvOutputter.outputPreferenceHistoryForOneTrait
     if (Property.csvOutputTraitLifeSpanFreq) CsvOutputter.outputTraitLifeSpanFreq
     if (Property.csvOutputTraitFreqHisory) CsvOutputter.outputTraitFreqHistory
