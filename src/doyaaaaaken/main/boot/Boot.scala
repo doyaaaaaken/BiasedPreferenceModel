@@ -20,9 +20,9 @@ object Boot {
 
   def finish(): Unit = {
     if (Property.csvOutputTopNTrait) CsvOutputter.outputTopNTrait
-    if (Property.csvOutputPreferenceHistoryForOneTrait) CsvOutputter.outputPreferenceHistoryForOneTrait
-    if (Property.csvOutputTraitLifeSpanFreq) CsvOutputter.outputTraitLifeSpanFreq
-    if (Property.csvOutputTraitFreqHisory) CsvOutputter.outputTraitFreqHistory
+    //    if (Property.csvOutputPreferenceHistoryForOneTrait) CsvOutputter.outputPreferenceHistoryForOneTrait
+    //    if (Property.csvOutputTraitLifeSpanFreq) CsvOutputter.outputTraitLifeSpanFreq
+    //    if (Property.csvOutputTraitFreqHisory) CsvOutputter.outputTraitFreqHistory
     DbSession.close
     println("＊＊＊＊＊＊シミュレーション終了＊＊＊＊＊＊")
     println("終了時刻：" + new Date().toString)

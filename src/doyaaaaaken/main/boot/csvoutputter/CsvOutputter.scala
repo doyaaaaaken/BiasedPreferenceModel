@@ -7,6 +7,7 @@ import java.io.IOException
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import doyaaaaaken.main.boot.Property
+import java.util.Date
 
 /**シミュレーション終了後に、DBの値をCSVとしてファイル出力するオブジェクト*/
 private[boot] object CsvOutputter {
@@ -27,28 +28,50 @@ private[boot] object CsvOutputter {
     println("＊＊＊＊＊＊CSVファイルアウトプット終了しました＊＊＊＊＊＊")
   }
 
-  /**タイムステップごとの度数分布：TraitFreqHistoryの出力メソッド*/
-  def outputTraitFreqHistory(): Unit = {
-    val outputter: PrintWriterUser = TraitFreqHistoryCsvOutputter
-    outputCsvFile(Property.csvOutputFileNameForTraitFreqHistory, outputter)
-  }
+  //  /**タイムステップごとの度数分布：TraitFreqHistoryの出力メソッド*/
+  //  def outputTraitFreqHistory(): Unit = {
+  //    val outputter: PrintWriterUser = TraitFreqHistoryCsvOutputter
+  //    outputCsvFile(Property.csvOutputFileNameForTraitFreqHistory, outputter)
+  //  }
 
   /**度数最高値がTopNのものの度数推移出力メソッド*/
   def outputTopNTrait(): Unit = {
-    val outputter: PrintWriterUser = TopNTraitCsvOutputter
+    //    outputMaxFreqTopNTrait()
+    outputCumulativeFreqTopNTrait()
+    outputLifeSpanTopNTrait()
+  }
+
+  /**度数最高値がTop20, 40, 100のものの度数推移出力メソッド*/
+  private[this] def outputMaxFreqTopNTrait(): Unit = {
+    //既に検討したので、今は書かないでおく
+  }
+
+  /**累積採用度数がTop20, 40, 100の様式群の度数推移出力メソッド*/
+  private[this] def outputCumulativeFreqTopNTrait(): Unit = {
+    println("***********累積採用度数TOPNの様式群の情報出力************")
+    val outputter: PrintWriterUser = CumulativeFreqTopNTraitCsvOutputter
     outputCsvFile(Property.csvOutputFileNameForTopNTrait, outputter)
+    println("***********出力完了***************" + new Date().toString)
   }
 
-  /**様式の寿命の分布出力メソッド*/
-  def outputTraitLifeSpanFreq(): Unit = {
-    val outputter: PrintWriterUser = TraitLifeSpanFreqCsvOutputter
-    outputCsvFile(Property.csvOutputFileNameForTraitLifeSpanFreq, outputter)
+  /**様式寿命最長値がTop20, 40, 100の様式群の度数推移出力メソッド*/
+  private[this] def outputLifeSpanTopNTrait(): Unit = {
+    println("***********様式寿命最長値TOPNの様式群の情報出力************")
+    val outputter: PrintWriterUser = LifeSpanTopNTraitCsvOutputter
+    outputCsvFile(Property.csvOutputFileNameForTopNTrait, outputter)
+    println("***********出力完了***************" + new Date().toString)
   }
 
-  def outputPreferenceHistoryForOneTrait(): Unit = {
-    val outputter: PrintWriterUser = PreferenceHistoryForOneTraitCsvOutputter
-    outputCsvFile(Property.csvOutputFileNameForPreferenceHistoryForOneTrait, outputter)
-  }
+  //  /**様式の寿命の分布出力メソッド*/
+  //  def outputTraitLifeSpanFreq(): Unit = {
+  //    val outputter: PrintWriterUser = TraitLifeSpanFreqCsvOutputter
+  //    outputCsvFile(Property.csvOutputFileNameForTraitLifeSpanFreq, outputter)
+  //  }
+  //
+  //  def outputPreferenceHistoryForOneTrait(): Unit = {
+  //    val outputter: PrintWriterUser = PreferenceHistoryForOneTraitCsvOutputter
+  //    outputCsvFile(Property.csvOutputFileNameForPreferenceHistoryForOneTrait, outputter)
+  //  }
 }
 
 /**PrintWriterを渡したら、それを使ってデータ出力をするTrait*/
