@@ -13,13 +13,13 @@ import java.util.Date
 private[boot] object CsvOutputter {
 
   /**引数に受け取ったファイル名と関数を用いてCSVファイル出力を行う共通メソッド*/
-  private[this] def outputCsvFile(fileName: String, pwUser: PrintWriterUser): Unit = {
+  private[this] def outputCsvFile(fileName: String, pwUser: PrintWriterUser, rank: Int): Unit = {
     println("＊＊＊＊＊＊CSVファイルアウトプット開始＊＊＊＊＊＊")
     val file = new File(fileName)
     try {
       file.createNewFile //ファイルが存在しない時はファイルを作成
       val pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "Shift-JIS")))
-      pwUser.csvOutput(pw)
+      pwUser.csvOutput(pw, rank)
       pw.close
     } catch {
       case e: IOException => println("CSV入出力中に入出力例外が発生しました ： " + e.printStackTrace)
@@ -50,7 +50,9 @@ private[boot] object CsvOutputter {
   private[this] def outputCumulativeFreqTopNTrait(): Unit = {
     println("***********累積採用度数TOPNの様式群の情報出力************")
     val outputter: PrintWriterUser = CumulativeFreqTopNTraitCsvOutputter
-    outputCsvFile(Property.csvOutputFileNameForTopNTrait, outputter)
+    outputCsvFile("cumulativeFreqTop20Trait.csv", outputter, 20)
+    outputCsvFile("cumulativeFreqTop40Trait.csv", outputter, 40)
+    outputCsvFile("cumulativeFreqTop100Trait.csv", outputter, 100)
     println("***********出力完了***************" + new Date().toString)
   }
 
@@ -58,7 +60,9 @@ private[boot] object CsvOutputter {
   private[this] def outputLifeSpanTopNTrait(): Unit = {
     println("***********様式寿命最長値TOPNの様式群の情報出力************")
     val outputter: PrintWriterUser = LifeSpanTopNTraitCsvOutputter
-    outputCsvFile(Property.csvOutputFileNameForTopNTrait, outputter)
+    outputCsvFile("lifeSpanTop20Trait.csv", outputter, 20)
+    outputCsvFile("lifeSpanTop40Trait.csv", outputter, 40)
+    outputCsvFile("lifeSpanTop100Trait.csv", outputter, 100)
     println("***********出力完了***************" + new Date().toString)
   }
 
@@ -77,4 +81,5 @@ private[boot] object CsvOutputter {
 /**PrintWriterを渡したら、それを使ってデータ出力をするTrait*/
 private[csvoutputter] trait PrintWriterUser {
   def csvOutput(pw: PrintWriter): Unit
+  def csvOutput(pw: PrintWriter, rank: Int): Unit
 }
