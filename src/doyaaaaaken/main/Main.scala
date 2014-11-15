@@ -69,7 +69,7 @@ object Main {
           //データの格納
           if (time % Property.dbSaveInterval == 0 && time >= Property.dbSaveStartTime) currentTraitFreq.insertDataSet(DbSession.getConnection)
 
-          if (time % 100 == 0) println(simNum + "回目Sim ： " + time + "タイムステップ経過")
+          if (time % 100 == 0) println("InitialHopedPrefAve = " + initialHopedPrefAve + "   " + simNum + "回目Sim ： " + time + "タイムステップ経過")
           if (time == Property.simTimeNum) println(Util.getMemoryInfo())
         }
       }
