@@ -7,12 +7,12 @@ import doyaaaaaken.main.boot.Property
 
 private[boot] object CumulativeFreqTopNTraitCsvOutputter extends PrintWriterUser {
 
-  override def csvOutput(pw: PrintWriter, rank: Int): Unit = {
+  override def csvOutput(pw: PrintWriter, rankLimit: Int): Unit = {
     val con = DbSession.getConnection
 
     //sim_num（何回目のシミュレーションか）ごとに出力する
     for (simNum <- 1 to Property.simNum) {
-      var topNTraitsDatas = TraitFreqHistory.selectCumulativeFreqTopNTraitsData(con, simNum, rank)
+      var topNTraitsDatas = TraitFreqHistory.selectCumulativeFreqTopNTraitsData(con, simNum, rankLimit)
 
       //使われている様式種類群
       val traitKindsList: Seq[Int] = topNTraitsDatas.map(_.trait_kind).toSet.toList.sorted //データとして存在したtrait_kind群

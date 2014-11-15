@@ -160,12 +160,12 @@ object TraitFreqHistory {
   /**
    * 累積採用度数TopNの様式の度数推移だけをtrait_freq_historyテーブルから抜き出す
    */
-  def selectCumulativeFreqTopNTraitsData(con: Connection, simNumber: Int, rank: Int): Seq[TraitFreqHistoryDataRow] = {
+  def selectCumulativeFreqTopNTraitsData(con: Connection, simNumber: Int, rankLimit: Int): Seq[TraitFreqHistoryDataRow] = {
     val datas: ListBuffer[TraitFreqHistoryDataRow] = ListBuffer()
     try {
       val stmt: Statement = con.createStatement
       val sql: StringBuilder = new StringBuilder
-      //TODO
+
       sql.append("SELECT * FROM ")
       sql.append(dbTableName)
       sql.append(" AS tfh1 WHERE tfh1.sim_num = ")
@@ -174,8 +174,8 @@ object TraitFreqHistory {
       sql.append(dbTableName)
       sql.append(" AS tfh3 WHERE tfh3.sim_num = ")
       sql.append(simNumber)
-      sql.append(" GROUP BY tfh3.trait_kind ORDER BY MAX(tfh3.freq) DESC LIMIT ")
-      sql.append(rank)
+      sql.append(" GROUP BY tfh3.trait_kind ORDER BY SUM(tfh3.freq) DESC LIMIT ")
+      sql.append(rankLimit)
       sql.append(") AS tfh2);")
 
       val rs: ResultSet = stmt.executeQuery(sql.toString())
@@ -203,12 +203,12 @@ object TraitFreqHistory {
   /**
    * 様式寿命最長値TopNの様式の度数推移だけをtrait_freq_historyテーブルから抜き出す
    */
-  def selectLifeSpanTopNTraitsData(con: Connection, simNumber: Int, rank: Int): Seq[TraitFreqHistoryDataRow] = {
+  def selectLifeSpanTopNTraitsData(con: Connection, simNumber: Int, rankLimit: Int): Seq[TraitFreqHistoryDataRow] = {
     val datas: ListBuffer[TraitFreqHistoryDataRow] = ListBuffer()
     try {
       val stmt: Statement = con.createStatement
       val sql: StringBuilder = new StringBuilder
-      //TODO
+
       sql.append("SELECT * FROM ")
       sql.append(dbTableName)
       sql.append(" AS tfh1 WHERE tfh1.sim_num = ")
@@ -217,8 +217,8 @@ object TraitFreqHistory {
       sql.append(dbTableName)
       sql.append(" AS tfh3 WHERE tfh3.sim_num = ")
       sql.append(simNumber)
-      sql.append(" GROUP BY tfh3.trait_kind ORDER BY MAX(tfh3.freq) DESC LIMIT ")
-      sql.append(rank)
+      sql.append(" GROUP BY tfh3.trait_kind ORDER BY COUNT(tfh3.freq) DESC LIMIT ")
+      sql.append(rankLimit)
       sql.append(") AS tfh2);")
 
       val rs: ResultSet = stmt.executeQuery(sql.toString())

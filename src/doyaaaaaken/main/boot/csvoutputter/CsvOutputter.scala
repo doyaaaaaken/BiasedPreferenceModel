@@ -80,6 +80,5 @@ private[boot] object CsvOutputter {
 
 /**PrintWriterを渡したら、それを使ってデータ出力をするTrait*/
 private[csvoutputter] trait PrintWriterUser {
-  def csvOutput(pw: PrintWriter): Unit
   def csvOutput(pw: PrintWriter, rank: Int): Unit
 }
