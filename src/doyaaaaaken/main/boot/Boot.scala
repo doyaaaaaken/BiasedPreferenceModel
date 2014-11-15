@@ -14,17 +14,30 @@ object Boot {
     PropertyReader.read
     if (useDb) {
       DbSession.open
-      if (Property.dbClearBeforeSim) DbSession.clearData
     }
   }
 
-  def finish(): Unit = {
+  def refresh(initialHopedPrefAve: Double): Unit = {
+    //DBの値をクリアする
+    if (Property.dbClearBeforeSim) DbSession.clearData
+    //変数をセットし直す
+    resetVariables(initialHopedPrefAve)
+  }
+
+  def output(): Unit = {
     if (Property.csvOutputTopNTrait) CsvOutputter.outputTopNTrait
     //    if (Property.csvOutputPreferenceHistoryForOneTrait) CsvOutputter.outputPreferenceHistoryForOneTrait
     //    if (Property.csvOutputTraitLifeSpanFreq) CsvOutputter.outputTraitLifeSpanFreq
     //    if (Property.csvOutputTraitFreqHisory) CsvOutputter.outputTraitFreqHistory
+  }
+
+  def finish(): Unit = {
     DbSession.close
     println("＊＊＊＊＊＊シミュレーション終了＊＊＊＊＊＊")
     println("終了時刻：" + new Date().toString)
+  }
+
+  private[this] def resetVariables(initialHopedPrefAve: Double): Unit = {
+    Property.setInitialHopedPrefAvarage(initialHopedPrefAve)
   }
 }

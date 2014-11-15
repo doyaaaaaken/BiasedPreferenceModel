@@ -50,9 +50,9 @@ private[boot] object CsvOutputter {
   private[this] def outputCumulativeFreqTopNTrait(): Unit = {
     println("***********累積採用度数TOPNの様式群の情報出力************")
     val outputter: PrintWriterUser = CumulativeFreqTopNTraitCsvOutputter
-    outputCsvFile("cumulativeFreqTop20Trait.csv", outputter, 20)
-    outputCsvFile("cumulativeFreqTop40Trait.csv", outputter, 40)
-    outputCsvFile("cumulativeFreqTop100Trait.csv", outputter, 100)
+    outputCsvFile("cumulativeFreqTop20Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
+    outputCsvFile("cumulativeFreqTop40Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 40)
+    outputCsvFile("cumulativeFreqTop100Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 100)
     println("***********出力完了***************" + new Date().toString)
   }
 
@@ -60,9 +60,9 @@ private[boot] object CsvOutputter {
   private[this] def outputLifeSpanTopNTrait(): Unit = {
     println("***********様式寿命最長値TOPNの様式群の情報出力************")
     val outputter: PrintWriterUser = LifeSpanTopNTraitCsvOutputter
-    outputCsvFile("lifeSpanTop20Trait.csv", outputter, 20)
-    outputCsvFile("lifeSpanTop40Trait.csv", outputter, 40)
-    outputCsvFile("lifeSpanTop100Trait.csv", outputter, 100)
+    outputCsvFile("lifeSpanTop20Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
+    outputCsvFile("lifeSpanTop40Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 40)
+    outputCsvFile("lifeSpanTop100Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 100)
     println("***********出力完了***************" + new Date().toString)
   }
 

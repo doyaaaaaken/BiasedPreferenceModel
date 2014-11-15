@@ -35,7 +35,7 @@ trait.generateInterval.hoped = 10; //いくつおきにhopedな様式が作ら�
 #好み関係
 pref.normalTrait.initialPrefAve = 0.0;//normal様式のPreference初期値の平均値
 pref.normalTrait.initialPrefSigmaPerRange = 2;//normal様式のPreferenceの初期値の分布が、右端の好み1.0の場所で分散σの何倍となっているか
-pref.hopedTrait.initialPrefAve = 0.05;//hoped様式のPreference初期値の平均値
+pref.hopedTrait.initialPrefAveList = 0.05,0.1;//hoped様式のPreference初期値の平均値
 pref.hopedTrait.initialPrefSigmaPerRange = 2;//hoped様式のPreferenceの初期値の分布が、右端の好み1.0の場所で分散σの何倍となっているか
 
 #突然変異率（0.0～1.0までの小数値で指定）

@@ -51,8 +51,10 @@ object Property {
 
   lazy val initialNormalPrefAvarage: Double = map.apply("pref.normalTrait.initialPrefAve").toDouble
   lazy val initialNormalPrefSigmaPerRange: Int = map.apply("pref.normalTrait.initialPrefSigmaPerRange").toInt
-  lazy val initialHopedPrefAvarage: Double = map.apply("pref.hopedTrait.initialPrefAve").toDouble
+  var initialHopedPrefAvarage: Double = _
   lazy val initialHopedPrefSigmaPerRange: Int = map.apply("pref.hopedTrait.initialPrefSigmaPerRange").toInt
+
+  lazy val initialHopedPrefAvarageList: Seq[Double] = map.apply("pref.hopedTrait.initialPrefAveList").toString.split(',').map(_.toDouble)
 
   lazy val newTraitMutationRate: Double = map.apply("sim.mutation.newTrait").toDouble
   lazy val randomizePreferenceMutationRate: Double = map.apply("sim.mutation.randomizePreference").toDouble
@@ -66,6 +68,11 @@ object Property {
   //セキュアな設定ファイルの情報へのアクセス時のキー名
   lazy val dbId: String = secureMap.apply("mysql.id")
   lazy val dbPass: String = secureMap.apply("mysql.pass")
+
+  //setterメソッド
+  def setInitialHopedPrefAvarage(initialHopedPrefAve: Double) {
+    initialHopedPrefAvarage = initialHopedPrefAve
+  }
 }
 
 /**
