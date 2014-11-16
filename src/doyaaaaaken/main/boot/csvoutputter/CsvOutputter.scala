@@ -8,6 +8,9 @@ import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import doyaaaaaken.main.boot.Property
 import java.util.Date
+import doyaaaaaken.main.boot.csvoutputter.feature_value.LifeSpanAveCsvOutputter
+import doyaaaaaken.main.boot.csvoutputter.feature_value.CumulativeFreqAveCsvOutputter
+import doyaaaaaken.main.boot.csvoutputter.feature_value.MaxFreqAveCsvOutputter
 
 /**シミュレーション終了後に、DBの値をCSVとしてファイル出力するオブジェクト*/
 private[boot] object CsvOutputter {
@@ -34,11 +37,11 @@ private[boot] object CsvOutputter {
   //    outputCsvFile(Property.csvOutputFileNameForTraitFreqHistory, outputter)
   //  }
 
-  /**度数最高値がTopNのものの度数推移出力メソッド*/
-  def outputTopNTrait(): Unit = {
+  /**特徴量についてTopNの様式群のうち、Hopedな様式の数を出力するメソッド*/
+  def outputTopNHopedTraitNum(): Unit = {
     //    outputMaxFreqTopNTrait()
-    outputCumulativeFreqTopNTrait()
-    outputLifeSpanTopNTrait()
+    outputCumulativeFreqTopNHopedTraitNum()
+    outputLifeSpanTopNHopedTraitNum()
   }
 
   /**度数最高値がTop20, 40, 100のものの度数推移出力メソッド*/
@@ -47,7 +50,7 @@ private[boot] object CsvOutputter {
   }
 
   /**累積採用度数がTop20, 40, 100の様式群の度数推移出力メソッド*/
-  private[this] def outputCumulativeFreqTopNTrait(): Unit = {
+  private[this] def outputCumulativeFreqTopNHopedTraitNum(): Unit = {
     println("***********累積採用度数TOPNの様式群の情報出力************")
     val outputter: PrintWriterUser = CumulativeFreqTopNTraitCsvOutputter
     outputCsvFile("cumulativeFreqTop20Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
@@ -57,12 +60,40 @@ private[boot] object CsvOutputter {
   }
 
   /**様式寿命最長値がTop20, 40, 100の様式群の度数推移出力メソッド*/
-  private[this] def outputLifeSpanTopNTrait(): Unit = {
+  private[this] def outputLifeSpanTopNHopedTraitNum(): Unit = {
     println("***********様式寿命最長値TOPNの様式群の情報出力************")
     val outputter: PrintWriterUser = LifeSpanTopNTraitCsvOutputter
     outputCsvFile("lifeSpanTop20Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
     outputCsvFile("lifeSpanTop40Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 40)
     outputCsvFile("lifeSpanTop100Trait-hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 100)
+    println("***********出力完了***************" + new Date().toString)
+  }
+
+  /**Normal様式群とHoped様式群の特徴量を、様式全体・特徴量に関してTop100,40,20の様式群 から抽出して出力する*/
+  def outputNormalHopedFeatureValue(): Unit = {
+    outputMaxFreqAve() //様式の最高到達度数の平均値
+    outputCumulativeFreqAve() //様式の累積採用度数の平均値
+    outputLifeSpanAve() //様式の寿命平均値
+  }
+
+  private[this] def outputMaxFreqAve(): Unit = {
+    println("***********Normal度数とHoped度数の、最高到達度数の平均値情報出力************")
+    val outputter: PrintWriterUser = MaxFreqAveCsvOutputter
+    outputCsvFile("maxFreqAve_hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
+    println("***********出力完了***************" + new Date().toString)
+  }
+
+  private[this] def outputCumulativeFreqAve(): Unit = {
+    println("***********Normal度数とHoped度数の、累積採用度数の平均値情報出力************")
+    val outputter: PrintWriterUser = CumulativeFreqAveCsvOutputter
+    outputCsvFile("cumulativeFreqAve_hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
+    println("***********出力完了***************" + new Date().toString)
+  }
+
+  private[this] def outputLifeSpanAve(): Unit = {
+    println("***********Normal度数とHoped度数の、様式寿命の平均値情報出力************")
+    val outputter: PrintWriterUser = LifeSpanAveCsvOutputter
+    outputCsvFile("lifeSpanAve_hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
     println("***********出力完了***************" + new Date().toString)
   }
 
