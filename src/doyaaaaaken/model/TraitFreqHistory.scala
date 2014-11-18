@@ -242,6 +242,134 @@ object TraitFreqHistory {
     }
     datas.toList
   }
+  //////////////////////////////////ここからが、hopedTraitSimulationブランチで使う部分//////////////////////////////////////////
+  /**
+   * 各シミュレーションでの最高到達度数TopNの様式について、最高到達度数の平均値をtrait_freq_historyテーブルから取得する
+   */
+  def selectMaxFreqAveForTopNTraits(con: Connection, rankLimit: Option[Int], simNum: Int): Seq[TraitFeatureValueDataRow] = {
+    val datas: ListBuffer[TraitFeatureValueDataRow] = ListBuffer()
+    try {
+      val stmt: Statement = con.createStatement
+      val sql: String = """
+							SELECT
+                	groups.is_hoped,
+                	AVG(groups.max_freq) AS max_freq_average
+                FROM (SELECT
+                	trait_kind,
+                	CASE WHEN tfh.trait_kind %% %d = 0 THEN "true" ELSE "false" END is_hoped,
+                	MAX(tfh.freq) AS max_freq
+                      FROM %s AS tfh
+                	WHERE sim_num = %d
+                	GROUP BY tfh.trait_kind
+								  ORDER BY max_freq DESC %s) AS groups
+                GROUP BY groups.is_hoped;"""
+        .format(Property.hopedTraitGenerateInterval, dbTableName, simNum, if (rankLimit.isDefined) "LIMIT " + rankLimit.get else "")
+
+      val rs: ResultSet = stmt.executeQuery(sql)
+
+      while (rs.next()) {
+        val isHoped: Boolean = rs.getBoolean("is_hoped")
+        val maxFreqAverage: Double = rs.getDouble("max_freq_average")
+        datas += TraitFeatureValueDataRow(simNum, isHoped, maxFreqAverage)
+      }
+      rs.close
+      stmt.close
+    } catch {
+      case e: SQLException => println("Database error " + e)
+      case e: Throwable => {
+        println("Some other exception type on DbSession:")
+        e.printStackTrace
+      }
+    }
+    datas.toList
+  }
+
+  /**
+   * 各シミュレーションでの累積採用度数TopNの様式について、累積採用度数の平均値をtrait_freq_historyテーブルから取得する
+   */
+  def selectCumulativeFreqAveForTopNTraits(con: Connection, rankLimit: Option[Int], simNum: Int): Seq[TraitFeatureValueDataRow] = {
+    val datas: ListBuffer[TraitFeatureValueDataRow] = ListBuffer()
+    try {
+      val stmt: Statement = con.createStatement
+      val sql: String = """
+							SELECT
+                	groups.is_hoped,
+                	AVG(groups.cumulative_freq) AS cumulative_freq_average
+                FROM (SELECT
+                	trait_kind,
+                	CASE WHEN tfh.trait_kind %% %d = 0 THEN "true" ELSE "false" END is_hoped,
+                	SUM(tfh.freq) AS cumulative_freq
+                      FROM %s AS tfh
+                	WHERE sim_num = %d
+                	GROUP BY tfh.trait_kind
+								  ORDER BY cumulative_freq DESC %s) AS groups
+                GROUP BY groups.is_hoped;"""
+        .format(Property.hopedTraitGenerateInterval, dbTableName, simNum, if (rankLimit.isDefined) "LIMIT " + rankLimit.get else "")
+
+      val rs: ResultSet = stmt.executeQuery(sql.toString())
+
+      while (rs.next()) {
+        val isHoped: Boolean = rs.getBoolean("is_hoped")
+        val cumulativeFreqAverage: Double = rs.getDouble("cumulative_freq_average")
+        datas += TraitFeatureValueDataRow(simNum, isHoped, cumulativeFreqAverage)
+      }
+      rs.close
+      stmt.close
+    } catch {
+      case e: SQLException => println("Database error " + e)
+      case e: Throwable => {
+        println("Some other exception type on DbSession:")
+        e.printStackTrace
+      }
+    }
+    datas.toList
+  }
+
+  /**
+   * 各シミュレーションでの様式寿命TopNの様式について、様式寿命の平均値をtrait_freq_historyテーブルから取得する
+   */
+  def selectLifeSpanAveForTopNTraits(con: Connection, rankLimit: Option[Int], simNum: Int): Seq[TraitFeatureValueDataRow] = {
+    val datas: ListBuffer[TraitFeatureValueDataRow] = ListBuffer()
+    try {
+      val stmt: Statement = con.createStatement
+      val sql: String = """
+							SELECT
+                	groups.is_hoped,
+                	AVG(groups.life_span) AS life_span_average
+                FROM (SELECT
+                	trait_kind,
+                	CASE WHEN tfh.trait_kind %% %d = 0 THEN "true" ELSE "false" END is_hoped,
+                	COUNT(tfh.freq) AS life_span
+                      FROM %s AS tfh
+                	WHERE sim_num = %d
+                	GROUP BY tfh.trait_kind
+								  ORDER BY life_span DESC %s) AS groups
+                GROUP BY groups.is_hoped;"""
+        .format(Property.hopedTraitGenerateInterval, dbTableName, simNum, if (rankLimit.isDefined) "LIMIT " + rankLimit.get else "")
+
+      val rs: ResultSet = stmt.executeQuery(sql.toString())
+
+      while (rs.next()) {
+        val isHoped: Boolean = rs.getBoolean("is_hoped")
+        val lifeSpanAverage: Double = rs.getDouble("life_span_average")
+        datas += TraitFeatureValueDataRow(simNum, isHoped, lifeSpanAverage)
+      }
+      rs.close
+      stmt.close
+    } catch {
+      case e: SQLException => println("Database error " + e)
+      case e: Throwable => {
+        println("Some other exception type on DbSession:")
+        e.printStackTrace
+      }
+    }
+    datas.toList
+  }
+
+  /**trait_freq_historyテーブルからSELECTし加工した、traitLifeSpanに関する行を格納するDTO*/
+  case class TraitFeatureValueDataRow(simNum: Int, isHoped: Boolean, average: Double)
+
+  //////////////////////////////////ここまでが、hopedTraitSimulationブランチで使う部分//////////////////////////////////////////
 
   /**
    * 様式の寿命の分布を抜き出すメソッド
