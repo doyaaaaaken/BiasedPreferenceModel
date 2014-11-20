@@ -79,21 +79,21 @@ private[boot] object CsvOutputter {
   private[this] def outputMaxFreqAve(): Unit = {
     println("***********Normal度数とHoped度数の、最高到達度数の平均値情報出力************")
     val outputter: PrintWriterUser = MaxFreqAveCsvOutputter
-    outputCsvFile("maxFreqAve_hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
+    outputCsvFile("maxFreqAve_hope" + Property.initialHopedPrefAvarage + ".csv", outputter, -1)
     println("***********出力完了***************" + new Date().toString)
   }
 
   private[this] def outputCumulativeFreqAve(): Unit = {
     println("***********Normal度数とHoped度数の、累積採用度数の平均値情報出力************")
     val outputter: PrintWriterUser = CumulativeFreqAveCsvOutputter
-    outputCsvFile("cumulativeFreqAve_hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
+    outputCsvFile("cumulativeFreqAve_hope" + Property.initialHopedPrefAvarage + ".csv", outputter, -1)
     println("***********出力完了***************" + new Date().toString)
   }
 
   private[this] def outputLifeSpanAve(): Unit = {
     println("***********Normal度数とHoped度数の、様式寿命の平均値情報出力************")
     val outputter: PrintWriterUser = LifeSpanAveCsvOutputter
-    outputCsvFile("lifeSpanAve_hope" + Property.initialHopedPrefAvarage + ".csv", outputter, 20)
+    outputCsvFile("lifeSpanAve_hope" + Property.initialHopedPrefAvarage + ".csv", outputter, -1)
     println("***********出力完了***************" + new Date().toString)
   }
 

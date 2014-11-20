@@ -10,7 +10,7 @@ import java.sql.Connection
 
 private[boot] object MaxFreqAveCsvOutputter extends PrintWriterUser {
 
-  override def csvOutput(pw: PrintWriter, rankLimit: Int): Unit = {
+  override def csvOutput(pw: PrintWriter, hoge: Int): Unit = {
     val con = DbSession.getConnection
 
     getAndOutputMaxFreqAverage(pw, con, None)
@@ -34,9 +34,9 @@ private[boot] object MaxFreqAveCsvOutputter extends PrintWriterUser {
     pw.println(if (rankLimit.isDefined) "TOP" + rankLimit.get else "全様式")
     for (simNum <- 1 to Property.simNum) {
       val rows: Seq[TraitFeatureValueDataRow] = TraitFreqHistory.selectMaxFreqAveForTopNTraits(con, rankLimit, simNum)
-      val normalAve: Double = rows.filter(_.isHoped == false).map(_.average).apply(0)
-      val hopedAve: Double = rows.filter(_.isHoped == true).map(_.average).apply(0)
-      pw.println("Hoped様式," + Property.initialHopedPrefAvarage + ",に関して、Normal様式の最高到達度数平均：," + normalAve + ",Hoped様式の最高到達度数平均：," + hopedAve)
+      val normalAve: Option[Double] = rows.filter(_.isHoped == false).map(_.average).headOption
+      val hopedAve: Option[Double] = rows.filter(_.isHoped == true).map(_.average).headOption
+      pw.println("Hoped様式," + Property.initialHopedPrefAvarage + ",に関して、Normal様式の最高到達度数平均：," + normalAve.getOrElse("null") + ",Hoped様式の最高到達度数平均：," + hopedAve.getOrElse("null"))
     }
     pw.println
   }

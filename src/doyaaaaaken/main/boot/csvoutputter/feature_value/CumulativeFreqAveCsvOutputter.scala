@@ -34,9 +34,9 @@ private[boot] object CumulativeFreqAveCsvOutputter extends PrintWriterUser {
     pw.println(if (rankLimit.isDefined) "TOP" + rankLimit.get else "全様式")
     for (simNum <- 1 to Property.simNum) {
       val rows: Seq[TraitFeatureValueDataRow] = TraitFreqHistory.selectCumulativeFreqAveForTopNTraits(con, rankLimit, simNum)
-      val normalAve = rows.filter(_.isHoped == false).map(_.average).apply(0)
-      val hopedAve = rows.filter(_.isHoped == true).map(_.average).apply(0)
-      pw.println("Hoped様式," + Property.initialHopedPrefAvarage + ",に関して、Normal様式の累積採用度数平均：," + normalAve + ",Hoped様式の累積採用度数平均：," + hopedAve)
+      val normalAve: Option[Double] = rows.filter(_.isHoped == false).map(_.average).headOption
+      val hopedAve: Option[Double] = rows.filter(_.isHoped == true).map(_.average).headOption
+      pw.println("Hoped様式," + Property.initialHopedPrefAvarage + ",に関して、Normal様式の累積採用度数平均：," + normalAve.getOrElse("null") + ",Hoped様式の累積採用度数平均：," + hopedAve.getOrElse("null"))
     }
     pw.println
   }

@@ -34,9 +34,9 @@ private[boot] object LifeSpanAveCsvOutputter extends PrintWriterUser {
     pw.println(if (rankLimit.isDefined) "TOP" + rankLimit.get else "全様式")
     for (simNum <- 1 to Property.simNum) {
       val rows: Seq[TraitFeatureValueDataRow] = TraitFreqHistory.selectLifeSpanAveForTopNTraits(con, rankLimit, simNum)
-      val normalAve = rows.filter(_.isHoped == false).map(_.average).apply(0)
-      val hopedAve = rows.filter(_.isHoped == true).map(_.average).apply(0)
-      pw.println("Hoped様式," + Property.initialHopedPrefAvarage + ",に関して、Normal様式の様式寿命平均値：," + normalAve + ",Hoped様式の様式寿命平均値：," + hopedAve)
+      val normalAve: Option[Double] = rows.filter(_.isHoped == false).map(_.average).headOption
+      val hopedAve: Option[Double] = rows.filter(_.isHoped == true).map(_.average).headOption
+      pw.println("Hoped様式," + Property.initialHopedPrefAvarage + ",に関して、Normal様式の様式寿命平均値：," + normalAve.getOrElse("null") + ",Hoped様式の様式寿命平均値：," + hopedAve.getOrElse("null"))
     }
     pw.println
   }
