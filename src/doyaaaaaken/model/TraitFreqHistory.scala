@@ -117,6 +117,40 @@ object TraitFreqHistory {
   }
 
   /**
+   * 指定のsim_num, trait_kindのデータを取得する
+   */
+  def findBySimNumAndTraitKind(con: Connection, simNum: Int, traitKind: Int): Seq[TraitFreqHistoryDataRow] = {
+
+    val datas: ListBuffer[TraitFreqHistoryDataRow] = ListBuffer()
+    try {
+      val stmt: Statement = con.createStatement
+      val sql: String =
+        "SELECT * FROM %s WHERE sim_num=%d AND trait_kind=%d ORDER BY id ASC, sim_num ASC, trait_kind ASC, timestep ASC"
+          .format(dbTableName, simNum, traitKind)
+      val rs: ResultSet = stmt.executeQuery(sql)
+
+      while (rs.next()) {
+        val id: Int = rs.getInt("id")
+        val simNum: Int = rs.getInt("sim_num")
+        val timeStep: Int = rs.getInt("timestep")
+        val traitKind: Int = rs.getInt("trait_kind")
+        val freq: Int = rs.getInt("freq")
+        datas += TraitFreqHistoryDataRow(id, simNum, timeStep, traitKind, freq)
+      }
+
+      rs.close
+      stmt.close
+    } catch {
+      case e: SQLException => println("Database error " + e)
+      case e: Throwable => {
+        println("Some other exception type on DbSession:")
+        e.printStackTrace
+      }
+    }
+    datas
+  }
+
+  /**
    * 様式度数最大値TopNの様式の度数推移だけをtrait_freq_historyテーブルから抜き出す
    */
   //  def selectTopNTraitsData(con: Connection, simNumber: Int): Seq[TraitFreqHistoryDataRow] = {

@@ -5,6 +5,8 @@ import doyaaaaaken.main.db.DbSession
 import doyaaaaaken.model.PreferenceHistoryForOneTraitDataRow
 import doyaaaaaken.model.PreferenceHistoryForOneTrait
 import doyaaaaaken.main.boot.Property
+import doyaaaaaken.model.TraitFreqHistory
+import doyaaaaaken.model.TraitFreqHistoryDataRow
 
 /**
  * preference_history_for_one_traitテーブルよりデータ取得し
@@ -34,6 +36,9 @@ private[boot] object PreferenceHistoryForOneTraitCsvOutputter extends PrintWrite
                 (timeStep, phSeq.map(ph => (ph.agentId, ph.preference)).toMap)
             }
 
+            //trait_freq_historyテーブルから、監視対象の様式の度数推移も取得する
+            val traitFreqTransition: Seq[TraitFreqHistoryDataRow] = TraitFreqHistory.findBySimNumAndTraitKind(con, simNum, traitKind)
+
             //タイトル行の出力
             pw.println(simNum + "回目のシミュレーション結果")
 
@@ -49,6 +54,11 @@ private[boot] object PreferenceHistoryForOneTraitCsvOutputter extends PrintWrite
                 for (i <- 0 to Property.agentNum - 1) {
                   pw.print(preferenceMap(i) + ",")
                 }
+
+                //Preferenceだけだといまいちデータとしての価値が薄いため、様式の度数も出力するようにした
+                traitFreqTransition.foreach(traitFreqRow =>
+                  if (traitFreqRow.timestep == timeStep) pw.print(traitFreqRow.freq))
+
                 pw.println
               }
             }
