@@ -25,31 +25,35 @@ private[boot] object PreferenceHistoryForOneTraitCsvOutputter extends PrintWrite
     prefHistoryDataRowsMap.foreach {
       case (simNum, prefHistorys) =>
 
-        val traitKind = prefHistorys(0).traitKind //監視対象の様式種類番号
-        val timeStepRowDatas = prefHistorys.groupBy(_.timeStep).map { //(timeStep, Map(agentId, preference))の形式に変換
-          case (timeStep, phSeq) =>
-            (timeStep, phSeq.map(ph => (ph.agentId, ph.preference)).toMap)
-        }
+        //trait_kindごとに出力する
+        prefHistorys.groupBy(_.traitKind).foreach {
+          case (traitKind, prefHisoryForOneTrait) =>
 
-        //タイトル行の出力
-        pw.println(simNum + "回目のシミュレーション結果")
+            val timeStepRowDatas = prefHisoryForOneTrait.groupBy(_.timeStep).map { //(timeStep, Map(agentId, preference))の形式に変換
+              case (timeStep, phSeq) =>
+                (timeStep, phSeq.map(ph => (ph.agentId, ph.preference)).toMap)
+            }
 
-        //2行目にはタイトルとAgent番号を出力する
-        pw.print("様式番号：" + traitKind + "に対するPreferenceの値の推移")
-        for (i <- 0 to Property.agentNum - 1) { pw.print("," + i) }
-        pw.println
+            //タイトル行の出力
+            pw.println(simNum + "回目のシミュレーション結果")
 
-        //3行目以下にデータを挿入
-        timeStepRowDatas.foreach {
-          case (timeStep, preferenceMap) => {
-            pw.print(timeStep + ",")
-            for (i <- 0 to Property.agentNum - 1) {
-              pw.print(preferenceMap(i) + ",")
+            //2行目にはタイトルとAgent番号を出力する
+            pw.print("様式番号：" + traitKind + "に対するPreferenceの値の推移")
+            for (i <- 0 to Property.agentNum - 1) { pw.print("," + i) }
+            pw.println
+
+            //3行目以下にデータを挿入
+            timeStepRowDatas.foreach {
+              case (timeStep, preferenceMap) => {
+                pw.print(timeStep + ",")
+                for (i <- 0 to Property.agentNum - 1) {
+                  pw.print(preferenceMap(i) + ",")
+                }
+                pw.println
+              }
             }
             pw.println
-          }
         }
-        pw.println
     }
   }
 }
