@@ -103,10 +103,10 @@ private[boot] object CsvOutputter {
   //    outputCsvFile(Property.csvOutputFileNameForTraitLifeSpanFreq, outputter)
   //  }
   //
-  //  def outputPreferenceHistoryForOneTrait(): Unit = {
-  //    val outputter: PrintWriterUser = PreferenceHistoryForOneTraitCsvOutputter
-  //    outputCsvFile(Property.csvOutputFileNameForPreferenceHistoryForOneTrait, outputter)
-  //  }
+  def outputPreferenceHistoryForOneTrait(): Unit = {
+    val outputter: PrintWriterUser = PreferenceHistoryForOneTraitCsvOutputter
+    outputCsvFile(Property.csvOutputFileNameForPreferenceHistoryForOneTrait, outputter, rank = -1)
+  }
 }
 
 /**PrintWriterを渡したら、それを使ってデータ出力をするTrait*/

@@ -26,6 +26,7 @@ object Boot {
 
   def output(): Unit = {
     if (Property.csvOutputTopNTrait) {
+      CsvOutputter.outputPreferenceHistoryForOneTrait
       //      CsvOutputter.outputTopNHopedTraitNum //特徴量についてTopNの様式群のうち、Hopedな様式の数を出力する
       CsvOutputter.outputNormalHopedFeatureValue //Normal様式群とHoped様式群の特徴量を、様式全体・特徴量に関してTop100,40,20の様式群 から抽出して出力する
     }
