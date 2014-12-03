@@ -64,7 +64,13 @@ object Main {
           agents.foreach { agent => agent._2.eraseExceptNecessaryPreference(currentTraitFreq.getCurrentTraitKindList) }
 
           //Preference推移監視対象の様式番号が存在する間は、その様式番号に対するPreference群をDBに記録する
-          if (currentTraitFreq.contains(Property.prefDbSaveTraitKind)) PreferenceHistoryForOneTrait.apply(simNum, time, Property.prefDbSaveTraitKind, agents).insertDataSet(DbSession.getConnection)
+          Property.prefDbSaveTraitKindList.foreach { prefDbSaveTraitKind =>
+            if (currentTraitFreq.contains(prefDbSaveTraitKind)) {
+              PreferenceHistoryForOneTrait
+                .apply(simNum, time, prefDbSaveTraitKind, agents)
+                .insertDataSet(DbSession.getConnection)
+            }
+          }
 
           //データの格納
           if (time % Property.dbSaveInterval == 0 && time >= Property.dbSaveStartTime) currentTraitFreq.insertDataSet(DbSession.getConnection)
