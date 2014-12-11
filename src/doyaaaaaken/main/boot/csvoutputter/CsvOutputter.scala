@@ -31,11 +31,11 @@ private[boot] object CsvOutputter {
     println("＊＊＊＊＊＊CSVファイルアウトプット終了しました＊＊＊＊＊＊")
   }
 
-  //  /**タイムステップごとの度数分布：TraitFreqHistoryの出力メソッド*/
-  //  def outputTraitFreqHistory(): Unit = {
-  //    val outputter: PrintWriterUser = TraitFreqHistoryCsvOutputter
-  //    outputCsvFile(Property.csvOutputFileNameForTraitFreqHistory, outputter)
-  //  }
+  /**タイムステップごとの度数分布：TraitFreqHistoryの出力メソッド*/
+  def outputTraitFreqHistory(): Unit = {
+    val outputter: PrintWriterUser = TraitFreqHistoryCsvOutputter
+    outputCsvFile(Property.csvOutputFileNameForTraitFreqHistory, outputter, -1)
+  }
 
   /**特徴量についてTopNの様式群のうち、Hopedな様式の数を出力するメソッド*/
   def outputTopNHopedTraitNum(): Unit = {
