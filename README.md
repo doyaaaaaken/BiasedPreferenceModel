@@ -45,3 +45,6 @@ Preferenceモデルにバイアス等を考慮したモデル。Scalaにて実�
 ●*hopedTraitSimulation*ブランチは*Model_2_3*ブランチから切ったもの。「初めから好まれている様式」のシミュレーションをするため以下のことをする。  
 ・累積採用度数と様式寿命のTOP20,40,100に関して出力するようにする  
 ・複数のPreference値に関するシミュレーションを一度にできるようにする  
+
+●*countTraitNumByHopedVariable*ブランチは*hopedTraitSimulation*ブランチから切ったもの。  
+ただ「Hopedの値によって、最後に残った様式の数がどう変わるのか」という目的のためだけに使用  

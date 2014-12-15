@@ -30,7 +30,7 @@ object Boot {
       //      CsvOutputter.outputTopNHopedTraitNum //特徴量についてTopNの様式群のうち、Hopedな様式の数を出力する
       CsvOutputter.outputNormalHopedFeatureValue //Normal様式群とHoped様式群の特徴量を、様式全体・特徴量に関してTop100,40,20の様式群 から抽出して出力する
     }
-    if (Property.csvOutputTraitFreqHisory && Property.simNum == 1) { //注：Hopedが複数の時は正常に作動しないので注意！！
+    if (Property.csvOutputTraitFreqHisory) { //注：Hopedが複数の時は正常に作動しないので注意！！
       CsvOutputter.outputTraitFreqHistory //trait_freq_historyの出力
     }
   }
