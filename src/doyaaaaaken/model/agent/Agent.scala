@@ -5,7 +5,7 @@ import doyaaaaaken.model.Preference
 import doyaaaaaken.model.helper.TraitFactory
 import doyaaaaaken.main.boot.Property
 
-class Agent(
+abstract class Agent(
   agentId: Int,
   antiConformism: Double, //はやりと差別化したがる傾向([0,1]の範囲。1に近いほど差別化欲求が大きく0に近いほど同調欲求が大きい)
   traitFactory: TraitFactory) {
@@ -17,6 +17,11 @@ class Agent(
 
   var traits: Seq[Int] = traitFactory.getInitialTrait
   val preference: Preference = Preference.apply
+
+  /**
+   * オブジェクトのAgentType（Normal,Fan,Critics）を返す
+   */
+  def getAgentType(): Int
 
   /**
    * 受け取った様式番号リストに対して、好みの総和Pomを返す
@@ -39,14 +44,6 @@ class Agent(
       traits = traits :+ traitNum
     }
   }
-
-  //  /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
-  //  def isAnti(targetTraitKind: Option[Int], linkedAgentNums: Seq[Int], agents: Map[Int, Agent]): Boolean = {
-  //    val agentNums = linkedAgentNums :+ id //自分含む、自身から見えるエージェント群のIDリスト
-  //    val seenTraitList: Seq[Int] = agentNums.flatMap(agents(_).traits) //自身から見える様式群 例）(2,3,3,3,4,5,7)
-  //    val diffusionRate: Double = if (seenTraitList.isEmpty) 0.0 else seenTraitList.filter(t => targetTraitKind.isDefined && targetTraitKind.get == t).size.toDouble / seenTraitList.size.toDouble //様式の普及率
-  //    diffusionRate > 1 - antiConformism
-  //  }
 
   /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
   def isAnti(targetTraitKind: Option[Int], linkedAgentNums: Seq[Int], agents: Map[Int, Agent]): Boolean = {
@@ -98,6 +95,18 @@ class Agent(
   }
 }
 
+/**
+ * Agentの種類を表すオブジェクト
+ */
+object AgentType {
+  val NORMAL = 1234
+  val FAN = 5678
+  val CRITICS = 9012
+}
+
+/**
+ * Agent生成の責務を担うオブジェクト
+ */
 object AgentFactory {
 
   var agentId = -1 //作成するAgentにつけるID
@@ -106,7 +115,10 @@ object AgentFactory {
   def create(): Agent = {
     agentId += 1
     val antiConformism: Double = new Random().nextGaussian() / 8.0 * 3.0 + 0.5 //平均が0.5、分散が3/8の正規分布
-    new Agent(agentId, antiConformism, traitFactory)
+
+    if (agentId < Property.fanAgentNum) new FanAgent(agentId, antiConformism, traitFactory)
+    else if (agentId < Property.fanAgentNum + Property.criticsAgentNum) new CriticsAgent(agentId, antiConformism, traitFactory)
+    else new NormalAgent(agentId, antiConformism, traitFactory)
   }
 
   def init(): Unit = {

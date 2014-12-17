@@ -25,8 +25,8 @@ sim.csv.fileName.preferenceHistoryForOneTrait = preference_history_for_one_trait
 
 #エージェント関係
 agent.num = 100;	//エージェント全体の数
-agent.num.fan = 0;	//信者の数
-agent.num.critics = 0;	//アンチの数
+agent.num.fan = 1;	//信者の数
+agent.num.critics = 2;	//アンチの数
 agent.trait.possessCapacity = 100;	//エージェントが様式を持てる限界数(未実装なので使えない)
 
 #様式関係
