@@ -5,6 +5,7 @@ import doyaaaaaken.main.boot.Property
 import doyaaaaaken.model.helper.TraitFactory
 import doyaaaaaken.model.agent.AgentFactory
 import doyaaaaaken.model.agent.Agent
+import doyaaaaaken.model.agent.AgentType
 
 object AgentTest {
 
@@ -30,7 +31,7 @@ object AgentTest {
     println("****以下のAgentの持つ各様式に対するPreference群が-1.0～1.0でばらついていることを目視確認する****")
     agents.map(a => a.preference).foreach(p =>
       for (i <- 0 to Property.initialTraitKind - 1) yield {
-        println("様式" + i + "に対する好みは" + p.getPreferenceValue(i))
+        println("様式" + i + "に対する好みは" + p.getPreferenceValue(i, AgentType.NORMAL)) //注：FANやCRITICSの存在を考慮していないため厳密な値は出ない
       })
     println()
 

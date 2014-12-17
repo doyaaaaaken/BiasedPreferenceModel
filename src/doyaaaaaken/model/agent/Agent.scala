@@ -26,9 +26,7 @@ abstract class Agent(
   /**
    * 受け取った様式番号リストに対して、好みの総和Pomを返す
    */
-  def calcPom(copyTraitNums: Seq[Int]): Double = {
-    preference.calcPrefSum(copyTraitNums)
-  }
+  def calcPom(copyTraitNums: Seq[Int]): Double
 
   /**自身が保持する様式の種類をランダムに返す*/
   def getTraitKindRandom: Option[Int] = {
@@ -79,7 +77,7 @@ abstract class Agent(
   /**エージェントが転生する（様式を全て破棄して、現存する全様式に対する好みを1にする）*/
   def reborn(currentTraitList: Seq[Int]): Unit = {
     traits = Nil
-    preference.rebornAgent(currentTraitList)
+    preference.rebornAgent(currentTraitList, false)
   }
 
   /**新規様式を獲得する*/

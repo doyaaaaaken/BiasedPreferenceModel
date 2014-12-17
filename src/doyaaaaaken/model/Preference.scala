@@ -2,22 +2,23 @@ package doyaaaaaken.model
 
 import doyaaaaaken.main.boot.Property
 import scala.util.Random
+import doyaaaaaken.model.agent.AgentType
 
 private[model] class Preference(preference: Map[Int, Double]) {
 
   var pref: Map[Int, Double] = preference
 
   /**指定の様式種類番号に対する好みの値を返す*/
-  def getPreferenceValue(traitKind: Int): Double = {
-    getOrCreatePrefValue(traitKind)
+  def getPreferenceValue(traitKind: Int, agentType: Int): Double = {
+    getOrCreatePrefValue(traitKind, agentType)
   }
 
   /**ゲッター：Preferenceの値を格納したMapをコピーして返す*/
   def getPreference: Map[Int, Double] = pref.toMap
 
   /**与えられた様式種類群に対する好みの総和を返す*/
-  def calcPrefSum(traitNums: Seq[Int]): Double = {
-    traitNums.map(getOrCreatePrefValue(_)).sum
+  def calcPrefSum(traitNums: Seq[Int], agentType: Int): Double = {
+    traitNums.map(getOrCreatePrefValue(_, agentType)).sum
   }
 
   /**指定の様式番号の様式に対する好みを変更する*/
@@ -31,14 +32,28 @@ private[model] class Preference(preference: Map[Int, Double]) {
     }
   }
 
-  /**エージェントの転生に伴い、好みの値を現存する様式群に対して全て1.0に変更する*/
-  def rebornAgent(currentTraitList: Seq[Int]): Unit = {
-    pref = currentTraitList.map((_ -> 1.0)).toMap
+  /**
+   * エージェントの転生に伴い、好みの値を現存する様式群に対して全て1.0に変更する
+   * (但し、CriticsAgentだった場合は、Extreme様式に対しては-1.0, 普通の様式に対しては1.0 となるようにする)
+   */
+  def rebornAgent(currentTraitList: Seq[Int], isCritics: Boolean): Unit = {
+    pref = if (isCritics) currentTraitList.map(t =>
+      if (t % Property.extremeTraitGenerateInterval == 0) (t -> -1.0)
+      else (t -> 1.0)).toMap
+    else currentTraitList.map((_ -> 1.0)).toMap
   }
 
-  /**好みの値をランダムに振り直す*/
+  /**全様式に対する好みの値をランダムに振り直す*/
   def randomizePrefValue: Unit = {
     pref = pref.map(prefMap => (prefMap._1, Math.random() * 2 - 1.0))
+  }
+
+  /**Extreme様式以外の全様式に対する好みの値をランダムに振り直す*/
+  def randomizePrefValueExceptExtremeTrait: Unit = {
+    pref = pref.map { prefMap =>
+      if (prefMap._1 % Property.extremeTraitGenerateInterval == 0) prefMap
+      else (prefMap._1, Math.random() * 2 - 1.0)
+    }
   }
 
   /**引数に指定された様式群以外に対する好みを消す*/
@@ -47,11 +62,20 @@ private[model] class Preference(preference: Map[Int, Double]) {
   }
 
   /**指定の様式番号に対する好みの値を得る。まだなかった場合は適宜その場で作る*/
-  private def getOrCreatePrefValue(traitKind: Int): Double = {
+  private def getOrCreatePrefValue(traitKind: Int, agentType: Int): Double = {
     if (pref.contains(traitKind)) {
-      pref.apply(traitKind)
+      agentType match {
+        case AgentType.NORMAL => pref.apply(traitKind)
+        case AgentType.FAN => 1.0
+        case AgentType.CRITICS => -1.0
+      }
     } else {
-      val newPrefValue = Preference.calcInitialPrefByType(traitKind)
+      val newPrefValue = if (traitKind % Property.extremeTraitGenerateInterval != 0) Preference.calcInitialPrefByType(traitKind)
+      else agentType match {
+        case AgentType.NORMAL => Preference.calcInitialPrefByType(traitKind)
+        case AgentType.FAN => 1.0
+        case AgentType.CRITICS => -1.0
+      }
       pref = pref + (traitKind -> newPrefValue)
       newPrefValue
     }

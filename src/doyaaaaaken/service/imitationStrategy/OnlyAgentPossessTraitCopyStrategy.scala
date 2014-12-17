@@ -42,7 +42,7 @@ object OnlyAgentPossessTraitCopyStrategy extends Algorithm {
     val preferenceCopyInfoList: Seq[(Agent, Int, Double)] = copyAgentInfoList.filter {
       case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random() && targetTraitNum.isDefined
     }.map {
-      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum.get, oldAgents.apply(copyAgentId).preference.getPreferenceValue(targetTraitNum.get))
+      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum.get, oldAgents.apply(copyAgentId).preference.getPreferenceValue(targetTraitNum.get, agent.getAgentType()))
     }
     debugPrint(Property.debug, copyAgentComList, copyAgentInfoList, traitCopyInfoList, preferenceCopyInfoList) //デバッグモードの場合は変数の値をコンソール出力する
     //コピー成功エージェントがtraitのコピーを行う

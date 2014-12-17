@@ -42,7 +42,7 @@ object BothTraitExistConditionCopyStrategy extends Algorithm {
     val preferenceCopyInfoList: Seq[(Agent, Int, Double)] = copyAgentInfoList.filter {
       case (agent, copyAgentId, targetTraitNum, copyProb) => copyProb > Math.random()
     }.map {
-      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum, oldAgents.apply(copyAgentId).preference.getPreferenceValue(targetTraitNum))
+      case (agent, copyAgentId, targetTraitNum, copyProb) => (agent, targetTraitNum, oldAgents.apply(copyAgentId).preference.getPreferenceValue(targetTraitNum, agent.getAgentType()))
     }
     debugPrint(Property.debug, copyAgentComList, copyAgentInfoList, traitCopyInfoList, preferenceCopyInfoList) //デバッグモードの場合は変数の値をコンソール出力する
     //コピー成功エージェントがtraitのコピーを行う

@@ -49,7 +49,7 @@ object PreferenceHistoryForOneTrait {
 
   /**ファクトリメソッド*/
   def apply(simNum: Int, timeStep: Int, traitKindNum: Int, agents: Map[Int, Agent]): PreferenceHistoryForOneTrait = {
-    val preferenceOfAgent = agents.map(agentMap => (agentMap._1, agentMap._2.preference.getPreferenceValue(traitKindNum)))
+    val preferenceOfAgent = agents.map(agentMap => (agentMap._1, agentMap._2.preference.getPreferenceValue(traitKindNum, agentMap._2.getAgentType())))
     new PreferenceHistoryForOneTrait(simNum, timeStep, traitKindNum, preferenceOfAgent)
   }
 
