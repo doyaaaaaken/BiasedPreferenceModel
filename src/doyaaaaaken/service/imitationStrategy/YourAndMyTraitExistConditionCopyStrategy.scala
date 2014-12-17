@@ -5,6 +5,7 @@ import doyaaaaaken.main.boot.Property
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
 import doyaaaaaken.model.agent.Agent
+import doyaaaaaken.model.agent.AgentType
 
 /**
  * 【AgentImitationServiceオブジェクトでのみ使われるアルゴリズム】
@@ -24,6 +25,11 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
     //(Agentインスタンス、コピー先エージェント番号、コピー対象の様式番号、コピー確率)という形式にする
     var copyAgentInfoList: Seq[(Agent, Int, Option[Int], Double)] = copyAgentComList.map {
       case (agent, copyAgentId, copyProb) => (agent, copyAgentId, getRandomTraitKind(agent.traits ++: oldAgents(copyAgentId).traits), copyProb)
+    }.filter {
+      //FanまたはCriticsのエージェントがExtreme様式をコピー対象に選んでしまった場合は、コピーが行われないため除外する
+      case (agent, targetAgentNum, targetTraitKind, copyProb) =>
+        agent.getAgentType == AgentType.NORMAL ||
+          targetTraitKind.getOrElse(-1) % Property.extremeTraitGenerateInterval != 0
     }
 
     // 以下の箇所でanti-conformist biasの処理を施す

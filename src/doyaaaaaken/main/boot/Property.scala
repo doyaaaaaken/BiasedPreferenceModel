@@ -50,6 +50,7 @@ object Property {
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
   lazy val initialHavingTraitProp: Double = map.apply("trait.initialHavingKindProportion").toDouble
   lazy val hopedTraitGenerateInterval: Int = map.apply("trait.generateInterval.hoped").toInt
+  lazy val extremeTraitGenerateInterval: Int = map.apply("trait.generateInterval.extreme").toInt
 
   lazy val initialNormalPrefAvarage: Double = map.apply("pref.normalTrait.initialPrefAve").toDouble
   lazy val initialNormalPrefSigmaPerRange: Int = map.apply("pref.normalTrait.initialPrefSigmaPerRange").toInt

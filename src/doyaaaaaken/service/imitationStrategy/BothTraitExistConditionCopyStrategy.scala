@@ -26,6 +26,8 @@ object BothTraitExistConditionCopyStrategy extends Algorithm {
       case (agent, copyAgentId, copyProb) => (agent, copyAgentId, traitFreq.getRandomTraitNum, copyProb)
     }
 
+    //TODO FanまたはCriticsのエージェントがExtreme様式をコピー対象に選んでしまった場合は、コピーが行われないため除外する
+
     /*
      * アシンクロナスに相手の様式・好みをコピーする
      * アシンクロナスに行うため現在の相手の状態を直接コピーするのではなく一旦変数に入れる

@@ -33,11 +33,12 @@ agent.trait.possessCapacity = 100;	//エージェントが様式を持てる限�
 trait.initialKindNum = 20;	//初期状態での様式の全種類数
 trait.initialHavingKindProportion = 0.2;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)
 trait.generateInterval.hoped = 10; //いくつおきにhopedな様式が作られるか（この変数の倍数番の様式がhopedとなる）
+trait.generateInterval.extreme = 15; //いくつおきにextremeな様式が作られるか（この変数の倍数番の様式がextremeとなる）
 
 #好み関係
 pref.normalTrait.initialPrefAve = 0.0;//normal様式のPreference初期値の平均値
 pref.normalTrait.initialPrefSigmaPerRange = 2;//normal様式のPreferenceの初期値の分布が、右端の好み1.0の場所で分散σの何倍となっているか
-pref.hopedTrait.initialPrefAve = 0.1;//hoped様式のPreference初期値の平均値
+pref.hopedTrait.initialPrefAve = 0.0;//hoped様式のPreference初期値の平均値
 pref.hopedTrait.initialPrefSigmaPerRange = 2;//hoped様式のPreferenceの初期値の分布が、右端の好み1.0の場所で分散σの何倍となっているか
 
 #突然変異率（0.0～1.0までの小数値で指定）
