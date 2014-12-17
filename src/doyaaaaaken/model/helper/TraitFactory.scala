@@ -7,7 +7,7 @@ import doyaaaaaken.main.boot.Property
  *
  * つまりTraitFactoryはAgentクラスからしか利用されない
  */
-private[model] class TraitFactory(initialTraitKindNum: Int) {
+class TraitFactory(initialTraitKindNum: Int) {
 
   val initialTraitKind = initialTraitKindNum //初期の様式種類数
   var latestTraitKind = initialTraitKind - 1 //現在の最新の様式種類番号
@@ -26,7 +26,6 @@ private[model] class TraitFactory(initialTraitKindNum: Int) {
     latestTraitKind = latestTraitKind + 1
     latestTraitKind
   }
-
 }
 
 /**
