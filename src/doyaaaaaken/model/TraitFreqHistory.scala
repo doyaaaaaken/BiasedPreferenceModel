@@ -82,10 +82,6 @@ object TraitFreqHistory {
   def apply(simNum: Int, timeStep: Int, agents: Map[Int, Agent]): TraitFreqHistory = {
     //agentから「様式種類 - 度数」の一覧を取得
     var currentTraitMap: Map[Int, Int] = agents.flatMap(_._2.traits).toList.groupBy(x => x).map(x => (x._1, x._2.size))
-    //Fanエージェントにしか保持されていないExtreme様式を滅ぼす
-    currentTraitMap = currentTraitMap.filter(ctm =>
-      ctm._1 % Property.extremeTraitGenerateInterval != 0 || ctm._2 == Property.fanAgentNum)
-
     new TraitFreqHistory(simNum, timeStep, currentTraitMap)
   }
 

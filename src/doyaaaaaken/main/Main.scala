@@ -50,8 +50,14 @@ object Main {
 
         //突然変異フェーズ
         AgentMutationService.randomizePreference(agents) //好みをランダムに振り直す
+
         AgentMutationService.reborn(agents, currentTraitFreq.getCurrentTraitKindList) //エージェントが転生する
         AgentMutationService.acquireNewTrait(agents) //新規様式の発生
+
+        //Fanエージェントにしか保持されていないExtreme様式を滅ぼす
+        val declinedExtremeTraitList: Seq[Int] = agents.flatMap(_._2.traits).toList.groupBy(x => x).map(x => (x._1, x._2.size))
+          .filter(ctm => ctm._1 % Property.extremeTraitGenerateInterval == 0 && ctm._2 == Property.fanAgentNum).map(_._2).toList
+        agents.foreach(aMap => declinedExtremeTraitList.foreach(traitNum => aMap._2.changeTrait(traitNum, false)))
 
         //現在存在する様式リストの更新（注：「突然変異：新規様式の発生」により現存する様式リストに変更があったため更新）
         currentTraitFreq = TraitFreqHistory.apply(simNum, time, agents)
