@@ -2,8 +2,6 @@ package test.doyaaaaaken.model
 
 import doyaaaaaken.main.boot.Boot
 import doyaaaaaken.main.boot.Property
-import doyaaaaaken.model.Agent
-import doyaaaaaken.model.AgentFactory
 import doyaaaaaken.model.CompleteGraphFactory
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
@@ -11,6 +9,9 @@ import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.service.imitationStrategy.BothTraitExistConditionCopyStrategy
 import doyaaaaaken.service.imitationStrategy.OnlyAgentPossessTraitCopyStrategy
 import doyaaaaaken.service.imitationStrategy.YourAndMyTraitExistConditionCopyStrategy
+import doyaaaaaken.model.agent.AgentFactory
+import doyaaaaaken.model.CompleteGraphFactory
+import doyaaaaaken.model.agent.Agent
 
 object AgentImitationServiceTest {
 

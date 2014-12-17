@@ -3,8 +3,8 @@ package doyaaaaaken.main
 import doyaaaaaken.main.boot.Boot
 import doyaaaaaken.main.boot.Property
 import doyaaaaaken.main.db.DbSession
-import doyaaaaaken.model.Agent
-import doyaaaaaken.model.AgentFactory
+import doyaaaaaken.model.agent.Agent
+import doyaaaaaken.model.agent.AgentFactory
 import doyaaaaaken.model.CompleteGraphFactory
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory

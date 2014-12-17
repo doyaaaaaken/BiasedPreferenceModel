@@ -1,9 +1,9 @@
 package doyaaaaaken.service
 
-import doyaaaaaken.model.Agent
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
 import doyaaaaaken.service.imitationStrategy.Algorithm
+import doyaaaaaken.model.agent.Agent
 
 /**
  * Agent同士で模倣しあう処理を行うクラス

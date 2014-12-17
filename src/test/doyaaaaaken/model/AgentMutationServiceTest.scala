@@ -2,11 +2,11 @@ package test.doyaaaaaken.model
 
 import doyaaaaaken.main.boot.Boot
 import doyaaaaaken.model.Network
-import doyaaaaaken.model.AgentFactory
 import doyaaaaaken.model.CompleteGraphFactory
-import doyaaaaaken.model.Agent
 import doyaaaaaken.main.boot.Property
 import doyaaaaaken.model.TraitFreqHistory
+import doyaaaaaken.model.agent.AgentFactory
+import doyaaaaaken.model.agent.Agent
 
 object AgentMutationServiceTest {
 

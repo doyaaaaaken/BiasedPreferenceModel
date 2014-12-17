@@ -1,16 +1,16 @@
 #シミュレーションの設定を記したファイル
 
 #シミュレーション関係
-sim.num = 3;	//シミュレーション回数
-sim.timestep.num = 50;//シミュレーションタイムステップ数
+sim.num = 2;	//シミュレーション回数
+sim.timestep.num = 12000;//シミュレーションタイムステップ数
 sim.debug = false;	//デバッグするか否か
 sim.algorithm.biased = false;	//Anti-conformist biasの機構をシミュレーションに入れるかどうか
 
 #DBへの保存関係
 sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
 sim.db.saveInterval = 1;	//DBに保存する時間刻み幅
-sim.db.traitSave.saveStartTime = 0;	//DBに保存を開始する時間
-sim.db.prefSave.observedTraitKind = 4500;	//Agent全体でのPreferenceの値推移を監視する対象の様式番号(preference_history_for_one_traitテーブルに格納するのに使用)
+sim.db.traitSave.saveStartTime = 8000;	//DBに保存を開始する時間
+sim.db.prefSave.observedTraitKind = 99999;	//Agent全体でのPreferenceの値推移を監視する対象の様式番号(preference_history_for_one_traitテーブルに格納するのに使用)
 
 #CSVアウトプット関係
 sim.csv.output.traitFreqHistory = true;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
@@ -24,7 +24,9 @@ sim.csv.output.preferenceHistoryForOneTrait = true; //監視対象の様式番�
 sim.csv.fileName.preferenceHistoryForOneTrait = preference_history_for_one_trait.csv;
 
 #エージェント関係
-agent.num = 100;
+agent.num = 100;	//エージェント全体の数
+agent.num.fan = 0;	//信者の数
+agent.num.critics = 0;	//アンチの数
 agent.trait.possessCapacity = 100;	//エージェントが様式を持てる限界数(未実装なので使えない)
 
 #様式関係
@@ -35,7 +37,7 @@ trait.generateInterval.hoped = 10; //いくつおきにhopedな様式が作ら�
 #好み関係
 pref.normalTrait.initialPrefAve = 0.0;//normal様式のPreference初期値の平均値
 pref.normalTrait.initialPrefSigmaPerRange = 2;//normal様式のPreferenceの初期値の分布が、右端の好み1.0の場所で分散σの何倍となっているか
-pref.hopedTrait.initialPrefAve = 0.05;//hoped様式のPreference初期値の平均値
+pref.hopedTrait.initialPrefAve = 0.1;//hoped様式のPreference初期値の平均値
 pref.hopedTrait.initialPrefSigmaPerRange = 2;//hoped様式のPreferenceの初期値の分布が、右端の好み1.0の場所で分散σの何倍となっているか
 
 #突然変異率（0.0～1.0までの小数値で指定）

@@ -6,6 +6,7 @@ import java.sql.SQLException
 import java.sql.Statement
 import doyaaaaaken.main.boot.Property
 import scala.collection.mutable.ListBuffer
+import doyaaaaaken.model.agent.Agent
 
 /**
  * 各タイムステップにおける、特定のTrait番号に対して各エージェントが持つPreferenceの値群

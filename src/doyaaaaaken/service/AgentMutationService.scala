@@ -1,8 +1,8 @@
 package doyaaaaaken.service
 
-import doyaaaaaken.model.Agent
 import doyaaaaaken.model.TraitFreqHistory
 import doyaaaaaken.main.boot.Property
+import doyaaaaaken.model.agent.Agent
 
 /**
  * Agent内で起こる突然変異の処理を行うクラス

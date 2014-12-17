@@ -3,9 +3,9 @@ package doyaaaaaken.service.imitationStrategy
 import doyaaaaaken.service.AgentImitationService
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
-import doyaaaaaken.model.Agent
 import doyaaaaaken.main.boot.Property
 import scala.util.Random
+import doyaaaaaken.model.agent.Agent
 
 /**
  * 【AgentImitationServiceオブジェクトでのみ使われるアルゴリズム】

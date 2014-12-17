@@ -1,8 +1,9 @@
-package doyaaaaaken.model
+package doyaaaaaken.model.agent
 
+import scala.util.Random
+import doyaaaaaken.model.Preference
 import doyaaaaaken.model.helper.TraitFactory
 import doyaaaaaken.main.boot.Property
-import scala.util.Random
 
 class Agent(
   agentId: Int,

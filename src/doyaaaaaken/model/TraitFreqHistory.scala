@@ -8,6 +8,7 @@ import java.sql.Statement
 import doyaaaaaken.main.boot.Property
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.{ Map => MutableMap }
+import doyaaaaaken.model.agent.Agent
 
 /**
  * 各ターンにおける様式の度数を表すクラス

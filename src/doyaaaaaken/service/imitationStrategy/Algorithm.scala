@@ -2,8 +2,8 @@ package doyaaaaaken.service.imitationStrategy
 
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
-import doyaaaaaken.model.Agent
 import scala.util.Random
+import doyaaaaaken.model.agent.Agent
 
 abstract class Algorithm {
   /**アルゴリズムを起動させる*/

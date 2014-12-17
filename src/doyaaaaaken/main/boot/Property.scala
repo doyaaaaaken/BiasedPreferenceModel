@@ -43,6 +43,8 @@ object Property {
   lazy val csvOutputFileNameForPreferenceHistoryForOneTrait: String = map.apply("sim.csv.fileName.preferenceHistoryForOneTrait").toString
 
   lazy val agentNum: Int = map.apply("agent.num").toInt
+  lazy val fanAgentNum: Int = map.apply("agent.num.fan").toInt
+  lazy val criticsAgentNum: Int = map.apply("agent.num.critics").toInt
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
 
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
