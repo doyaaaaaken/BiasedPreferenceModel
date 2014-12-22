@@ -34,5 +34,9 @@ object AgentMutationService {
     agents.foreach(aMap =>
       if (aMap._2.getAgentType() == AgentType.FAN) newExtremeTraitList.foreach(traitNum =>
         aMap._2.changeTrait(traitNum, true)))
+    //CRITICエージェントがもし新しく出来たExtreme様式を持っていたとするならば、それを破棄する
+    agents.foreach(aMap =>
+      if (aMap._2.getAgentType() == AgentType.CRITICS) newExtremeTraitList.foreach(traitNum =>
+        aMap._2.changeTrait(traitNum, false)))
   }
 }
