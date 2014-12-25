@@ -42,7 +42,7 @@ class Agent(
     //一番前の記憶(Map)を削除
     memory.remove(0)
     //一番後ろに、自身のtraitとコピー相手のtraitを合わせたMapを挿入する
-    val traitsList: Seq[Int] = traits.toList ++ otherPersonTraits
+    val traitsList: Seq[Int] = traits.toList ++ otherPersonTraits.toList
     memory += traitsList.groupBy(x => x).map(x => (x._1, x._2.size))
   }
 

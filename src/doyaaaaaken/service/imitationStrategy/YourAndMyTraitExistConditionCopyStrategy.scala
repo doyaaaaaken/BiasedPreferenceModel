@@ -19,6 +19,9 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
     //エージェント群を、(Agentインスタンス , コピー相手先のエージェント番号, コピー確率Com)という形式にする
     val copyAgentComList: Seq[(Agent, Int, Double)] = getCopyAgentComList(oldAgents, network)
 
+    //エージェントのMemoryを更新する
+    updateAgentMemory(oldAgents, copyAgentComList)
+
     //各エージェント、どの様式番号のt-pペアをコピーするのか決める
     //(Agentインスタンス、コピー先エージェント番号、コピー対象の様式番号、コピー確率)という形式にする
     var copyAgentInfoList: Seq[(Agent, Int, Option[Int], Double)] = copyAgentComList.map {

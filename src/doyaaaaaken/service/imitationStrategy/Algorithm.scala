@@ -30,6 +30,14 @@ abstract class Algorithm {
     }
   }
 
+  /**コピー相手先のエージェントのTraitを見て、エージェントのMemoryを更新する*/
+  private[imitationStrategy] def updateAgentMemory(agents: Map[Int, Agent], copyAgentComList: Seq[(Agent, Int, Double)]): Unit = {
+    copyAgentComList.foreach {
+      case (agent, copyAgentId, copyProb) =>
+        agent.updateMemory(agents(copyAgentId).traits)
+    }
+  }
+
   /**デバッグ用：摸倣の際の各種変数値をコンソール出力する*/
   private[imitationStrategy] def debugPrint(debug: Boolean, copyAgentComList: Seq[(Agent, Int, Double)], copyAgentInfoList: Seq[AnyRef], traitCopyInfoList: Seq[AnyRef], preferenceCopyInfoList: Seq[(Agent, Int, Double)]): Unit = {
     if (debug) {
