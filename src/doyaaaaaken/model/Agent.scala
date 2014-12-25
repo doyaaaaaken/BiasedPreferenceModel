@@ -3,10 +3,12 @@ package doyaaaaaken.model
 import doyaaaaaken.model.helper.TraitFactory
 import doyaaaaaken.main.boot.Property
 import scala.util.Random
+import scala.collection.mutable.ListBuffer
 
 class Agent(
   agentId: Int,
   antiConformThreshold: Double, //差別化行動を行う閾値([0,1]の範囲。コピー対象の様式がこの値より普及度が高ければ、差別化行動を行う)
+  memory: ListBuffer[Map[Int, Int]], //直近10回の自分・コピー相手を見た、[様式番号->度数]の記憶を保持している
   traitFactory: TraitFactory) {
 
   val id = agentId
@@ -33,6 +35,38 @@ class Agent(
     } else if (traits.contains(traitNum) == false && existTraitCondition == true) {
       traits = traits :+ traitNum
     }
+  }
+
+  /**記憶の変更*/
+  def updateMemory(otherPersonTraits: Seq[Int]): Unit = {
+    //一番前の記憶(Map)を削除
+    memory.remove(0)
+    //一番後ろに、自身のtraitとコピー相手のtraitを合わせたMapを挿入する
+    val traitsList: Seq[Int] = traits.toList ++ otherPersonTraits
+    memory += traitsList.groupBy(x => x).map(x => (x._1, x._2.size))
+  }
+
+  /**ある様式種類の普及率を自身の記憶から計算する*/
+  def calcDiffusion(traitNum: Int): Double = {
+    var allTraitNumCount = 0 //Memory内の全様式数をカウント
+    var targetTraitNumCount = 0 //Memory内の計算対象である様式の数をカウント
+
+    //指定された様式番号の普及率が自分から見ればいくつなのかを確認する
+    memory.foreach { traitFreqMap =>
+      if (traitFreqMap.isEmpty) return 0 //EmptyMapが1つでもある場合は、メソッドを終了し普及率0を返してしまう
+      traitFreqMap.foreach {
+        case (traitKind, freq) => {
+          if (traitKind == traitNum) targetTraitNumCount += 1
+          allTraitNumCount += 1
+        }
+      }
+    }
+    targetTraitNumCount / allTraitNumCount
+  }
+
+  /**Memoryのゲッターメソッド*/
+  def getMemory: Seq[Map[Int, Int]] = {
+    memory.toList
   }
 
   //  /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
@@ -88,7 +122,7 @@ class Agent(
   /**【デバッグ用】 エージェントの情報をコンソール出力する*/
   def debugPrint(): Unit = {
     println("+++++++++++++++++")
-    println("agentId = " + agentId + " , antiConformism = " + antiConformThreshold + " , traitList = " + traits + " , preferences = " + preference.getPreference)
+    println("agentId = " + agentId + " , antiConformism = " + antiConformThreshold + " , traitList = " + traits + " , memory = " + memory + " , preferences = " + preference.getPreference)
     println("+++++++++++++++++")
   }
 }
@@ -97,11 +131,14 @@ object AgentFactory {
 
   var agentId = -1 //作成するAgentにつけるID
   var traitFactory: TraitFactory = TraitFactory.apply()
+  val memoryTimespanSize = 10; //直近何ステップ分の記憶を保持できるか
 
   def create(): Agent = {
     agentId += 1
     val antiConformThreshold: Double = Property.antiConformThreshold
-    new Agent(agentId, antiConformThreshold, traitFactory)
+    val memory: ListBuffer[Map[Int, Int]] = ListBuffer()
+    for (i <- 1 to memoryTimespanSize) { memory += Map.empty[Int, Int] }
+    new Agent(agentId, antiConformThreshold, memory, traitFactory)
   }
 
   def init(): Unit = {
