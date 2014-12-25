@@ -1,11 +1,11 @@
 package doyaaaaaken.service.imitationStrategy
 
 import scala.util.Random
-
 import doyaaaaaken.main.boot.Property
 import doyaaaaaken.model.Agent
 import doyaaaaaken.model.Network
 import doyaaaaaken.model.TraitFreqHistory
+import scala.util.control.Breaks
 
 /**
  * 【AgentImitationServiceオブジェクトでのみ使われるアルゴリズム】
@@ -13,6 +13,8 @@ import doyaaaaaken.model.TraitFreqHistory
  *  自分と相手の様式を合わせたリストの中から様式ありorなしの状態をコピーする
  */
 object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
+
+  val b = new Breaks
 
   override def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
 
@@ -32,7 +34,16 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
     copyAgentInfoList = copyAgentInfoList.filter {
       case (agent, copyAgentId, targetTraitNum, copyProb) =>
         if (targetTraitNum.isDefined && agent.isDifferentiate(targetTraitNum.get)) {
-          agent.actDifferentiation(targetTraitNum.get, oldAgents(copyAgentId).getTraitKindRandom)
+
+          val targetAgent = oldAgents(copyAgentId)
+          var gotTraitKind: Int = -1
+          b.breakable {
+            for (i <- 1 to 5) {
+              gotTraitKind = oldAgents(copyAgentId).getTraitKindRandom.getOrElse(-1)
+              if (gotTraitKind != -1 && gotTraitKind != targetTraitNum.get) b.break
+            }
+          }
+          if (gotTraitKind != -1 && gotTraitKind != targetTraitNum.get) agent.actDifferentiation(targetTraitNum.get, Option(gotTraitKind))
           false
         } else {
           true
