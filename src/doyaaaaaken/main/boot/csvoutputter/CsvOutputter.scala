@@ -28,26 +28,26 @@ private[boot] object CsvOutputter {
   }
 
   /**タイムステップごとの度数分布：TraitFreqHistoryの出力メソッド*/
-  def outputTraitFreqHistory(): Unit = {
+  def outputTraitFreqHistory(outputId: Int): Unit = {
     val outputter: PrintWriterUser = TraitFreqHistoryCsvOutputter
-    outputCsvFile("act" + Property.antiConformThreshold + Property.csvOutputFileNameForTraitFreqHistory, outputter)
+    outputCsvFile("act" + outputId + "_" + Property.antiConformThreshold + Property.csvOutputFileNameForTraitFreqHistory, outputter)
   }
 
   /**度数最高値がTopNのものの度数推移出力メソッド*/
-  def outputTopNTrait(): Unit = {
+  def outputTopNTrait(outputId: Int): Unit = {
     val outputter: PrintWriterUser = TopNTraitCsvOutputter
-    outputCsvFile("act" + Property.antiConformThreshold + Property.csvOutputFileNameForTopNTrait, outputter)
+    outputCsvFile("act" + outputId + "_" + Property.antiConformThreshold + Property.csvOutputFileNameForTopNTrait, outputter)
   }
 
   /**様式の寿命の分布出力メソッド*/
-  def outputTraitLifeSpanFreq(): Unit = {
+  def outputTraitLifeSpanFreq(outputId: Int): Unit = {
     val outputter: PrintWriterUser = TraitLifeSpanFreqCsvOutputter
-    outputCsvFile("act" + Property.antiConformThreshold + Property.csvOutputFileNameForTraitLifeSpanFreq, outputter)
+    outputCsvFile("act" + outputId + "_" + Property.antiConformThreshold + Property.csvOutputFileNameForTraitLifeSpanFreq, outputter)
   }
 
-  def outputPreferenceHistoryForOneTrait(): Unit = {
+  def outputPreferenceHistoryForOneTrait(outputId: Int): Unit = {
     val outputter: PrintWriterUser = PreferenceHistoryForOneTraitCsvOutputter
-    outputCsvFile("act" + Property.antiConformThreshold + Property.csvOutputFileNameForPreferenceHistoryForOneTrait, outputter)
+    outputCsvFile("act" + outputId + "_" + Property.antiConformThreshold + Property.csvOutputFileNameForPreferenceHistoryForOneTrait, outputter)
   }
 }
 

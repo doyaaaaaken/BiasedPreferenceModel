@@ -30,6 +30,8 @@ object Main {
     /*エージェント間の繋がりを示すネットワークの生成*/
     val network: Network = CompleteGraphFactory.create(Property.agentNum) //完全グラフ
 
+    var outputCount = 0 //Boot.output関数を呼んだ回数
+
     Property.antiConformThresholdList.foreach { antiConformThreshold =>
       /*変数（antiConformThreshold）をセットしてシミュレーションを行う*/
       Boot.refresh(antiConformThreshold)
@@ -73,7 +75,8 @@ object Main {
           if (time == Property.simTimeNum) println(Util.getMemoryInfo())
         }
       }
-      Boot.output
+      Boot.output(outputCount)
+      outputCount += 1
     }
 
     Boot.finish

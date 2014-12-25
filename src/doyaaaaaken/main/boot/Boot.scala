@@ -24,11 +24,11 @@ object Boot {
     resetVariables(antiConformThreshold)
   }
 
-  def output(): Unit = {
-    if (Property.csvOutputTopNTrait) CsvOutputter.outputTopNTrait
-    if (Property.csvOutputPreferenceHistoryForOneTrait) CsvOutputter.outputPreferenceHistoryForOneTrait
-    if (Property.csvOutputTraitLifeSpanFreq) CsvOutputter.outputTraitLifeSpanFreq
-    if (Property.csvOutputTraitFreqHisory) CsvOutputter.outputTraitFreqHistory
+  def output(outputId: Int): Unit = {
+    if (Property.csvOutputTopNTrait) CsvOutputter.outputTopNTrait(outputId)
+    if (Property.csvOutputPreferenceHistoryForOneTrait) CsvOutputter.outputPreferenceHistoryForOneTrait(outputId)
+    if (Property.csvOutputTraitLifeSpanFreq) CsvOutputter.outputTraitLifeSpanFreq(outputId)
+    if (Property.csvOutputTraitFreqHisory) CsvOutputter.outputTraitFreqHistory(outputId)
   }
 
   def finish(): Unit = {
