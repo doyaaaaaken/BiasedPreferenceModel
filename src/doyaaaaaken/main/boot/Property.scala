@@ -25,7 +25,6 @@ object Property {
   lazy val simNum: Int = map.apply("sim.num").toInt
   lazy val simTimeNum: Int = map.apply("sim.timestep.num").toInt
   lazy val debug: Boolean = map.apply("sim.debug").toBoolean
-  lazy val isBiasedAlgorithm: Boolean = map.apply("sim.algorithm.biased").toBoolean
 
   lazy val dbClearBeforeSim: Boolean = map.apply("sim.db.clear").toBoolean
   lazy val dbSaveInterval: Int = map.apply("sim.db.saveInterval").toInt
@@ -43,7 +42,8 @@ object Property {
   lazy val csvOutputFileNameForPreferenceHistoryForOneTrait: String = map.apply("sim.csv.fileName.preferenceHistoryForOneTrait").toString
 
   lazy val agentNum: Int = map.apply("agent.num").toInt
-  lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
+  var antiConformThreshold: Double = _
+  lazy val antiConformThresholdList: Seq[Double] = map.apply("agent.antiConformThreshold.list").toString.split(",").map(_.toDouble)
 
   lazy val initialTraitKind: Int = map.apply("trait.initialKindNum").toInt
   lazy val initialHavingTraitProp: Double = map.apply("trait.initialHavingKindProportion").toDouble
@@ -66,6 +66,11 @@ object Property {
   //セキュアな設定ファイルの情報へのアクセス時のキー名
   lazy val dbId: String = secureMap.apply("mysql.id")
   lazy val dbPass: String = secureMap.apply("mysql.pass")
+
+  //setterメソッド
+  def setAntiConformThreshold(act: Double) {
+    antiConformThreshold = act
+  }
 }
 
 /**

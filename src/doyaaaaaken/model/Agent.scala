@@ -6,13 +6,10 @@ import scala.util.Random
 
 class Agent(
   agentId: Int,
-  antiConformism: Double, //はやりと差別化したがる傾向([0,1]の範囲。1に近いほど差別化欲求が大きく0に近いほど同調欲求が大きい)
+  antiConformThreshold: Double, //差別化行動を行う閾値([0,1]の範囲。コピー対象の様式がこの値より普及度が高ければ、差別化行動を行う)
   traitFactory: TraitFactory) {
 
   val id = agentId
-
-  //TODO 様式上限数系の制限を実装する
-  val possessTraitNumCapacity = Property.agentPossessTraitCapacity //持てる様式の上限数
 
   var traits: Seq[Int] = traitFactory.getInitialTrait
   val preference: Preference = Preference.apply
@@ -34,7 +31,6 @@ class Agent(
     if (traits.contains(traitNum) == true && existTraitCondition == false) {
       traits = traits.filter(_ != traitNum)
     } else if (traits.contains(traitNum) == false && existTraitCondition == true) {
-      //TODO 持てる様式の上限数以下の場合のみ、という条件を入れる
       traits = traits :+ traitNum
     }
   }
@@ -47,21 +43,21 @@ class Agent(
   //    diffusionRate > 1 - antiConformism
   //  }
 
-  /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
-  def isAnti(targetTraitKind: Option[Int], linkedAgentNums: Seq[Int], agents: Map[Int, Agent]): Boolean = {
-    //注：自分自身の様式は考慮に入れない（なぜなら新興の様式がはやろうとした時に初めから普及率１に近い値になってしまうため）
-    //seenTraitListのサイズがAgentNum以下だった場合はAntiにならない、的な制約入れている。
-    val seenTraitList: Seq[Int] = linkedAgentNums.flatMap(agents(_).traits) //自身から見える様式群 例）(2,3,3,3,4,5,7)
-    val diffusionRate: Double = if (seenTraitList.isEmpty || seenTraitList.size <= Property.agentNum) 0.0 else seenTraitList.filter(t => targetTraitKind.isDefined && targetTraitKind.get == t).size.toDouble / seenTraitList.size.toDouble //様式の普及率
-    diffusionRate > 1 - antiConformism
-  }
+  //  /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
+  //  def isAnti(targetTraitKind: Option[Int], linkedAgentNums: Seq[Int], agents: Map[Int, Agent]): Boolean = {
+  //    //注：自分自身の様式は考慮に入れない（なぜなら新興の様式がはやろうとした時に初めから普及率１に近い値になってしまうため）
+  //    //seenTraitListのサイズがAgentNum以下だった場合はAntiにならない、的な制約入れている。
+  //    val seenTraitList: Seq[Int] = linkedAgentNums.flatMap(agents(_).traits) //自身から見える様式群 例）(2,3,3,3,4,5,7)
+  //    val diffusionRate: Double = if (seenTraitList.isEmpty || seenTraitList.size <= Property.agentNum) 0.0 else seenTraitList.filter(t => targetTraitKind.isDefined && targetTraitKind.get == t).size.toDouble / seenTraitList.size.toDouble //様式の普及率
+  //    diffusionRate > 1 - antiConformThreshold
+  //  }
 
-  /**エージェントがアンチ行動をとる*/
-  def becomeAnti(traitKind: Int): Unit = {
-    //エージェントは、選んだ様式を保持しない状態になる＆その様式に対する好みが-1となる
-    traits = traits.filterNot(_ == traitKind)
-    preference.changePrefValue(traitKind, -1.0)
-  }
+  //  /**エージェントがアンチ行動をとる*/
+  //  def becomeAnti(traitKind: Int): Unit = {
+  //    //エージェントは、選んだ様式を保持しない状態になる＆その様式に対する好みが-1となる
+  //    traits = traits.filterNot(_ == traitKind)
+  //    preference.changePrefValue(traitKind, -1.0)
+  //  }
 
   /**指定の様式番号の様式に対する好みを変更する*/
   def changePreference(traitNum: Int, prefValue: Double): Unit = {
@@ -92,7 +88,7 @@ class Agent(
   /**【デバッグ用】 エージェントの情報をコンソール出力する*/
   def debugPrint(): Unit = {
     println("+++++++++++++++++")
-    println("agentId = " + agentId + " , antiConformism = " + antiConformism + " , traitList = " + traits + " , preferences = " + preference.getPreference)
+    println("agentId = " + agentId + " , antiConformism = " + antiConformThreshold + " , traitList = " + traits + " , preferences = " + preference.getPreference)
     println("+++++++++++++++++")
   }
 }
@@ -104,8 +100,8 @@ object AgentFactory {
 
   def create(): Agent = {
     agentId += 1
-    val antiConformism: Double = new Random().nextGaussian() / 8.0 * 3.0 + 0.5 //平均が0.5、分散が3/8の正規分布
-    new Agent(agentId, antiConformism, traitFactory)
+    val antiConformThreshold: Double = Property.antiConformThreshold
+    new Agent(agentId, antiConformThreshold, traitFactory)
   }
 
   def init(): Unit = {

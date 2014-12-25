@@ -14,8 +14,6 @@ import doyaaaaaken.model.TraitFreqHistory
  */
 object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
 
-  lazy val isBiasedAlgorithm: Boolean = Property.isBiasedAlgorithm
-
   override def work(oldAgents: Map[Int, Agent], network: Network, traitFreq: TraitFreqHistory): Unit = {
 
     //エージェント群を、(Agentインスタンス , コピー相手先のエージェント番号, コピー確率Com)という形式にする
@@ -27,18 +25,18 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
       case (agent, copyAgentId, copyProb) => (agent, copyAgentId, getRandomTraitKind(agent.traits ++: oldAgents(copyAgentId).traits), copyProb)
     }
 
-    // 以下の箇所でanti-conformist biasの処理を施す
-    if (isBiasedAlgorithm) {
-      val copyAndAntiAgentsPartition = copyAgentInfoList.partition { //copy,antiの２つにエージェント群を切り分ける
-        case (agent, targetAgentNum, targetTraitKind, copyProb) =>
-          agent.isAnti(targetTraitKind, network.getLinkedAgentNums(agent.id), oldAgents)
-      }
-      copyAgentInfoList = copyAndAntiAgentsPartition._2 //2つに切り分けられたうちのcopy行動をとるAgent群のほうを代入
-      copyAndAntiAgentsPartition._1.foreach { //anti行動を取ると判定をされたAgent群に対し、アンチになる処理を施す
-        case (agent, targetAgentNum, targetTraitKind, copyProb) =>
-          if (targetTraitKind.isDefined) agent.becomeAnti(targetTraitKind.get)
-      }
-    }
+    //    // 以下の箇所でanti-conformist biasの処理を施す
+    //    if (isBiasedAlgorithm) {
+    //      val copyAndAntiAgentsPartition = copyAgentInfoList.partition { //copy,antiの２つにエージェント群を切り分ける
+    //        case (agent, targetAgentNum, targetTraitKind, copyProb) =>
+    //          agent.isAnti(targetTraitKind, network.getLinkedAgentNums(agent.id), oldAgents)
+    //      }
+    //      copyAgentInfoList = copyAndAntiAgentsPartition._2 //2つに切り分けられたうちのcopy行動をとるAgent群のほうを代入
+    //      copyAndAntiAgentsPartition._1.foreach { //anti行動を取ると判定をされたAgent群に対し、アンチになる処理を施す
+    //        case (agent, targetAgentNum, targetTraitKind, copyProb) =>
+    //          if (targetTraitKind.isDefined) agent.becomeAnti(targetTraitKind.get)
+    //      }
+    //    }
 
     /*
      * アシンクロナスに相手の様式・好みをコピーする
