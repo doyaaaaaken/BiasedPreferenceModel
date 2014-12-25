@@ -78,7 +78,7 @@ class Agent(
   /**差別化行動をとり、指定の様式を破棄し、代わりに別の指定の様式を取得する*/
   def actDifferentiation(abondonTraitKind: Int, gotTraitKind: Option[Int]): Unit = {
     if (traits.contains(abondonTraitKind)) traits.filter(_ != abondonTraitKind)
-    if (gotTraitKind.isDefined) traits = traits :+ gotTraitKind.get
+    if (gotTraitKind.isDefined && !traits.contains(gotTraitKind.get)) traits = traits :+ gotTraitKind.get
   }
 
   /**指定の様式番号の様式に対する好みを変更する*/
