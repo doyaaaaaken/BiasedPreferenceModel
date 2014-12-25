@@ -47,7 +47,7 @@ class Agent(
   }
 
   /**ある様式種類の普及率を自身の記憶から計算する*/
-  def calcDiffusion(traitNum: Int): Double = {
+  private def calcDiffusion(traitNum: Int): Double = {
     var allTraitNumCount = 0 //Memory内の全様式数をカウント
     var targetTraitNumCount = 0 //Memory内の計算対象である様式の数をカウント
 
@@ -64,34 +64,22 @@ class Agent(
     targetTraitNumCount / allTraitNumCount
   }
 
+  /**普及率とAnti-Conform Thresholdから、差別化行動をとるかどうかを判定する*/
+  def isDifferentiate(traitNum: Int): Boolean = {
+    val diffusionRate = calcDiffusion(traitNum)
+    if (antiConformThreshold > diffusionRate) false else true
+  }
+
   /**Memoryのゲッターメソッド*/
   def getMemory: Seq[Map[Int, Int]] = {
     memory.toList
   }
 
-  //  /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
-  //  def isAnti(targetTraitKind: Option[Int], linkedAgentNums: Seq[Int], agents: Map[Int, Agent]): Boolean = {
-  //    val agentNums = linkedAgentNums :+ id //自分含む、自身から見えるエージェント群のIDリスト
-  //    val seenTraitList: Seq[Int] = agentNums.flatMap(agents(_).traits) //自身から見える様式群 例）(2,3,3,3,4,5,7)
-  //    val diffusionRate: Double = if (seenTraitList.isEmpty) 0.0 else seenTraitList.filter(t => targetTraitKind.isDefined && targetTraitKind.get == t).size.toDouble / seenTraitList.size.toDouble //様式の普及率
-  //    diffusionRate > 1 - antiConformism
-  //  }
-
-  //  /**エージェントが第一引数の様式番号に対しAnti-conformistであるかを判定する*/
-  //  def isAnti(targetTraitKind: Option[Int], linkedAgentNums: Seq[Int], agents: Map[Int, Agent]): Boolean = {
-  //    //注：自分自身の様式は考慮に入れない（なぜなら新興の様式がはやろうとした時に初めから普及率１に近い値になってしまうため）
-  //    //seenTraitListのサイズがAgentNum以下だった場合はAntiにならない、的な制約入れている。
-  //    val seenTraitList: Seq[Int] = linkedAgentNums.flatMap(agents(_).traits) //自身から見える様式群 例）(2,3,3,3,4,5,7)
-  //    val diffusionRate: Double = if (seenTraitList.isEmpty || seenTraitList.size <= Property.agentNum) 0.0 else seenTraitList.filter(t => targetTraitKind.isDefined && targetTraitKind.get == t).size.toDouble / seenTraitList.size.toDouble //様式の普及率
-  //    diffusionRate > 1 - antiConformThreshold
-  //  }
-
-  //  /**エージェントがアンチ行動をとる*/
-  //  def becomeAnti(traitKind: Int): Unit = {
-  //    //エージェントは、選んだ様式を保持しない状態になる＆その様式に対する好みが-1となる
-  //    traits = traits.filterNot(_ == traitKind)
-  //    preference.changePrefValue(traitKind, -1.0)
-  //  }
+  /**差別化行動をとり、指定の様式を破棄し、代わりに別の指定の様式を取得する*/
+  def actDifferentiation(abondonTraitKind: Int, gotTraitKind: Option[Int]): Unit = {
+    if (traits.contains(abondonTraitKind)) traits.filter(_ != abondonTraitKind)
+    if (gotTraitKind.isDefined) traits = traits :+ gotTraitKind.get
+  }
 
   /**指定の様式番号の様式に対する好みを変更する*/
   def changePreference(traitNum: Int, prefValue: Double): Unit = {

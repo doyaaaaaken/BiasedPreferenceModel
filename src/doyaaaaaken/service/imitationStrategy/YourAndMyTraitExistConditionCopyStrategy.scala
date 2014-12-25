@@ -28,18 +28,16 @@ object YourAndMyTraitExistConditionCopyStrategy extends Algorithm {
       case (agent, copyAgentId, copyProb) => (agent, copyAgentId, getRandomTraitKind(agent.traits ++: oldAgents(copyAgentId).traits), copyProb)
     }
 
-    //    // 以下の箇所でanti-conformist biasの処理を施す
-    //    if (isBiasedAlgorithm) {
-    //      val copyAndAntiAgentsPartition = copyAgentInfoList.partition { //copy,antiの２つにエージェント群を切り分ける
-    //        case (agent, targetAgentNum, targetTraitKind, copyProb) =>
-    //          agent.isAnti(targetTraitKind, network.getLinkedAgentNums(agent.id), oldAgents)
-    //      }
-    //      copyAgentInfoList = copyAndAntiAgentsPartition._2 //2つに切り分けられたうちのcopy行動をとるAgent群のほうを代入
-    //      copyAndAntiAgentsPartition._1.foreach { //anti行動を取ると判定をされたAgent群に対し、アンチになる処理を施す
-    //        case (agent, targetAgentNum, targetTraitKind, copyProb) =>
-    //          if (targetTraitKind.isDefined) agent.becomeAnti(targetTraitKind.get)
-    //      }
-    //    }
+    //各エージェント、anti-Conform Thresholdによる判定を行い、コピー先様式の普及率が閾値以上であれば差別化行動をとる
+    copyAgentInfoList = copyAgentInfoList.filter {
+      case (agent, copyAgentId, targetTraitNum, copyProb) =>
+        if (targetTraitNum.isDefined && agent.isDifferentiate(targetTraitNum.get)) {
+          agent.actDifferentiation(targetTraitNum.get, oldAgents(copyAgentId).getTraitKindRandom)
+          false
+        } else {
+          true
+        }
+    }
 
     /*
      * アシンクロナスに相手の様式・好みをコピーする
