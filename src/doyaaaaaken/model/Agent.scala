@@ -8,7 +8,7 @@ import scala.collection.mutable.ListBuffer
 class Agent(
   agentId: Int,
   antiConformThreshold: Double, //差別化行動を行う閾値([0,1]の範囲。コピー対象の様式がこの値より普及度が高ければ、差別化行動を行う)
-  memory: ListBuffer[Map[Int, Int]], //直近10回の自分・コピー相手を見た、[様式番号->度数]の記憶を保持している
+  memory: ListBuffer[Map[Int, Int]], //memoryの長さ分の直近タイムステップの自分・コピー相手を見た、[様式番号->度数]の記憶を保持している
   traitFactory: TraitFactory) {
 
   val id = agentId
@@ -47,17 +47,17 @@ class Agent(
   }
 
   /**ある様式種類の普及率を自身の記憶から計算する*/
-  private def calcDiffusion(traitNum: Int): Double = {
-    var allTraitNumCount = 0 //Memory内の全様式数をカウント
-    var targetTraitNumCount = 0 //Memory内の計算対象である様式の数をカウント
+  def calcDiffusion(traitNum: Int): Double = {
+    var allTraitNumCount = 0.0 //Memory内の全様式数をカウント
+    var targetTraitNumCount = 0.0 //Memory内の計算対象である様式の数をカウント
 
     //指定された様式番号の普及率が自分から見ればいくつなのかを確認する
     memory.foreach { traitFreqMap =>
       if (traitFreqMap.isEmpty) return 0 //EmptyMapが1つでもある場合は、メソッドを終了し普及率0を返してしまう
       traitFreqMap.foreach {
         case (traitKind, freq) => {
-          if (traitKind == traitNum) targetTraitNumCount += 1
-          allTraitNumCount += 1
+          if (traitKind == traitNum) targetTraitNumCount += freq
+          allTraitNumCount += freq
         }
       }
     }
@@ -75,9 +75,9 @@ class Agent(
     memory.toList
   }
 
-  /**差別化行動をとり、指定の様式を破棄し、代わりに別の指定の様式を取得する*/
+  /**差別化行動をとる。指定の様式を破棄し、代わりに別の指定の様式を取得する*/
   def actDifferentiation(abondonTraitKind: Int, gotTraitKind: Option[Int]): Unit = {
-    if (traits.contains(abondonTraitKind)) traits.filter(_ != abondonTraitKind)
+    if (traits.contains(abondonTraitKind)) traits = traits.filter(_ != abondonTraitKind)
     if (gotTraitKind.isDefined && !traits.contains(gotTraitKind.get)) traits = traits :+ gotTraitKind.get
   }
 
