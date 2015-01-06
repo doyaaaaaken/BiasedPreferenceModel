@@ -67,7 +67,7 @@ class Agent(
   /**普及率とAnti-Conform Thresholdから、差別化行動をとるかどうかを判定する*/
   def isDifferentiate(traitNum: Int): Boolean = {
     val diffusionRate = calcDiffusion(traitNum)
-    if (antiConformThreshold > diffusionRate) false else true
+    if (antiConformThreshold < diffusionRate) true else false
   }
 
   /**Memoryのゲッターメソッド*/
