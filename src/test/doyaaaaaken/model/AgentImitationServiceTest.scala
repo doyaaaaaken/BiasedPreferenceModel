@@ -23,6 +23,7 @@ object AgentImitationServiceTest {
      * エージェント間での様式摸倣に関するテスト(用いるアルゴリズムは変数agentImitationServiceにて指定)
      ================================================================================================*/
     Boot.start(useDb = false)
+    Property.setAntiConformThreshold(0.2) //anti-Conform Thresholdの値をここで設定できる
 
     //エージェント間の繋がりを示すネットワークの生成
     val network: Network = CompleteGraphFactory.create(Property.agentNum) //完全グラフ
@@ -48,6 +49,23 @@ object AgentImitationServiceTest {
 
     //摸倣後
     println("\n＊＊＊摸倣後＊＊＊")
+    agents.foreach(_._2.debugPrint)
+
+    ////////////ここから、Anti-Conform処理が正しく行われているかどうかをチェックする////////
+
+    println("\n＊＊＊Anti-Conform処理のテストを行う＊＊＊")
+
+    println("＊＊＊＊updateMemoryメソッドのテスト＊＊＊＊＊＊")
+    agents.foreach(_._2.updateMemory(Seq(1, 2, 3, 4, 5))) //ダミーの様式群を見せ、記憶を更新する
+    agents.foreach(_._2.debugPrint)
+
+    println("＊＊＊＊＊calcDiffusionメソッドのテスト(副作用なし)＊＊＊＊＊")
+    agents.foreach(aMap => println("ID:" + aMap._2.id + "  " + aMap._2.calcDiffusion(1)))
+    println("＊＊＊＊＊isDiffrentiateメソッドのテスト(副作用なし)＊＊＊＊＊")
+    agents.foreach(aMap => println("ID:" + aMap._2.id + "  " + aMap._2.isDifferentiate(1)))
+
+    println("＊＊＊＊＊actDifferentiationメソッドのテスト＊＊＊＊＊")
+    agents.foreach(_._2.actDifferentiation(1, Some(11)))
     agents.foreach(_._2.debugPrint)
 
   }
