@@ -12,6 +12,7 @@ class Agent(
   traitFactory: TraitFactory) {
 
   val id = agentId
+  val possessTraitNumCapacity = Property.agentPossessTraitCapacity //持てる様式の上限数
 
   var traits: Seq[Int] = traitFactory.getInitialTrait
   val preference: Preference = Preference.apply
@@ -32,7 +33,7 @@ class Agent(
   def changeTrait(traitNum: Int, existTraitCondition: Boolean): Unit = {
     if (traits.contains(traitNum) == true && existTraitCondition == false) {
       traits = traits.filter(_ != traitNum)
-    } else if (traits.contains(traitNum) == false && existTraitCondition == true) {
+    } else if (traits.contains(traitNum) == false && existTraitCondition == true && traits.length < possessTraitNumCapacity) {
       traits = traits :+ traitNum
     }
   }
@@ -78,7 +79,7 @@ class Agent(
   /**差別化行動をとる。指定の様式を破棄し、代わりに別の指定の様式を取得する*/
   def actDifferentiation(abondonTraitKind: Int, gotTraitKind: Option[Int]): Unit = {
     if (traits.contains(abondonTraitKind)) traits = traits.filter(_ != abondonTraitKind)
-    if (gotTraitKind.isDefined && !traits.contains(gotTraitKind.get)) traits = traits :+ gotTraitKind.get
+    if (gotTraitKind.isDefined && !traits.contains(gotTraitKind.get) && traits.length < possessTraitNumCapacity) traits = traits :+ gotTraitKind.get
   }
 
   /**指定の様式番号の様式に対する好みを変更する*/
@@ -104,7 +105,9 @@ class Agent(
 
   /**新規様式を獲得する*/
   def acquireNewTrait: Unit = {
-    traits = traits :+ traitFactory.getNewTrait
+    if (traits.length < possessTraitNumCapacity) {
+      traits = traits :+ traitFactory.getNewTrait
+    }
   }
 
   /**【デバッグ用】 エージェントの情報をコンソール出力する*/
