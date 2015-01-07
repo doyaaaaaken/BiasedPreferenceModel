@@ -24,8 +24,9 @@ sim.csv.fileName.preferenceHistoryForOneTrait = preference_history_for_one_trait
 
 #エージェント関係
 agent.num = 100;
-agent.trait.possessCapacity = 100;	//エージェントが様式を持てる限界数
-agent.antiConformThreshold.list = 0.005,0.01,0.015,0.02,0.025,0.03,0.04,0.05,1.0;//差別化行動を行う閾値([0,1]の範囲。コピー対象の様式がこの値より普及度が高ければ、差別化行動を行う)
+agent.trait.possessCapacity = 6;	//エージェントが様式を持てる限界数
+agent.memory.size = 10;	//直近何ステップ分の記憶を保持できるか
+agent.antiConformThreshold.list = 0.3;//差別化行動を行う閾値([0,1]の範囲。コピー対象の様式がこの値より普及度が高ければ、差別化行動を行う)
 
 #様式関係
 trait.initialKindNum = 20;	//初期状態での様式の全種類数

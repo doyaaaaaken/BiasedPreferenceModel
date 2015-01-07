@@ -43,6 +43,7 @@ object Property {
 
   lazy val agentNum: Int = map.apply("agent.num").toInt
   lazy val agentPossessTraitCapacity: Int = map.apply("agent.trait.possessCapacity").toInt
+  lazy val memoryTimespanSize: Int = map.apply("agent.memory.size").toInt
   var antiConformThreshold: Double = _
   lazy val antiConformThresholdList: Seq[Double] = map.apply("agent.antiConformThreshold.list").toString.split(",").map(_.toDouble)
 

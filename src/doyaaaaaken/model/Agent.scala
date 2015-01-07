@@ -122,7 +122,7 @@ object AgentFactory {
 
   var agentId = -1 //作成するAgentにつけるID
   var traitFactory: TraitFactory = TraitFactory.apply()
-  val memoryTimespanSize = 10; //直近何ステップ分の記憶を保持できるか
+  val memoryTimespanSize = Property.memoryTimespanSize; //直近何ステップ分の記憶を保持できるか
 
   def create(): Agent = {
     agentId += 1
