@@ -79,7 +79,9 @@ class Agent(
   /**差別化行動をとる。指定の様式を破棄し、代わりに別の指定の様式を取得する*/
   def actDifferentiation(abondonTraitKind: Int, gotTraitKind: Option[Int]): Unit = {
     if (traits.contains(abondonTraitKind)) traits = traits.filter(_ != abondonTraitKind)
-    if (gotTraitKind.isDefined && !traits.contains(gotTraitKind.get) && traits.length < possessTraitNumCapacity) traits = traits :+ gotTraitKind.get
+    val abondonTraitDiffusion = calcDiffusion(abondonTraitKind)
+    val gotTraitDiffusion = calcDiffusion(gotTraitKind.getOrElse(-1))
+    if (abondonTraitDiffusion >= gotTraitDiffusion && gotTraitKind.isDefined && !traits.contains(gotTraitKind.get) && traits.length < possessTraitNumCapacity) traits = traits :+ gotTraitKind.get
   }
 
   /**指定の様式番号の様式に対する好みを変更する*/
