@@ -1,0 +1,51 @@
+#シミュレーションの設定を記したファイル
+
+#シミュレーション関係
+sim.num = 1;	//シミュレーション回数
+sim.timestep.num = 12000;//シミュレーションタイムステップ数
+sim.debug = false;	//デバッグするか否か
+
+#DBへの保存関係
+sim.db.clear = true;	//毎実験を始める前にDBの値をクリアするかどうか？
+sim.db.saveInterval = 1;	//DBに保存する時間刻み幅
+sim.db.traitSave.saveStartTime = 8000;	//DBに保存を開始する時間
+sim.db.prefSave.observedTraitKind = 9999999;	//Agent全体でのPreferenceの値推移を監視する対象の様式番号(preference_history_for_one_traitテーブルに格納するのに使用)
+
+#CSVアウトプット関係
+sim.csv.output.traitFreqHistory = true;	//シミュレーション終わりにDBのtrait_freq_historyテーブル情報を全てCSVアウトプットするかどうか
+sim.csv.fileName.traitFreqHistory = trait_freq_history.csv; 	//TraitFreqHistory情報をCSVアウトプットする際のファイル名
+sim.csv.output.topNtrait = true;	//度数最高値TopNの様式群の推移をCSV出力するかどうか
+sim.csv.topNnum = 40;	//TopNのNの値 (Preferenceモデルでは40で指定されている)
+sim.csv.fileName.topNtrait = top40trait.csv;
+sim.csv.output.traitLifeSpanFreq = true;	//注：様式の寿命分布の出力はDBへの保存時間刻み幅が1でなければ使えません。
+sim.csv.fileName.traitLifeSpanFreq = trait_life_span.csv;
+sim.csv.output.preferenceHistoryForOneTrait = true; //監視対象の様式番号に対するAgent全体でのPreferenceの値の推移情報をCSV出力するか否か
+sim.csv.fileName.preferenceHistoryForOneTrait = preference_history_for_one_trait.csv;
+
+#エージェント関係
+agent.num = 100;
+agent.trait.possessCapacity = 6;	//エージェントが様式を持てる限界数
+agent.memory.size = 10;	//直近何ステップ分の記憶を保持できるか
+agent.antiConformThreshold.list = 0.3;//差別化行動を行う閾値([0,1]の範囲。コピー対象の様式がこの値より普及度が高ければ、差別化行動を行う)
+
+#様式関係
+trait.initialKindNum = 20;	//初期状態での様式の全種類数
+trait.initialHavingKindProportion = 0.2;	//初期状態においてエージェントが全種様式のうちどれだけの割合保持しているか(確率0～1.0)
+trait.generateInterval.hoped = 10; //いくつおきにhopedな様式が作られるか（この変数の倍数番の様式がhopedとなる）
+
+#好み関係
+pref.normalTrait.initialPrefAve = 0.0;//normal様式のPreference初期値の平均値
+pref.normalTrait.initialPrefSigmaPerRange = 2;//normal様式のPreferenceの初期値の分布が、右端の好み1.0の場所で分散σの何倍となっているか
+pref.hopedTrait.initialPrefAve = 0.0;//hoped様式のPreference初期値の平均値
+pref.hopedTrait.initialPrefSigmaPerRange = 2;//hoped様式のPreferenceの初期値の分布が、右端の好み1.0の場所で分散σの何倍となっているか
+
+#突然変異率（0.0～1.0までの小数値で指定）
+sim.mutation.newTrait = 0.005;	//Preferenceモデルでは0.001で指定されている
+sim.mutation.randomizePreference = 0.001;	//Preferenceモデルでは0.001で指定されている
+sim.mutation.agentReborn = 0.001;	//Preferenceモデルでは0.01で指定されている
+
+#DB設定関係
+mysql.hostName = localhost;
+mysql.dbName = biased_preference_model;
+mysql.tableName.traitFreqHistory = trait_freq_history;
+mysql.tableName.preferenceHistoryForOneTrait = preference_history_for_one_trait;
